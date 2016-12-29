@@ -39,7 +39,6 @@ git:
 install:
   - cd oc/
   - wget http://codeception.com/codecept.phar
-  - cd ..
 
 # execute any number of scripts before the test run, custom env's are available as variables
 before_script:
