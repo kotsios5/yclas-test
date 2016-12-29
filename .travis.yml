@@ -69,7 +69,7 @@ before_script:
 script: 
   - pwd
   - curl reoc.lo
-  - cd /var/www/openclassifieds2
+  - ls /var/www/openclassifieds2
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
