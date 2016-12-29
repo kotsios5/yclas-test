@@ -43,7 +43,6 @@ before_script:
   - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS openclassifieds2;" -uroot; fi
   - cd oc/
   - wget http://codeception.com/codecept.phar
-  - php codecept.phar run acceptance admin/SetUsersPasswordsCept
 
 # omitting "script:" will default to phpunit
 # use the $DB env variable to determine the phpunit.xml to use
