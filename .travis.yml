@@ -38,7 +38,6 @@ git:
 
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS openclassifieds2;'
-  - mysql -e 'show databases;'
 
 install:
   - cd oc/
@@ -58,12 +57,13 @@ before_script:
   - sudo cp -f $TRAVIS_BUILD_DIR/build/travis-ci-apache /etc/apache2/sites-available/default
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
+  - mysql -e 'show databases;'
 
 # omitting "script:" will default to phpunit
 # use the $DB env variable to determine the phpunit.xml to use
-script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
+# script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
 
-# script: cat /etc/hosts
+script: mysql -e 'show databases;'
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
