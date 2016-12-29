@@ -63,7 +63,7 @@ before_script:
 # use the $DB env variable to determine the phpunit.xml to use
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
 
-script: curl reoc.lo
+script: sudo curl reoc.lo
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
