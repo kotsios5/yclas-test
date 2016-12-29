@@ -1,3 +1,0 @@
-[submodule "oc/modules/common"]
-	path = oc/common
-	url = https://github.com/yclas/common
