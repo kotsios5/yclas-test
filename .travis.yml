@@ -14,6 +14,10 @@ php:
   # aliased to a recent 7.1 version
   - 7.1
 
+addons:
+  hosts:
+    - reoc.lo
+
 # optionally specify a list of environments, for example to test different RDBMS
 env:
   - DB=mysql
@@ -32,9 +36,6 @@ env:
 git:
 submodules: false
 
-addons:
-  hosts:
-    - reoc.lo
 
 # execute any number of scripts before the test run, custom env's are available as variables
 before_script:
