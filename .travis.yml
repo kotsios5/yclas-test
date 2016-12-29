@@ -35,12 +35,12 @@ before_script:
   # - if [[ "$DB" == "pgsql" ]]; then psql -c "DROP DATABASE IF EXISTS hello_world_test;" -U postgres; fi
   # - if [[ "$DB" == "pgsql" ]]; then psql -c "create database hello_world_test;" -U postgres; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS openclassifieds2;" -uroot; fi
+  - cd oc/
+  - wget http://codeception.com/codecept.phar
+  - php codecept.phar run acceptance admin/SetUsersPasswordsCept
 
 # omitting "script:" will default to phpunit
 # use the $DB env variable to determine the phpunit.xml to use
-script: cd oc/
-script: wget http://codeception.com/codecept.phar
-script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
 script: php codecept.phar run acceptance
 
 # configure notifications (email, IRC, campfire etc)
