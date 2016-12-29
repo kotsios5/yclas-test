@@ -38,6 +38,7 @@ git:
 
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS openclassifieds2;'
+  - mysql -e 'show databases;'
 
 install:
   - cd oc/
