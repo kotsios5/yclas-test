@@ -34,7 +34,7 @@ env:
 
 # disable the default submodule logic
 git:
-submodules: false
+  submodules: false
 
 
 # execute any number of scripts before the test run, custom env's are available as variables
@@ -45,13 +45,10 @@ before_script:
   - cd oc/
   - wget http://codeception.com/codecept.phar
 
-before_install:
-  - cat /etc/hosts
-
 # omitting "script:" will default to phpunit
 # use the $DB env variable to determine the phpunit.xml to use
-# script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
-script: cat /etc/hosts
+script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
+# script: cat /etc/hosts
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
