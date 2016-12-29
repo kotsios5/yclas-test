@@ -47,7 +47,7 @@ before_script:
 
 # omitting "script:" will default to phpunit
 # use the $DB env variable to determine the phpunit.xml to use
-# script: php codecept.phar run acceptance
+script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
 
 # configure notifications (email, IRC, campfire etc)
 # notifications:
