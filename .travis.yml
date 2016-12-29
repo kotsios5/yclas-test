@@ -64,6 +64,8 @@ before_script:
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
 
 script: pwd
+script: curl reoc.lo
+script: cd /var/www/openclassifieds2
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
