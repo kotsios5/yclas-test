@@ -66,9 +66,10 @@ before_script:
 # use the $DB env variable to determine the phpunit.xml to use
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
 
-script: pwd
-script: curl reoc.lo
-script: cd /var/www/openclassifieds2
+script: 
+  - pwd
+  - curl reoc.lo
+  - cd /var/www/openclassifieds2
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
