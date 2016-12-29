@@ -43,5 +43,5 @@ script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
 script: php codecept.phar run acceptance
 
 # configure notifications (email, IRC, campfire etc)
-notifications:
-  email: "pantazis.constantinos@gmail.com"
+# notifications:
+#   email: "pantazis.constantinos@gmail.com"
