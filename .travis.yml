@@ -59,7 +59,7 @@ before_script:
   - sudo service apache2 restart
   - sudo chmod -R 755 $TRAVIS_BUILD_DIR
   - sudo cp -r $TRAVIS_BUILD_DIR /var/www
-  - mv /var/www/$TRAVIS_BUILD_DIR /var/www/openclassifieds2
+  - sudo mv /var/www/$TRAVIS_BUILD_DIR /var/www/openclassifieds2
   - sudo chmod -R 755 /var/www/openclassifieds2
 
 # omitting "script:" will default to phpunit
