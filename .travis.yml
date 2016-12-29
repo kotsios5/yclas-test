@@ -57,8 +57,7 @@ before_script:
 
 # omitting "script:" will default to phpunit
 # use the $DB env variable to determine the phpunit.xml to use
-# script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
-script: build.sh
+script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
 
 # script: cat /etc/hosts
 
