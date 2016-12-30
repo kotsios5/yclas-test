@@ -66,10 +66,8 @@ before_script:
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
 
 script: 
-  - set -e
+  # - set -e # don't stop on failure
   - curl reoc.lo
-  - cat reoc.lo
-  # - ls /var/www/$TRAVIS_BUILD_DIR
   - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
 after_failure:
