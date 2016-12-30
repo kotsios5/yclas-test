@@ -58,7 +58,7 @@ before_script:
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
   - sudo chmod -R 755 $TRAVIS_BUILD_DIR
-  # - sudo cp -r $TRAVIS_BUILD_DIR /var/www
+  - sudo cp -r $TRAVIS_BUILD_DIR /var/www
   - cd $TRAVIS_BUILD_DIR
   # - sudo chmod -R 755 /var/www/$TRAVIS_BUILD_DIR
 
