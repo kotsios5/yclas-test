@@ -67,6 +67,14 @@ before_script:
   - sudo apt-get install gettext
   - sudo service apache2 restart
 
+  # Install mcrypt
+  - sudo apt-get install php5-mcrypt -y
+  - sudo mv -i /etc/php5/apache2/conf.d/20-mcrypt.ini /etc/php5/mods-available/
+  - php5enmod mcrypt
+  - service apache2 restart
+
+
+
   # configure apache virtual hosts
     # $TRAVIS_BUILD_DIR is the cloned repo, it enters the repo after it clones it
   - sudo cp -f $TRAVIS_BUILD_DIR/build/travis-ci-apache /etc/apache2/sites-available/reoc.lo.conf 
