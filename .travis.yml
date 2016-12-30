@@ -72,7 +72,7 @@ before_script:
   # - sudo chmod -R 755 $TRAVIS_BUILD_DIR
   - sudo cp -r $TRAVIS_BUILD_DIR /var/www
   - sudo chmod -R 755 /var/www/yclas-test
-  - git clone https://github.com/yclas/common /var/www/yclas-test/oc/common
+  - git clone https://github.com/yclas/common /var/www/yclas-test/oc/
   - sudo chmod -R 755 /var/www/yclas-test
 
 # use the $DB env variable to determine the phpunit.xml to use
