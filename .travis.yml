@@ -69,7 +69,7 @@ before_script:
 
   # Install mcrypt
   - sudo apt-get install php5-mcrypt -y
-  - sudo mv -i /etc/php5/apache2/conf.d/20-mcrypt.ini /etc/php5/mods-available/
+  # - sudo mv -i /etc/php5/apache2/conf.d/20-mcrypt.ini /etc/php5/mods-available/
   - php5enmod mcrypt
   - service apache2 restart
 
