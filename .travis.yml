@@ -54,9 +54,9 @@ before_script:
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
 
-  - sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php5/cli/php.ini
-  - sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php5/fpm/php.ini
-  - sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php5/apache2/php.ini
+  # - sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php5/cli/php.ini
+  # - sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php5/fpm/php.ini
+  # - sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php5/apache2/php.ini
 
 
   # configure apache virtual hosts
@@ -73,6 +73,7 @@ before_script:
 
 script: 
   # - set -e # don't stop on failure
+  - ls /etc/php5
   - curl reoc.lo
   - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
