@@ -94,7 +94,6 @@ before_script:
 
 script: 
   # - set -e # don't stop on failure
-  - php -v
   - curl reoc.lo/install-yclas.php
   - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
