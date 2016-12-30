@@ -74,7 +74,12 @@ before_script:
   - sudo service apache2 restart
   # - sudo chmod -R 755 $TRAVIS_BUILD_DIR
   - sudo cp -r $TRAVIS_BUILD_DIR /var/www
-  - sudo chmod -R 755 /var/www/yclas-test
+
+  # permissions
+  - sudo chown -R root:root /var/www
+  - sudo chown -R www-data:www-data /var/www/*
+  - sudo chmod -R 755 /var/www/*
+  # - sudo chmod -R 755 /var/www/yclas-test
 
 # use the $DB env variable to determine the phpunit.xml to use
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
