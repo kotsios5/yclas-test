@@ -65,6 +65,7 @@ before_script:
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
 
 script: 
+  - set -e
   - curl reoc.lo
   # - ls /var/www/$TRAVIS_BUILD_DIR
   - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
