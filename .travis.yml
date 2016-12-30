@@ -57,18 +57,15 @@ before_script:
   - sudo cp -f $TRAVIS_BUILD_DIR/build/travis-ci-apache /etc/apache2/sites-available/default 
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
-  - sudo chmod -R 755 $TRAVIS_BUILD_DIR
+  # - sudo chmod -R 755 $TRAVIS_BUILD_DIR
   - sudo cp -r $TRAVIS_BUILD_DIR /var/www
-  - cd /var/www
-  # - sudo chmod -R 755 /var/www/$TRAVIS_BUILD_DIR
+  - sudo chmod -R 755 /var/www/$TRAVIS_BUILD_DIR
 
 # omitting "script:" will default to phpunit
 # use the $DB env variable to determine the phpunit.xml to use
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
 
 script: 
-  - ls
-  - pwd
   - cat /etc/apache2/sites-available/default
   - curl reoc.lo
   # - ls /var/www/$TRAVIS_BUILD_DIR
