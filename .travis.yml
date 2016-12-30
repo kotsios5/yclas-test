@@ -67,8 +67,12 @@ before_script:
 script: 
   - set -e
   - curl reoc.lo
+  - cat reoc.lo
   # - ls /var/www/$TRAVIS_BUILD_DIR
   - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
+
+after_failure:
+  - cat reoc.lo
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
