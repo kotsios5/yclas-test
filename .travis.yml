@@ -70,6 +70,7 @@ script:
   - pwd
   - curl reoc.lo
   - ls /var/www/openclassifieds2
+  - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
