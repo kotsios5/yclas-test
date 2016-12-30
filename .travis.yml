@@ -69,7 +69,7 @@ before_script:
 script: 
   - ls
   - pwd
-
+  - cat /etc/apache2/sites-available/default
   - curl reoc.lo
   # - ls /var/www/$TRAVIS_BUILD_DIR
   - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
