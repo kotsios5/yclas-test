@@ -59,6 +59,11 @@ before_script:
   
   - sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php5/fpm/php.ini
   - sudo service apache2 restart
+
+  # install gettext
+  - sudo apt-get install gettext
+  - sudo service apache2 restart
+  
   # configure apache virtual hosts
     # $TRAVIS_BUILD_DIR is the cloned repo, it enters the repo after it clones it
   - sudo cp -f $TRAVIS_BUILD_DIR/build/travis-ci-apache /etc/apache2/sites-available/reoc.lo.conf 
