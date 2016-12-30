@@ -59,7 +59,7 @@ before_script:
   - sudo service apache2 restart
   - sudo chmod -R 755 $TRAVIS_BUILD_DIR
   - sudo cp -r $TRAVIS_BUILD_DIR /var/www
-  - cd /var/www/travis
+  - cd /var/www
   # - sudo chmod -R 755 /var/www/$TRAVIS_BUILD_DIR
 
 # omitting "script:" will default to phpunit
