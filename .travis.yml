@@ -34,7 +34,7 @@ env:
 
 # disable the default submodule logic
 git:
-  submodules: false
+  submodules: true
 
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS openclassifieds2;'
