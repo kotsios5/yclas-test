@@ -60,6 +60,9 @@ before_script:
   - sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php5/fpm/php.ini
   - sudo service apache2 restart
 
+  # install php5-curl
+  - sudo apt-get install php5-curl
+
   # install gettext
   - sudo apt-get install gettext
   - sudo service apache2 restart
