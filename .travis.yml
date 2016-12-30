@@ -48,17 +48,17 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
   - sudo apt-get install apache2 php5 libapache2-mod-php5
-  # enable php-fpm
-  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-  - sudo a2enmod rewrite actions fastcgi alias
-  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
 
   - sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php5/cli/php.ini
   - sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php5/apache2/php.ini
   - sudo service apache2 restart
 
-
+  # enable php-fpm
+  - sudo apt-get install php5-fpm -y > /dev/null
+  - sudo service apache2 restart
+  
+  - sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php5/fpm/php.ini
+  - sudo service apache2 restart
   # configure apache virtual hosts
     # $TRAVIS_BUILD_DIR is the cloned repo, it enters the repo after it clones it
   - sudo cp -f $TRAVIS_BUILD_DIR/build/travis-ci-apache /etc/apache2/sites-available/reoc.lo.conf 
