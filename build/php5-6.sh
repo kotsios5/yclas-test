@@ -36,4 +36,4 @@ sudo service apache2 restart
 # Upgrade PHP from 5.5.9 to 5.6
 sudo add-apt-repository ppa:ondrej/php -y > /dev/null
 sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get install php5
