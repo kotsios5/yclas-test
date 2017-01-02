@@ -32,3 +32,8 @@ sudo service apache2 restart
 # MySQLi extension
 sudo apt-get install php5-mysql
 sudo service apache2 restart
+
+# Upgrade PHP from 5.5.9 to 5.6
+sudo add-apt-repository ppa:ondrej/php
+sudo apt-get update
+sudo apt-get upgrade

@@ -1,5 +1,5 @@
 sudo: required
-dist: trusty
+dist: xenial
 # see http://about.travis-ci.org/docs/user/languages/php/ for more hints
 language: php
 
@@ -48,6 +48,8 @@ before_script:
   - sudo apt-get update
 
   - if [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then sh $TRAVIS_BUILD_DIR/build/php5-6.sh; fi
+  - if [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then sh $TRAVIS_BUILD_DIR/build/php7.sh; fi
+  - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then sh $TRAVIS_BUILD_DIR/build/php7-1.sh; fi
   
 
 
