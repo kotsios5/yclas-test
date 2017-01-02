@@ -9,7 +9,7 @@ $I->amOnPage('/?LANGUAGE=en_US'); //select language already
 $I->see('Welcome to the super easy and fast installation');
 
 $I->click('Start installation');
-$I->see('Software Requirements');
+$I->see('DB Configuration');
 
 
 
