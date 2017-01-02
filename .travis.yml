@@ -73,7 +73,13 @@ before_script:
   - sudo php5enmod mcrypt
   - sudo service apache2 restart
 
+  # Install GD
+  - sudo apt-get install php5-gd -y
+  - sudo service apache2 restart
 
+  # MySQLi extension
+  - sudo apt-get install php5-mysql -y
+  - sudo service apache2 restart
 
   # configure apache virtual hosts
     # $TRAVIS_BUILD_DIR is the cloned repo, it enters the repo after it clones it
