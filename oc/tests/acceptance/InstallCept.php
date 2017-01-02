@@ -9,11 +9,23 @@ $I->amOnPage('/?LANGUAGE=en_US'); //select language already
 $I->see('Welcome to the super easy and fast installation');
 
 $I->click('Start installation');
+
 $I->see('DB Configuration');
+$I->fillField('#DB_HOST', 'localhost');
+$I->fillField('#DB_NAME', 'openclassifieds');
+$I->fillField('#DB_USER', 'root'); 	# Default travis user: root or travis
+$I->fillField('#DB_USER', ''); 		# Default travis pass (blank): 
+
+$I->click('Continue');
+
+$I->see('Site Configuration');
+$I->fillField('#SITE_NAME', 'Test Yclas');
+$I->fillField('#ADMIN_EMAIL', 'admin@reoc.lo');
+$I->fillField('#ADMIN_PWD', '1234');
+
+$I->click('Install');
 
 
-
-
-
+$I->see('Congratulations');
 
 ?>
