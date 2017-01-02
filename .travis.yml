@@ -76,11 +76,11 @@ before_script:
 script: 
   # - set -e # don't stop on failure
   - curl reoc.lo/install-yclas.php
-  - ls /etc/php5
   - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
 after_failure:
   - ls /home/travis/build/kotsios5/yclas-test/oc/tests/_output/
+  - firefox /home/travis/build/kotsios5/yclas-test/oc/tests/_output/InstallCept.fail.html
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
