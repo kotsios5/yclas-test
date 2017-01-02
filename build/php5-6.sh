@@ -26,8 +26,8 @@ sudo apt-get install gettext
 sudo service apache2 restart
 
 # Enable mcrypt
-sudo apt-get install php5.6-mcrypt
-# sudo mv -i /etc/php/5.6/apache2/conf.d/20-mcrypt.ini /etc/php/5.6/mods-available/
+sudo apt-get install php5-mcrypt
+sudo mv -i /etc/php5/apache2/conf.d/20-mcrypt.ini /etc/php5/mods-available/
 sudo php5enmod mcrypt
 sudo service apache2 restart
 

@@ -72,7 +72,7 @@ before_script:
 
 script: 
   # - set -e # don't stop on failure
-  - curl reoc.lo/?LANGUAGE=en_US
+  # - curl reoc.lo/?LANGUAGE=en_US
   - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
 after_failure:
