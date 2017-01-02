@@ -26,6 +26,8 @@ sleep(2);
 
 $I->click('Go to Your Website');
 
+$I->amOnPage('/');
+
 $I->see('Listing');
 $I->see('Categories');
 $I->see('Login');
