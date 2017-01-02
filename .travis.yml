@@ -42,7 +42,7 @@ before_install:
 install:
   - cd oc/
   - sudo rm -rf common
-  - git clone https://github.com/yclas/common 
+  - git clone https://github.com/kotsios5/common 
   - wget http://codeception.com/codecept.phar
 
 # execute any number of scripts before the test run, custom env's are available as variables
