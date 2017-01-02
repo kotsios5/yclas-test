@@ -100,7 +100,7 @@ before_script:
 
 script: 
   # - set -e # don't stop on failure
-  - if [ $TRAVIS_PHP_VERSION = "5.5.9" ]; then echo "Using PHP 5.4.9"; fi
+  - if [ "$TRAVIS_PHP_VERSION" != "5.6" ]; then sudo apt-get update; fi
   - curl reoc.lo/install-yclas.php
   - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
