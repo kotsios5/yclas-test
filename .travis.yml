@@ -76,8 +76,7 @@ script:
   - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
 after_failure:
-  - ls /home/travis/build/kotsios5/yclas-test/oc/tests/_output/
-  - firefox /home/travis/build/kotsios5/yclas-test/oc/tests/_output/InstallCept.fail.html
+  - cat /home/travis/build/kotsios5/yclas-test/oc/tests/_output/InstallCept.fail.html
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
