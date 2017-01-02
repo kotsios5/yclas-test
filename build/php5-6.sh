@@ -13,6 +13,12 @@ sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php/5.6/cli/php.
 sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php/5.6/apache2/php.ini
 sudo service apache2 restart
 
+# Enable mcrypt
+sudo apt-get install php5.6-mcrypt
+# sudo mv -i /etc/php5/apache2/conf.d/20-mcrypt.ini /etc/php5/mods-available/
+sudo php5enmod mcrypt
+sudo service apache2 restart
+
 # Enable php-fpm
 sudo apt-get install php5.6-fpm -y > /dev/null
 sudo service apache2 restart
@@ -23,12 +29,6 @@ sudo service apache2 restart
 
 # Install gettext
 sudo apt-get install gettext
-sudo service apache2 restart
-
-# Enable mcrypt
-sudo apt-get install php5.6-mcrypt
-# sudo mv -i /etc/php5/apache2/conf.d/20-mcrypt.ini /etc/php5/mods-available/
-sudo php5enmod mcrypt
 sudo service apache2 restart
 
 # Soap Client
