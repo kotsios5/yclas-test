@@ -29,4 +29,5 @@ sudo service apache2 restart
 
 # Soap Client
 sudo apt-get install php-soap -y
+sudo service apache2 restart
 
