@@ -8,8 +8,6 @@ $I->lookForwardTo('see a success message after the installation and see the webs
 $I->amOnPage('/'); //select language already
 $I->see('Welcome to the super easy and fast installation');
 
-$I->see('Start Installation','button');
-sleep(2);
 $I->fillField('#DB_HOST', 'localhost');
 $I->fillField('#DB_NAME', 'openclassifieds');
 $I->fillField('#DB_USER', 'root'); 	# Default travis user: root or travis
@@ -24,7 +22,13 @@ $I->fillField('#ADMIN_PWD', '1234');
 
 $I->click('Install');
 
+sleep(2);
 
-$I->see('Congratulations');
+$I->click('Go to Your Website');
+
+$I->see('Listing');
+$I->see('Categories');
+$I->see('Login');
+$I->see('Publish New');
 
 ?>
