@@ -9,8 +9,7 @@ $I->amOnPage('/'); //select language already
 $I->see('Welcome to the super easy and fast installation');
 
 $I->click('Start installation');
-sleep(5);
-$I->see('DB Configuration');
+sleep(2);
 $I->fillField('#DB_HOST', 'localhost');
 $I->fillField('#DB_NAME', 'openclassifieds');
 $I->fillField('#DB_USER', 'root'); 	# Default travis user: root or travis
