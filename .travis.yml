@@ -43,8 +43,6 @@ install:
   - cd oc/
   - wget http://codeception.com/codecept.phar
 
-  - if [ "$TRAVIS_PHP_VERSION" != "5.6" ]; then sudo apt-get update; fi
-
 # execute any number of scripts before the test run, custom env's are available as variables
 before_script:
   - sudo apt-get update
@@ -97,7 +95,7 @@ before_script:
   - sudo chmod -R 755 /var/www/*
   # - sudo chmod -R 755 /var/www/yclas-test
 
-  - if [ "$TRAVIS_PHP_VERSION" != "5.6" ]; then sudo apt-get update; fi
+  - if [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then echo "then"; fi
 
 # use the $DB env variable to determine the phpunit.xml to use
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
