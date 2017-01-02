@@ -97,6 +97,7 @@ before_script:
 
   - if [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then echo "5.6"; fi
   - if [ "$TRAVIS_PHP_VERSION" == "5.5.9" ]; then echo "5.5.9"; fi
+  - echo $TRAVIS_PHP_VERSION
 
 # use the $DB env variable to determine the phpunit.xml to use
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
