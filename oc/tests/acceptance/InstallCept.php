@@ -9,7 +9,7 @@ $I->amOnPage('/?LANGUAGE=en_US'); //select language already
 $I->see('Welcome to the super easy and fast installation');
 
 $I->click('Start installation');
-
+sleep(5);
 $I->see('DB Configuration');
 $I->fillField('#DB_HOST', 'localhost');
 $I->fillField('#DB_NAME', 'openclassifieds');
