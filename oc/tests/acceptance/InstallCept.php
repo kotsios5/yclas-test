@@ -8,7 +8,7 @@ $I->lookForwardTo('see a success message after the installation and see the webs
 $I->amOnPage('/'); //select language already
 $I->see('Welcome to the super easy and fast installation');
 
-$I->click('button[type=submit]');
+$I->click('button[type="submit"]');
 sleep(2);
 $I->fillField('#DB_HOST', 'localhost');
 $I->fillField('#DB_NAME', 'openclassifieds');
