@@ -27,3 +27,6 @@ sudo service apache2 restart
 sudo php5enmod mcrypt
 sudo service apache2 restart
 
+# Soap Client
+sudo apt-get install php-soap -y
+
