@@ -25,8 +25,8 @@ sudo service apache2 restart
 
 # Enable mcrypt
 sudo mv -i /etc/php/5.6/apache2/conf.d/20-mcrypt.ini /etc/php/5.6/mods-available/
-php5enmod mcrypt
-service apache2 restart
+sudo php5enmod mcrypt
+sudo service apache2 restart
 
 # Soap Client
 sudo apt-get install php5.6-soap -y
