@@ -68,17 +68,17 @@ before_script:
   - sudo service apache2 restart
 
   # Install mcrypt
-  - sudo apt-get install php5-mcrypt -y
+  - sudo apt-get install php5-mcrypt
   # - sudo mv -i /etc/php5/apache2/conf.d/20-mcrypt.ini /etc/php5/mods-available/
   - sudo php5enmod mcrypt
   - sudo service apache2 restart
 
   # Install GD
-  - sudo apt-get install php5-gd -y
+  - sudo apt-get install php5-gd
   - sudo service apache2 restart
 
   # MySQLi extension
-  - sudo apt-get install php5-mysql -y
+  - sudo apt-get install php5-mysql
   - sudo service apache2 restart
 
   # configure apache virtual hosts
