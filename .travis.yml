@@ -74,8 +74,8 @@ before_script:
 script: 
   # - set -e # don't stop on failure
   - curl reoc.lo/install-yclas.php
-  - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
   - ls /etc/php5
+  - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
 after_failure:
   - ls /home/travis/build/kotsios5/yclas-test/oc/tests/_output/
