@@ -45,8 +45,6 @@ install:
 
 # execute any number of scripts before the test run, custom env's are available as variables
 before_script:
-  - if [ $TRAVIS_PHP_VERSION = "5.5.9" ]; then echo "Using PHP 5.4.9"; fi
-
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
   - sudo apt-get install apache2 php5 libapache2-mod-php5
@@ -102,6 +100,7 @@ before_script:
 
 script: 
   # - set -e # don't stop on failure
+  - if [ $TRAVIS_PHP_VERSION = "5.5.9" ]; then echo "Using PHP 5.4.9"; fi
   - curl reoc.lo/install-yclas.php
   - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
