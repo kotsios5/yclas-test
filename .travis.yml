@@ -45,6 +45,8 @@ install:
 
 # execute any number of scripts before the test run, custom env's are available as variables
 before_script:
+  - if [ $TRAVIS_PHP_VERSION = "5.5.9" ]; then echo "Using PHP 5.4.9"; fi
+
   # Upgrade PHP from 5.5.9 to 5.6
   - sudo apt-get install software-properties-common
   - sudo add-apt-repository ppa:ondrej/php5-5.6
