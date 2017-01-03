@@ -8,9 +8,9 @@ php:
   # using major version aliases
 
   # aliased to a recent 5.6.x version
-  - 5.6
+  # - 5.6
   # aliased to a recent 7.0 version
-  # - 7.0
+  - 7.0
   # # aliased to a recent 7.1 version
   # - 7.1
 
@@ -72,11 +72,11 @@ before_script:
 
 script: 
   # - set -e # don't stop on failure
-  # - curl reoc.lo/?LANGUAGE=en_US
-  - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
+  - curl reoc.lo/
+  # - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
 after_failure:
-  - cat /home/travis/build/kotsios5/yclas-test/oc/tests/_output/InstallCept.fail.html
+  # - cat /home/travis/build/kotsios5/yclas-test/oc/tests/_output/InstallCept.fail.html
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
