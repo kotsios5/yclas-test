@@ -24,7 +24,7 @@ sudo apt-get install php7.1-xml -y
 
 sudo apt-get install php7.1-zip -y
 
-sudo apt-get install php-soap -y
+sudo apt-get install php7.1-soap -y
 
 sudo service apache2 restart
 
