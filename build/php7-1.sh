@@ -11,14 +11,14 @@ sudo apt-get install php7.1-gd -y
 sudo apt-get install php7.1-fpm -y
 sudo a2enmod proxy_fcgi setenvif
 sudo service apache2 restart
-sudo a2enconf php7.0-fpm
+sudo a2enconf php7.1-fpm
 sudo service apache2 reload
 
 sudo apt-get install php7.1-mbstring -y
 
 sudo apt-get install php7.1-mcrypt -y
 
-sudo apt-get install php7.0-mysql -y
+sudo apt-get install php7.1-mysql -y
 
 sudo apt-get install php7.1-xml -y
 
