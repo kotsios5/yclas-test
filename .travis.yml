@@ -79,12 +79,9 @@ before_script:
 
 script: 
   # - set -e # don't stop on failure
-  - curl reoc.lo/index.php
-  - sudo cat /var/log/apache2/error.log
-  # - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
+  - php codecept.phar run acceptance tests/acceptance/admin.SetUsersPasswordsCept.php --steps
 
 after_failure:
-  # - cat /home/travis/build/kotsios5/yclas-test/oc/tests/_output/InstallCept.fail.html
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
