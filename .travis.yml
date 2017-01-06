@@ -58,7 +58,7 @@ before_script:
     # $TRAVIS_BUILD_DIR is the cloned repo, it enters the repo after it clones it
   - sudo cp -f $TRAVIS_BUILD_DIR/build/travis-ci-apache /etc/apache2/sites-available/reoc.lo.conf 
   - sudo a2ensite reoc.lo.conf 
-  - sudo echo "127.0.0.1  reoc.lo" >> /etc/hosts
+  - sudo sed -i "127.0.0.1  reoc.lo" /etc/hosts
   - sudo service apache2 restart
   - sudo cp -r $TRAVIS_BUILD_DIR /var/www
 
