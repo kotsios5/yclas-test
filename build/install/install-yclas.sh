@@ -1,3 +1,8 @@
+# Automated installation
+
+# Move files that installation should create
+# Import database with admin user and 4 ads
+
 sudo cp /var/www/yclas-test/build/install/auth.php /var/www/yclas-test/oc/config/
 sudo cp /var/www/yclas-test/build/install/database.php /var/www/yclas-test/oc/config/
 sudo cp /var/www/yclas-test/build/install/robots /var/www/yclas-test/robots.txt
