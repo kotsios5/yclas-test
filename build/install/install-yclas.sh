@@ -1,1 +1,1 @@
-sudo cp auth.php /var/www/test-yclas/oc/config/
+sudo cp /var/www/yclas-test/build/install/auth.php /var/www/test-yclas/oc/config/
