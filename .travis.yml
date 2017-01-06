@@ -8,9 +8,9 @@ php:
   # using major version aliases
 
   # aliased to a recent 5.6.x version
-  # - 5.6
+  - 5.6
   # aliased to a recent 7.0 version
-  # - 7.0
+  - 7.0
   # # aliased to a recent 7.1 version
   - 7.1
 
@@ -44,7 +44,6 @@ install:
   - sudo rm -rf common
   - git clone https://github.com/kotsios5/common 
 
-  # - wget http://codeception.com/codecept.phar # unable to resolve host address ‘codeception.com’ (since 03-01-2016) 
 
 # execute any number of scripts before the test run, custom env's are available as variables
 before_script:
@@ -74,12 +73,14 @@ before_script:
   # install
   - sh /var/www/yclas-test/build/install/install-yclas.sh
 
+  - wget http://codeception.com/codecept.phar
+
 # use the $DB env variable to determine the phpunit.xml to use
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
 
 script: 
   # - set -e # don't stop on failure
-  - php codecept.phar run acceptance tests/acceptance/admin.SetUsersPasswordsCept.php --steps
+  - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/admin/SetUsersPasswordsCept.php --steps
 
 after_failure:
 
