@@ -75,8 +75,7 @@ before_script:
 script: 
   # - set -e # don't stop on failure
   - curl reoc.lo/index.php
-  - ls -a /var/www/yclas-test/
-  - ls -a /var/www/yclas-test/build/
+  - sudo cat /var/log/apache2/error.log
   # - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
 after_failure:
