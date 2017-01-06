@@ -75,7 +75,7 @@ before_script:
 
   # Install codecept
   - cd /var/www/yclas-test/oc
-  - wget http://codeception.com/codecept.phar
+  - sudo wget http://codeception.com/codecept.phar
 
 # use the $DB env variable to determine the phpunit.xml to use
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
