@@ -78,13 +78,10 @@ before_script:
   - sudo wget http://codeception.com/codecept.phar
   - sudo chmod -R 755 codecept.phar
 
-# use the $DB env variable to determine the phpunit.xml to use
-# script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
-
 script: 
   # - set -e # don't stop on failure
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/admin/SetUsersPasswordsCept.php --steps
-  - ls -l
+  - ls -l /var/www/yclas-test/oc/tests/
 
 after_failure:
 
