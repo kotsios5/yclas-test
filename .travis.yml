@@ -69,7 +69,7 @@ before_script:
   - sudo chmod -R 755 /var/www/*
 
   # install
-  - sh /var/www/yclas-test/build/install/install-yclas.sh
+  # - sh /var/www/yclas-test/build/install/install-yclas.sh
 
 # use the $DB env variable to determine the phpunit.xml to use
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
@@ -77,7 +77,7 @@ before_script:
 script: 
   # - set -e # don't stop on failure
   - curl reoc.lo/
-  # - ls /var/www/
+  - ls /var/www/
   # - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
 after_failure:
