@@ -67,7 +67,9 @@ before_script:
   - sudo chown -R root:root /var/www
   - sudo chown -R www-data:www-data /var/www/*
   - sudo chmod -R 755 /var/www/*
-  - sh build/install/install-yclas.sh
+
+  # install
+  - sh $TRAVIS_BUILD_DIR/build/install/install-yclas.sh
 
 # use the $DB env variable to determine the phpunit.xml to use
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
