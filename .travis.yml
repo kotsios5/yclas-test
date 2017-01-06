@@ -70,6 +70,8 @@ before_script:
   - sudo chown -R www-data:www-data /var/www/*
   - sudo chmod -R 755 /var/www/*
 
+  - sudo chmod -R 755 $TRAVIS_BUILD_DIR/oc/tests/
+
   # install
   - sh /var/www/yclas-test/build/install/install-yclas.sh
 
@@ -81,8 +83,6 @@ before_script:
 script: 
   # - set -e # don't stop on failure
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/admin/SetUsersPasswordsCept.php --steps
-  - ls -l /var/www/yclas-test/oc/tests/
-  - ls $TRAVIS_BUILD_DIR
 
 after_failure:
 
