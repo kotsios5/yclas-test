@@ -53,8 +53,6 @@ before_script:
   - if [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then sh $TRAVIS_BUILD_DIR/build/php5-6.sh; fi
   - if [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then sh $TRAVIS_BUILD_DIR/build/php7.sh; fi
   - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then sh $TRAVIS_BUILD_DIR/build/php7-1.sh; fi
-  
-
 
   # configure apache virtual hosts
     # $TRAVIS_BUILD_DIR is the cloned repo, it enters the repo after it clones it
@@ -77,7 +75,8 @@ before_script:
 script: 
   # - set -e # don't stop on failure
   - curl reoc.lo/
-  - ls /var/www/yclas-test/build/install/
+  - ls /var/www/yclas-test/
+  - ls /var/www/yclas-test/build/
   # - php codecept.phar run acceptance tests/acceptance/InstallCept.php --steps
 
 after_failure:

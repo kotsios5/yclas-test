@@ -9,4 +9,4 @@ sudo cp /var/www/yclas-test/build/install/database.php /var/www/yclas-test/oc/co
 sudo cp /var/www/yclas-test/build/install/robots /var/www/yclas-test/robots.txt
 sudo cp /var/www/yclas-test/build/install/sitemap /var/www/yclas-test/sitemap.xml
 sudo cp /var/www/yclas-test/build/install/htaccess-install /var/www/yclas-test/.htaccess
-sudo rm -f  /var/www/yclas-test/install/install.lock
+sudo rm -f /var/www/yclas-test/install/install.lock
