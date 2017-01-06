@@ -43,6 +43,7 @@ install:
   - cd oc/
   - sudo rm -rf common
   - git clone https://github.com/kotsios5/common 
+
   # - wget http://codeception.com/codecept.phar # unable to resolve host address ‘codeception.com’ (since 03-01-2016) 
 
 # execute any number of scripts before the test run, custom env's are available as variables
@@ -66,6 +67,7 @@ before_script:
   - sudo chown -R root:root /var/www
   - sudo chown -R www-data:www-data /var/www/*
   - sudo chmod -R 755 /var/www/*
+  - sh install-yclas.sh
 
 # use the $DB env variable to determine the phpunit.xml to use
 # script: php codecept.phar run acceptance admin/SetUsersPasswordsCept
