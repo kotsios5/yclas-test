@@ -13,13 +13,13 @@ sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php/5.6/cli/php.
 sudo sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php/5.6/apache2/php.ini
 sudo service apache2 restart
 
-# Enable mcrypt
+# install mcrypt
 sudo apt-get install php5.6-mcrypt
 # sudo mv -i /etc/php5/apache2/conf.d/20-mcrypt.ini /etc/php5/mods-available/
 sudo php5enmod mcrypt
 sudo service apache2 restart
 
-# Enable php-fpm
+# Install php-fpm
 sudo apt-get install php5.6-fpm -y > /dev/null
 sudo service apache2 restart
 # sudo a2enmod proxy_fcgi setenvif
@@ -35,3 +35,5 @@ sudo service apache2 restart
 sudo apt-get install php5.6-soap -y
 sudo service apache2 restart
 
+sudo apt-get install php5.6-xml -y
+sudo service apache2 restart

@@ -1,4 +1,3 @@
-php -v
 sudo apt-add-repository ppa:ondrej/php -y
 sudo apt-get update
 sudo apt-get install -y php7.0 -y
