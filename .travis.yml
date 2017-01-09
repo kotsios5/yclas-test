@@ -84,9 +84,10 @@ before_script:
 script: 
   # - set -e # don't stop on failure
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/admin/SetUsersPasswordsCept.php --steps
+  - php /var/www/yclas-test/oc/codecept.phar run acceptance
 
 after_failure:
-  - cat /var/www/yclas-test/oc/tests/_output/SetUsersPasswordsCept.fail.html
+  - ls /var/www/yclas-test/oc/tests/_output/
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
