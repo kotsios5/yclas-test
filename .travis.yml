@@ -84,7 +84,8 @@ before_script:
 script: 
   # - set -e # don't stop on failure
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/admin/SetUsersPasswordsCept.php --steps
-  - php /var/www/yclas-test/oc/codecept.phar run acceptance
+  # - php /var/www/yclas-test/oc/codecept.phar run acceptance
+  - php /var/www/yclas-test/oc/codecept.phar run acceptance --skip-group tests/acceptance/premium/
 
 after_failure:
   - ls /var/www/yclas-test/oc/tests/_output/
