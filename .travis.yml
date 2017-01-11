@@ -21,16 +21,6 @@ addons:
 # optionally specify a list of environments, for example to test different RDBMS
 env:
   - DB=mysql
-#   - DB=pgsql
-
-# optionally set up exclutions and allowed failures in the matrix
-# matrix:
-#   exclude:
-#     - php: hhvm
-#       env: DB=pgsql  # PDO driver for pgsql is unsupported by HHVM (3rd party install for support)
-#   allow_failures:
-#     - php: 7.0
-#     - php: hhvm
 
 # disable the default submodule logic
 git:
@@ -54,7 +44,7 @@ before_script:
   - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then sh $TRAVIS_BUILD_DIR/build/php7-1.sh; fi
 
   # configure apache virtual hosts
-    # $TRAVIS_BUILD_DIR is the cloned repo, it enters the repo after it clones it
+  # $TRAVIS_BUILD_DIR contains the path of the cloned repo
   - sudo cp -f $TRAVIS_BUILD_DIR/build/travis-ci-apache /etc/apache2/sites-available/reoc.lo.conf 
   - sudo a2ensite reoc.lo.conf 
   - sudo sed -i 's/localhost/reoc.lo/g' /etc/hosts
@@ -77,8 +67,8 @@ before_script:
   - sh /var/www/yclas-test/build/install/install-yclas.sh
 
   # Install postfix
-  - debconf-set-selections <<< "postfix postfix/mailname string reoc.lo"
-  - debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
+  - sudo debconf-set-selections <<< "postfix postfix/mailname string reoc.lo"
+  - sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
   - sudo apt-get install postfix -y
   - sudo service postfix reload
 
