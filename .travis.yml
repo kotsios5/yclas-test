@@ -75,6 +75,8 @@ before_script:
 
   # install
   - sh /var/www/yclas-test/build/install/install-yclas.sh
+
+  # Install postfix
   - debconf-set-selections <<< "postfix postfix/mailname string reoc.lo"
   - debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
   - sudo apt-get install postfix -y
@@ -90,7 +92,7 @@ script:
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default/admin/SetUsersPasswordsCept.php --steps
   # - php /var/www/yclas-test/oc/codecept.phar run acceptance
   # - php /var/www/yclas-test/oc/codecept.phar run acceptance --skip-group premium
-  - php /var/www/yclas-test/oc/codecept.phar run acceptance 
+  - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default
 
 after_failure:
   - cat /var/www/yclas-test/oc/tests/_output/ContactCept.fail.html
