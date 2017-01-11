@@ -83,10 +83,10 @@ before_script:
 
 script: 
   # - set -e # don't stop on failure
-  - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/admin/SetUsersPasswordsCept.php --steps
+  - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default/admin/SetUsersPasswordsCept.php --steps
   # - php /var/www/yclas-test/oc/codecept.phar run acceptance
   # - php /var/www/yclas-test/oc/codecept.phar run acceptance --skip-group premium
-  - php /var/www/yclas-test/oc/codecept.phar run acceptance --group default
+  - php /var/www/yclas-test/oc/codecept.phar run acceptance
 
 after_failure:
   - ls /var/www/yclas-test/oc/tests/_output/
