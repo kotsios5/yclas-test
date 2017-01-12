@@ -9,4 +9,4 @@ $I->login_admin();
 $I->activate_theme('basecamp_free');
 
 // Default
-$I->$I->activate_theme('default');
+$I->activate_theme('default');
