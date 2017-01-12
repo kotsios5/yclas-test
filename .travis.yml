@@ -85,9 +85,7 @@ script:
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default
 
 after_failure:
-  - cat /var/www/yclas-test/oc/tests/_output/ContactCept.fail.html
-  - cat /var/www/yclas-test/oc/tests/_output/LoginCept.fail.html
-  - cat /var/www/yclas-test/oc/tests/_output/BlackListCept.fail.html
+
 
 # configure notifications (email, IRC, campfire etc)
 notifications:

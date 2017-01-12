@@ -20,6 +20,7 @@ $I->amOnPage('/oc-panel/auth/login');
 $I->fillField('email','user@reoc.lo');
 $I->fillField('password','1234');
 $I->click('auth_redirect');
+$I->amOnPage('/oc-panel/myads');
 $I->see('my profile');
 $I->See('My Advertisements');
 
