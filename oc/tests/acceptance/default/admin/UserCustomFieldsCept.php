@@ -31,8 +31,7 @@ $I->see('All cache deleted');
 
 // // delete all cache
 // $I->amOnPage('/oc-panel/tools/cache?force=1');
-// $I->see('All cache deleted');
-
+// $I->see('All cache deleted
 // // Not able to see my custom field from the test 
 // // but it's displayed on http://reoc.lo/publish-new.html (Maybe an issue with PhpBrowser)
 
@@ -44,15 +43,11 @@ $I->see('All cache deleted');
 
 // $I->login_admin();
 
-$I->amOnPage('oc-panel/userfields');
+$I->amOnPage('/oc-panel/userfields');
 $I->seeElement('.drag-item');
-$I->amOnPage('http://reoc.lo/oc-panel/userfields/delete/telephone');
-$I->amOnPage('oc-panel/userfields');
+$I->amOnPage('/oc-panel/userfields/delete/telephone');
+$I->amOnPage('/oc-panel/userfields');
 $I->dontSeeElement('.drag-item');
 $I->dontSeeElement('.glyphicon.glyphicon-trash');
 
 $I->$I->activate_theme('default');;
-
-
-
-
