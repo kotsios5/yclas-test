@@ -50,4 +50,4 @@ $I->amOnPage('/oc-panel/userfields');
 $I->dontSeeElement('.drag-item');
 $I->dontSeeElement('.glyphicon.glyphicon-trash');
 
-$I->$I->activate_theme('default');;
+$I->activate_theme('default');;
