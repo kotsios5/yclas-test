@@ -80,24 +80,24 @@ $I->fillField('password','dontletmein');
 $I->click('auth_redirect'); // Try #4
 $I->see('Login has been temporarily disabled due to too many unsuccessful login attempts. Please try again in a minute.');
 
-
-sleep(61);
-$I->fillField('email','user@reoc.lo');
-$I->fillField('password','dontletmein');
-$I->click('auth_redirect'); // Try #4
-$I->see('Some errors in the form');
-
-
-sleep(61);
-$I->fillField('email','user@reoc.lo');
-$I->fillField('password','dontletmein');
-$I->click('auth_redirect'); // Try #4
-$I->see('Some errors in the form');
+// COMMENTED TEMPORARIRLY as it doubles the total time
+// sleep(61);
+// $I->fillField('email','user@reoc.lo');
+// $I->fillField('password','dontletmein');
+// $I->click('auth_redirect'); // Try #4
+// $I->see('Some errors in the form');
 
 
-$I->fillField('email','user@reoc.lo');
-$I->fillField('password','dontletmein');
-$I->click('auth_redirect'); // Try #4
-$I->see('Login has been temporarily disabled due to too many unsuccessful login attempts. Please try again in 24 hours.');
+// sleep(61);
+// $I->fillField('email','user@reoc.lo');
+// $I->fillField('password','dontletmein');
+// $I->click('auth_redirect'); // Try #4
+// $I->see('Some errors in the form');
+
+
+// $I->fillField('email','user@reoc.lo');
+// $I->fillField('password','dontletmein');
+// $I->click('auth_redirect'); // Try #4
+// $I->see('Login has been temporarily disabled due to too many unsuccessful login attempts. Please try again in 24 hours.');
 
 ?>
