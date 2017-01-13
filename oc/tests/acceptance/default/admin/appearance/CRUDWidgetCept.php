@@ -11,7 +11,7 @@ $I->amOnPage('/oc-panel/Config/create');
 $I->fillField('#formorm_group_name', 'widget');
 $I->fillField('#formorm_config_key', 'Widget_Search_1484236960');
 $I->fillField('#formorm_config_value', '{"class":"Widget_Search","created":1484236960,"placeholder":"sidebar","data":{"text_title":"mySearchSeeTitle","advanced":"0","custom":"0"}}');
-
+$I->click('button[type="submit"]');
 
 // $I->amOnPage('/oc-panel/widget');
 // $I->click(['class' => 'btn btn-primary btn-xs']);
