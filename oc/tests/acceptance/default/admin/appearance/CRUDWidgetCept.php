@@ -7,10 +7,16 @@ $I->login_admin();
 
 // Categories
 $I->wantTo('create a widget');
-$I->amOnPage('/oc-panel/widget');
-$I->click(['class' => 'btn btn-primary btn-xs']);
-$I->selectOption('placeholder','sidebar');
-$I->click('Save changes');
+$I->amOnPage('/oc-panel/Config/create');
+$I->fillField('#formorm_group_name', 'widget');
+$I->fillField('#formorm_config_key', 'Widget_Search_1484236960');
+$I->fillField('#formorm_config_value', '{"class":"Widget_Search","created":1484236960,"placeholder":"sidebar","data":{"text_title":"Search","advanced":"0","custom":"0"}}');
+
+
+// $I->amOnPage('/oc-panel/widget');
+// $I->click(['class' => 'btn btn-primary btn-xs']);
+// $I->selectOption('placeholder','sidebar');
+// $I->click('Save changes');
 
 // See on default theme
 $I->amOnPage('/');
