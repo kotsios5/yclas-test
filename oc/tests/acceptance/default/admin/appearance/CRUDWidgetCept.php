@@ -8,7 +8,7 @@ $I->login_admin();
 // Categories
 $I->wantTo('create a widget');
 $I->amOnPage('/oc-panel/widget');
-$I->click('button[class=".btn.btn-primary.btn-xs"]');
+$I->click(['class' => 'btn btn-primary btn-xs']);
 $I->selectOption('placeholder','sidebar');
 $I->click('Save changes');
 
