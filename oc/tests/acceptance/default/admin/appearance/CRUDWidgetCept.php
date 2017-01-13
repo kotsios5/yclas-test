@@ -10,7 +10,7 @@ $I->wantTo('create a widget');
 $I->amOnPage('/oc-panel/Config/create');
 $I->fillField('#formorm_group_name', 'widget');
 $I->fillField('#formorm_config_key', 'Widget_Search_1484236960');
-$I->fillField('#formorm_config_value', '{"class":"Widget_Search","created":1484236960,"placeholder":"sidebar","data":{"text_title":"Search","advanced":"0","custom":"0"}}');
+$I->fillField('#formorm_config_value', '{"class":"Widget_Search","created":1484236960,"placeholder":"sidebar","data":{"text_title":"mySearchSeeTitle","advanced":"0","custom":"0"}}');
 
 
 // $I->amOnPage('/oc-panel/widget');
@@ -25,7 +25,7 @@ $I->seeElement('.col-md-3.col-sm-12.col-xs-12');
 // See on basecamp theme
 $I->activate_theme('basecamp_free');
 $I->amOnPage('/all');
-$I->seeElement('.Widget_Search');
+$I->see('mySearchSeeTitle');
 
 // Back to default theme
 $I->activate_theme('default');
