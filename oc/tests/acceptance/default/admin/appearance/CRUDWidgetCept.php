@@ -8,7 +8,7 @@ $I->login_admin();
 // Categories
 $I->wantTo('create a widget');
 $I->amOnPage('/oc-panel/widget');
-$I->click('Create');
+$I->click('button[class=".btn.btn-primary.btn-xs"]');
 $I->selectOption('placeholder','sidebar');
 $I->click('Save changes');
 
@@ -22,7 +22,7 @@ $I->amOnPage('/all');
 $I->seeElement('.Widget_Search');
 
 // Back to default theme
-$I->$I->activate_theme('default');
+$I->activate_theme('default');
 
 // Delete
 $I->amOnPage('/oc-panel/widget');
