@@ -8,7 +8,7 @@ $I->login_admin();
 $I->amOnPage('/oc-panel/fields/new');
 $I->see('New Custom Field');
 
-$I->fillField('name','My Custom Field');
+$I->fillField('name','My_Custom_Field');
 $I->fillField('label','My Custom Field');
 $I->fillField('tooltip','Test field for testing');
 $I->selectOption('form select[name="type"]','string');
