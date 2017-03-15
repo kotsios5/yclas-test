@@ -14,9 +14,12 @@ $I->wantTo('create a widget');
 // $I->click('button[type="submit"]');
 
 $I->amOnPage('/oc-panel/widget');
-$I->click(['class' => 'btn btn-primary btn-xs']);
-$I->selectOption('placeholder','sidebar');
-$I->click('Save changes');
+
+$I->click('//*[@id="modal_Widget_Stats"]//button[@class="btn btn-primary"]');
+
+// $I->click(['class' => 'btn btn-primary btn-xs']);
+// $I->selectOption('placeholder','sidebar');
+// $I->click('Save changes');
 
 // See on default theme
 $I->amOnPage('/');
