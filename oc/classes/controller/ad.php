@@ -10,12 +10,12 @@ class Controller_Ad extends Controller {
 	{ 
 		if(Theme::get('infinite_scroll'))
 		{
-			$this->template->scripts['footer'][] = '//cdn.jsdelivr.net/jquery.infinitescroll/2.0b2/jquery.infinitescroll.js';
+			$this->template->scripts['footer'][] = '//cdn.jsdelivr.net/jquery.infinitescroll/2.1/jquery.infinitescroll.js';
 			$this->template->scripts['footer'][] = 'js/listing.js';
 		}
 		if(core::config('general.auto_locate') OR core::config('advertisement.map'))
 		{
-            Theme::$scripts['async_defer'][] = '//maps.google.com/maps/api/js?libraries=geometry,places&v=3&key='.core::config("advertisement.gm_api_key").'&callback=initLocationsGMap';
+            Theme::$scripts['async_defer'][] = '//maps.google.com/maps/api/js?libraries=geometry,places&v=3&key='.core::config("advertisement.gm_api_key").'&callback=initLocationsGMap&language='.i18n::get_gmaps_language(i18n::$locale);
 		}
         $this->template->scripts['footer'][] = 'js/jquery.toolbar.js';
 		$this->template->scripts['footer'][] = 'js/sort.js';
@@ -742,13 +742,6 @@ class Controller_Ad extends Controller {
         //check pay to featured top is enabled check stripe config too
         if(core::config('payment.paypal_seller') == FALSE AND Core::config('payment.stripe_connect')==FALSE)
             throw HTTP_Exception::factory(404,__('Page not found'));
-
-        //getting the user that wants to buy now
-        if (!Auth::instance()->logged_in())
-        {
-            Alert::set(Alert::INFO, __('To buy this product you first need to register'));
-            $this->redirect(Route::url('oc-panel'));
-        }
         
         $id_product = Model_Order::PRODUCT_AD_SELL;
 
@@ -760,19 +753,71 @@ class Controller_Ad extends Controller {
         if($ad->loaded() AND $ad->status==Model_Ad::STATUS_PUBLISHED
             AND (core::config('payment.stock')==0 OR ($ad->stock > 0 AND core::config('payment.stock')==1)) )
         {
-            $amount     = $ad->price;
-            $currency   = core::config('payment.paypal_currency');
-            
-            if (isset($ad->cf_shipping) AND Valid::numeric($ad->cf_shipping) AND $ad->cf_shipping > 0)
-                $amount = $ad->price + $ad->cf_shipping;
 
-            $order = Model_Order::new_order($ad, $this->user, $id_product, $amount, $currency, __('Purchase').': '.$ad->seotitle);
+            //guest checkout since is not logged in
+            if (!Auth::instance()->logged_in())
+            {
+                $this->redirect(Route::url('default', array('controller' =>'ad','action'=>'guestcheckout' ,'id' => $id_ad)));
+            }
+            else
+            {
+                $amount     = $ad->price;
+                $currency   = core::config('payment.paypal_currency');
 
-            $this->redirect(Route::url('default', array('controller' =>'ad','action'=>'checkout' ,'id' => $order->id_order)));
+                if ($ad->shipping_price() AND $ad->shipping_pickup() AND Core::request('shipping_pickup'))
+                    $amount = $ad->price;
+                elseif ($ad->shipping_price())
+                    $amount = $ad->price + $ad->shipping_price();
+
+                $order = Model_Order::new_order($ad, $this->user, $id_product, $amount, $currency, __('Purchase').': '.$ad->seotitle);
+
+                $this->redirect(Route::url('default', array('controller' =>'ad','action'=>'checkout' ,'id' => $order->id_order)));   
+            }
+
         }
         else
             throw HTTP_Exception::factory(404,__('Page not found'));
         
+    }
+
+    /**
+     * guestcheckout for non registered users
+     * @return [type] [description]
+     */
+    public function action_guestcheckout()
+    {
+        $id_ad  = $this->request->param('id');
+
+        //only for not logued in users
+        if (Auth::instance()->logged_in())
+            $this->redirect(Route::url('default', array('controller' =>'ad','action'=>'buy' ,'id' => $id_ad)));
+        
+        //check ad exists
+        $ad     = new Model_Ad($id_ad);
+
+        //loaded published and with stock if we control the stock.
+        if($ad->loaded() AND $ad->status==Model_Ad::STATUS_PUBLISHED
+            AND (core::config('payment.stock')==0 OR ($ad->stock > 0 AND core::config('payment.stock')==1))
+            AND (core::config('payment.paypal_seller')==1 OR core::config('payment.stripe_connect')==1) 
+            )
+        {
+
+            //template header
+            $this->template->title              = __('Checkout').' '.Model_Order::product_desc(Model_Order::PRODUCT_AD_SELL);
+            Breadcrumbs::add(Breadcrumb::factory()->set_title(__('Home'))->set_url(Route::url('default')));
+            Breadcrumbs::add(Breadcrumb::factory()->set_title($this->template->title ));
+
+            Controller::$full_width = TRUE;
+
+            $this->template->bind('content', $content);
+
+            $this->template->content = View::factory('pages/ad/guestcheckout',array('ad' => $ad)); 
+        }
+        else
+        {
+            //throw 404
+            throw HTTP_Exception::factory(404,__('Page not found'));
+        }            
     }
 
 
@@ -897,12 +942,12 @@ class Controller_Ad extends Controller {
 	{
         if (Theme::get('infinite_scroll'))
         {
-            $this->template->scripts['footer'][] = '//cdn.jsdelivr.net/jquery.infinitescroll/2.0b2/jquery.infinitescroll.js';
+            $this->template->scripts['footer'][] = '//cdn.jsdelivr.net/jquery.infinitescroll/2.1/jquery.infinitescroll.js';
             $this->template->scripts['footer'][] = 'js/listing.js';
         }
         if(core::config('general.auto_locate') OR core::config('advertisement.map'))
         {
-            Theme::$scripts['async_defer'][] = '//maps.google.com/maps/api/js?libraries=geometry,places&v=3&key='.core::config("advertisement.gm_api_key").'&callback=initLocationsGMap';
+            Theme::$scripts['async_defer'][] = '//maps.google.com/maps/api/js?libraries=geometry,places&v=3&key='.core::config("advertisement.gm_api_key").'&callback=initLocationsGMap&language='.i18n::get_gmaps_language(i18n::$locale);
         }
         $this->template->scripts['footer'][] = 'js/jquery.toolbar.js';
         $this->template->scripts['footer'][] = 'js/sort.js';

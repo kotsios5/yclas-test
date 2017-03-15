@@ -21,30 +21,16 @@ DocumentRoot /var/www/yclas/
 ```
 
 ## Cloning repo
-Go to https://github.com/yclas for each repo in the top right theres a button that says Fork. Click there to clone each repo, don't forget to clone common. That will copy the repos to your github user, ex: https://github.com/neo22s?tab=repositories
+Go to https://github.com/yclas for each repo in the top right theres a button that says Fork. Click there to clone each repo, don't forget to clone common. That will copy the repos to your github user, ex: https://github.com/USER?tab=repositories
 
 Clone your project in local
 ```
-git clone git@github.com:neo22s/yclas.git yclas
-cd yclas
-git submodule init
-git submodule update
+git clone git@github.com:USER/yclas.git yclas && cd yclas
 ```
 
-This will clone the yclas project + submodule at oc/common https://github.com/yclas/common
+This will clone the yclas project
 
 
-Modify the hidden file .gitmodules, this is to track changes at the neo22s/common repo
-- Ex git@github.com:yclas/common.git
-- To git@github.com:neo22s/common.git
-- Save file.
-
-
-Go to common module and change to branch master
-```
-cd oc/common
-git checkout master
-```
 
 Ready ;)
 
@@ -65,12 +51,9 @@ git commit -a -m 'working on yclas/yclas#725' # this will mention an issue in th
 ```
 
 
-If you made changes in any file located at oc/common (common submodule), you need to browse that directory since its a different repo. To commit works exactly the same.
-
-
 ## Pull Requests
 
-Now you have new code at your fork ex https://github.com/neo22s/common. To move them to the original https://github.com/yclas/common repo you need to go to https://github.com/neo22s/common, and click on Pull Request (next to compare). This will create a pull request to the original code and the responsible will decide to merge it or not.
+Now you have new code at your fork ex https://github.com/USER/yclas. To move them to the original https://github.com/yclas/yclas repo you need to go to https://github.com/USER/yclas, and click on Pull Request (next to compare). This will create a pull request to the original code and the responsible will decide to merge it or not.
 
 Notes:
 - Try to submit pull requests against master branch for easier merging
@@ -85,11 +68,8 @@ git remote add upstream git@github.com:yclas/yclas.git
 
 Everytime you want to sync just
 ```
-git fetch upstream
-git merge upstream/master
+git fetch upstream && git merge upstream/master
 ```
-
-Do the same for common repo if needed.
 
 Remember to be at you master branch!
 
@@ -110,7 +90,7 @@ We only accept issues that are bug reports or feature requests. Bugs must be iso
 
 - master is the development branch.
 - We create tags per release from master branch.
- -We have many other branches not in use anymore since we changed the way we use the git flow.
+- We have many other branches not in use anymore since we changed the way we use the git flow.
 
 
 ## Coding standards

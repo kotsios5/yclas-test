@@ -1104,6 +1104,111 @@
                     </div>
 
                     <hr>
+
+                    <div>
+                        <h4><?=__('Instagram')?></h4>
+                        <hr>
+                        <div class="form-group">
+                            <?=FORM::label($forms['instagram']['key'], __('Auto Post'), array('class'=>'control-label', 'for'=>$forms['instagram']['key']))?>
+                            <div class="radio radio-primary">
+                                <?=Form::radio($forms['instagram']['key'], 1, (bool) $forms['instagram']['value'], array('id' => $forms['instagram']['key'].'1'))?>
+                                <?=Form::label($forms['instagram']['key'].'1', __('Enabled'))?>
+                                <?=Form::radio($forms['instagram']['key'], 0, ! (bool) $forms['instagram']['value'], array('id' => $forms['instagram']['key'].'0'))?>
+                                <?=Form::label($forms['instagram']['key'].'0', __('Disabled'))?>
+                            </div>
+                            <span class="help-block">
+                                <?=__("Enable to post new ads on instagram automatically.")?>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <?=FORM::label($forms['instagram_username']['key'], __('Instagram Username'), array('class'=>'control-label', 'for'=>$forms['instagram_username']['key']))?>
+                            <?=FORM::input($forms['instagram_username']['key'], $forms['instagram_username']['value'], array(
+                                'placeholder' => "", 
+                                'class' => 'tips form-control', 
+                                'id' => $forms['instagram_username']['key'],
+                            ))?> 
+                            <span class="help-block">
+                                <?=__("Instagram Username")?>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <?=FORM::label($forms['instagram_password']['key'], __('Instagram Password'), array('class'=>'control-label', 'for'=>$forms['instagram_password']['key']))?>
+                            <?=FORM::input($forms['instagram_password']['key'], $forms['instagram_password']['value'], array(
+                                'placeholder' => "", 
+                                'class' => 'tips form-control', 
+                                'type' => 'password', 
+                                'id' => $forms['instagram_password']['key'],
+                            ))?> 
+                            <span class="help-block">
+                                <?=__("Instagram Password")?>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <hr>
+
+                    <div>
+                        <h4><?=__('Pinterest')?></h4>
+                        <hr>
+                        <div class="form-group">
+                            <?=FORM::label($forms['pinterest']['key'], __('Auto Post'), array('class'=>'control-label', 'for'=>$forms['pinterest']['key']))?>
+                            <div class="radio radio-primary">
+                                <?=Form::radio($forms['pinterest']['key'], 1, (bool) $forms['pinterest']['value'], array('id' => $forms['pinterest']['key'].'1'))?>
+                                <?=Form::label($forms['pinterest']['key'].'1', __('Enabled'))?>
+                                <?=Form::radio($forms['pinterest']['key'], 0, ! (bool) $forms['pinterest']['value'], array('id' => $forms['pinterest']['key'].'0'))?>
+                                <?=Form::label($forms['pinterest']['key'].'0', __('Disabled'))?>
+                            </div>
+                            <span class="help-block">
+                                <?=__("Enable to post new ads on pinterest automatically.")?>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <?=FORM::label($forms['pinterest_app_id']['key'], __('App ID'), array('class'=>'control-label', 'for'=>$forms['pinterest_app_id']['key']))?>
+                            <?=FORM::input($forms['pinterest_app_id']['key'], $forms['pinterest_app_id']['value'], array(
+                                'placeholder' => "", 
+                                'class' => 'tips form-control', 
+                                'id' => $forms['pinterest_app_id']['key'],
+                            ))?> 
+                            <span class="help-block">
+                                <?=__("Pinterest App ID")?>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <?=FORM::label($forms['pinterest_app_secret']['key'], __('App secret'), array('class'=>'control-label', 'for'=>$forms['pinterest_app_secret']['key']))?>
+                            <?=FORM::input($forms['pinterest_app_secret']['key'], $forms['pinterest_app_secret']['value'], array(
+                                'placeholder' => "", 
+                                'class' => 'tips form-control', 
+                                'id' => $forms['pinterest_app_secret']['key'],
+                            ))?> 
+                            <span class="help-block">
+                                <?=__("Pinterest App secret")?>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <?=FORM::label($forms['pinterest_access_token']['key'], __('Pinterest Access token'), array('class'=>'control-label', 'for'=>$forms['pinterest_access_token']['key']))?>
+                            <?=FORM::input($forms['pinterest_access_token']['key'], $forms['pinterest_access_token']['value'], array(
+                                'placeholder' => "", 
+                                'class' => 'tips form-control', 
+                                'id' => $forms['pinterest_access_token']['key'],
+                            ))?> 
+                            <span class="help-block">
+                                <?=__("Pinterest Access token")?>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <?=FORM::label($forms['pinterest_board']['key'], __('Board'), array('class'=>'control-label', 'for'=>$forms['pinterest_board']['key']))?>
+                            <?=FORM::input($forms['pinterest_board']['key'], $forms['pinterest_board']['value'], array(
+                                'placeholder' => "username/board", 
+                                'class' => 'tips form-control', 
+                                'id' => $forms['pinterest_board']['key'],
+                            ))?> 
+                            <span class="help-block">
+                                <?=__("Board")?>
+                            </span>
+                        </div>
+                    </div>
+
+                    <hr>
                     <p>
                         <?=FORM::button('submit', __('Save'), array('type'=>'submit', 'class'=>'btn btn-primary', 'action'=>Route::url('oc-panel',array('controller'=>'settings', 'action'=>'form'))))?>
                     </p>

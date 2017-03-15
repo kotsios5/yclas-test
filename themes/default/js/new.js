@@ -1,17 +1,17 @@
 // selectize for category and location selects
 $(function(){
-    
+
     // create 1st category select
     category_select = createCategorySelect();
     // remove hidden class
     $('#category-chained .select-category[data-level="0"]').parent('div').removeClass('hidden');
-    
+
     // load options for 1st category select
     category_select.load(function(callback) {
         $.ajax({
             url: $('#category-chained').data('apiurl'),
             type: 'GET',
-            data: { 
+            data: {
                 "id_category_parent": 1,
                 "sort": 'order',
             },
@@ -23,7 +23,7 @@ $(function(){
             }
         });
     });
-    
+
     // advertisement location is enabled?
     if ($('#location-chained').length ) {
 
@@ -31,13 +31,13 @@ $(function(){
         location_select = createLocationSelect();
         // remove hidden class
         $('#location-chained .select-location[data-level="0"]').parent('div').removeClass('hidden');
-        
+
         // load options for 1st location select
         location_select.load(function(callback) {
             $.ajax({
                 url: $('#location-chained').data('apiurl'),
                 type: 'GET',
-                data: { 
+                data: {
                     "id_location_parent": 1,
                     "sort": 'order',
                 },
@@ -55,37 +55,37 @@ $(function(){
 });
 
 function createCategorySelect () {
-    
+
     // count how many category selects we have rendered
     num_category_select = $('#category-chained .select-category[data-level]').length;
-    
+
     // clone category select from template
     $('#select-category-template').clone().attr('id', '').insertBefore($('#select-category-template')).find('select').attr('data-level', num_category_select);
-    
+
     // initialize selectize on created category select
     category_select = $('.select-category[data-level="'+ num_category_select +'"]').selectize({
         valueField:  'id_category',
         labelField:  'name',
         searchField: 'name',
         onChange: function (value) {
-            
+
             if (!value.length) return;
-            
+
             // get current category level
             current_level = $('#category-chained .option[data-value="'+ value +'"]').closest('.selectize-control').prev().data('level');
-            
+
             // is allowed to post on selected category?
             if ( current_level > 0 || (current_level == 0 && $('#category-chained').is('[data-isparent]')))
             {
                 // update #category-selected input value
                 $('#category-selected').attr('value', value);
-                
+
                 //get category price
                 $.ajax({
                     url: $('#category-chained').data('apiurl') + '/' + value,
                     success: function(results) {
                         if (decodeHtml(results.category.price) != $('#category-chained').data('price0')) {
-                            price_txt = $('#paid-category .help-block').data('title').replace(/%s/g, results.category.name).replace(/%d/g, results.category.price);
+                            price_txt = $('#paid-category .help-block').data('title').replace(/%s/g, results.category.name).replace(/%d/g, decodeHtml(results.category.price));
                             $('#paid-category').removeClass('hidden').find('.help-block span').text(price_txt);
                         }
                         else {
@@ -100,20 +100,20 @@ function createCategorySelect () {
                 $('#category-selected').attr('value', '');
                 $('#paid-category').addClass('hidden');
             }
-            
+
             // get current category level
             current_level = $('#category-chained .option[data-value="'+ value +'"]').closest('.selectize-control').prev().data('level');
-            
+
             destroyCategoryChildSelect(current_level);
-            
+
             // create category select
             category_select = createCategorySelect();
-            
+
             // load options for category select
             category_select.load(function (callback) {
                 $.ajax({
                     url: $('#category-chained').data('apiurl'),
-                    data: { 
+                    data: {
                         "id_category_parent": value,
                         "sort": 'order',
                     },
@@ -136,44 +136,44 @@ function createCategorySelect () {
             });
         }
     });
-    
+
     // return selectize control
     return category_select[0].selectize;
 }
 
 function createLocationSelect () {
-    
+
     // count how many location selects we have rendered
     num_location_select = $('#location-chained .select-location[data-level]').length;
-    
+
     // clone location select from template
     $('#select-location-template').clone().attr('id', '').insertBefore($('#select-location-template')).find('select').attr('data-level', num_location_select);
-    
+
     // initialize selectize on created location select
     location_select = $('.select-location[data-level="'+ num_location_select +'"]').selectize({
         valueField:  'id_location',
         labelField:  'name',
         searchField: 'name',
         onChange: function (value) {
-            
+
             if (!value.length) return;
-            
+
             // update #location-selected input value
             $('#location-selected').attr('value', value);
-            
+
             // get current location level
             current_level = $('#location-chained .option[data-value="'+ value +'"]').closest('.selectize-control').prev().data('level');
-            
+
             destroyLocationChildSelect(current_level);
-            
+
             // create location select
             location_select = createLocationSelect();
-            
+
             // load options for location select
             location_select.load(function (callback) {
                 $.ajax({
                     url: $('#location-chained').data('apiurl'),
-                    data: { 
+                    data: {
                         "id_location_parent": value,
                         "sort": 'order',
                     },
@@ -196,7 +196,7 @@ function createLocationSelect () {
             });
         }
     });
-    
+
     // return selectize control
     return location_select[0].selectize;
 }
@@ -223,7 +223,7 @@ $('#category-edit button').click(function(){
     $('#category-chained').removeClass('hidden');
     $('#category-edit').addClass('hidden');
 });
-    
+
 $('#location-edit button').click(function(){
     $('#location-chained').removeClass('hidden');
     $('#location-edit').addClass('hidden');
@@ -238,7 +238,7 @@ $('textarea[name=description]:not(.disable-bbcode)').sceditorBBCodePlugin({
     width: "88%",
     style: $('meta[name="application-name"]').data('baseurl') + "themes/default/css/jquery.sceditor.default.min.css",
 });
-	
+
 // paste plain text in sceditor
 $(".sceditor-container iframe").contents().find("body").bind('paste', function(e) {
     var text = ''; var that = $(this);
@@ -250,7 +250,7 @@ $(".sceditor-container iframe").contents().find("body").bind('paste', function(e
     else if (e.originalEvent.clipboardData)
         text = $('<div></div>').text(e.originalEvent.clipboardData.getData('text'));
 
-        
+
     if (document.queryCommandSupported('insertText')) {
         $(".sceditor-container iframe")[0].contentWindow.document.execCommand('insertHTML', false, $(text).html());
         return false;
@@ -266,7 +266,7 @@ $(".sceditor-container iframe").contents().find("body").bind('paste', function(e
             });
         }, 1);
     }
-});	
+});
 
 function initLocationsGMap() {
     jQuery.ajax({
@@ -286,7 +286,7 @@ function locationsGMap() {
             zoom: parseInt($('#map').attr('data-zoom')),
             lat: $('#map').attr('data-lat'),
             lng: $('#map').attr('data-lon')
-        }); 
+        });
         var typingTimer;                //timer identifier
         var doneTypingInterval = 500;  //time in ms, 5 second for example
         //on keyup, start the countdown
@@ -307,7 +307,7 @@ function locationsGMap() {
                             div: '#map',
                             lat: latlng.lat(),
                             lng: latlng.lng(),
-                        }); 
+                        });
                         map.setCenter(latlng.lat(), latlng.lng());
                         map.addMarker({
                             lat: latlng.lat(),
@@ -334,7 +334,7 @@ function locationsGMap() {
                     div: '#map',
                     lat: lat,
                     lng: lng,
-                }); 
+                });
                 map.setCenter(lat, lng);
                 map.addMarker({
                     lat: lat,
@@ -371,57 +371,64 @@ $('.fileinput').on('change.bs.fileinput', function() {
         var $input = $(this).find('input[name^="image"]');
         var image = $input[0].files[0];
         var max_size = $('.images').data('max-image-size')*1048576 // max size in bites
+        var $closestFileInput = $(this).closest('.fileinput');
 
-        if (image && image.size > max_size)
-        {
-            swal({
-                title: '',
-                text: $('.images').data('swaltext'),
-                type: "warning",
-                allowOutsideClick: true
-            });
-            
-            $(this).closest('.fileinput').fileinput('clear');
-        }
-        else
-        {
-            //resize image
-            canvasResize(image, {
-                width: $('.images').data('image-width'),
-                height: $('.images').data('image-height'),
-                crop: false,
-                quality: $('.images').data('image-quality'),
-                callback: function(data, width, height) {
-                    $('<input>').attr({
-                        type: 'hidden',
-                        name: 'base64_' + $input.attr('name'),
-                        value: data
-                        }).appendTo('#publish-new');
+        //resize image
+        canvasResize(image, {
+            width: getResizeValue($('.images').data('image-width')),
+            height: getResizeValue($('.images').data('image-height')),
+            crop: false,
+            quality: $('.images').data('image-quality'),
+            callback: function(data, width, height) {
+
+                var base64Image = new Image();
+                base64Image.src = data;
+
+                if (base64Image.size > max_size)
+                {
+                    swal({
+                        title: '',
+                        text: $('.images').data('swaltext'),
+                        type: "warning",
+                        allowOutsideClick: true
+                    });
+
+                    $closestFileInput.fileinput('clear');
                 }
-            });
+                else
+                {
+                    $('<input>').attr({
+                    type: 'hidden',
+                    name: 'base64_' + $input.attr('name'),
+                    value: data
+                    }).appendTo('#publish-new');
+                }
+            }
+        });
 
-            // Fixes exif orientation on thumbnail
-            var thumbnail = $(this).find('.thumbnail > img');
-            var rotation = 1;
-            var rotate = {
-                1: 'rotate(0deg)',
-                2: 'rotate(0deg)',
-                3: 'rotate(180deg)',
-                4: 'rotate(0deg)',
-                5: 'rotate(0deg)',
-                6: 'rotate(90deg)',
-                7: 'rotate(0deg)',
-                8: 'rotate(270deg)'
-            };
+        // Fixes exif orientation on thumbnail
+        var thumbnail = $(this).find('.thumbnail > img');
+        var rotation = 1;
+        var rotate = {
+            1: 'rotate(0deg)',
+            2: 'rotate(0deg)',
+            3: 'rotate(180deg)',
+            4: 'rotate(0deg)',
+            5: 'rotate(0deg)',
+            6: 'rotate(90deg)',
+            7: 'rotate(0deg)',
+            8: 'rotate(270deg)'
+        };
 
-            loadImage.parseMetaData(
-                image,
-                function (data) {
+        loadImage.parseMetaData(
+            image,
+            function (data) {
+                if (data.exif) {
                     rotation = data.exif.get('Orientation');
                     thumbnail.css('transform', rotate[rotation]);
                 }
-            );
-        }
+            }
+        );
     }
 
     //unhide next box image after selecting first
@@ -555,5 +562,8 @@ function FileApiSupported() {
 }
 
 $("#price").keyup(function() {
-    $(this).val($(this).val().replace(/[^\d.,]/g, ''));
+    if ($(this).data('decimal_point') == ',')
+        $(this).val($(this).val().replace(/[^\d,]/g, ''));
+    else
+        $(this).val($(this).val().replace(/[^\d.]/g, ''));
 });

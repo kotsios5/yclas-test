@@ -87,12 +87,12 @@ class Controller_New extends Controller
         $this->template->scripts['footer'][] = 'js/jasny-bootstrap.min.js';
         $this->template->scripts['footer'][] = '//cdn.jsdelivr.net/sweetalert/1.1.3/sweetalert.min.js';
         $this->template->scripts['footer'][] = '//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/js/standalone/selectize.min.js';
-        $this->template->scripts['footer'][] = '//cdnjs.cloudflare.com/ajax/libs/ouibounce/0.0.10/ouibounce.min.js';
+        $this->template->scripts['footer'][] = '//cdnjs.cloudflare.com/ajax/libs/ouibounce/0.0.12/ouibounce.min.js';
         $this->template->scripts['footer'][] = 'js/canvasResize.js';
         $this->template->scripts['footer'][] = 'js/load-image.all.min.js';
         if(core::config('advertisement.map_pub_new'))
         {
-            $this->template->scripts['async_defer'][] = '//maps.google.com/maps/api/js?libraries=geometry&v=3&key='.core::config("advertisement.gm_api_key").'&callback=initLocationsGMap';
+            $this->template->scripts['async_defer'][] = '//maps.google.com/maps/api/js?libraries=geometry&v=3&key='.core::config("advertisement.gm_api_key").'&callback=initLocationsGMap&language='.i18n::get_gmaps_language(i18n::$locale);
         }
         $this->template->scripts['footer'][] = 'js/new.js?v='.Core::VERSION;
 
@@ -209,10 +209,27 @@ class Controller_New extends Controller
 
                 if($validation->check())
                 {       
-
                     // User detection, if doesnt exists create
                     if (!Auth::instance()->logged_in()) 
-                        $user = Model_User::create_email(core::post('email'), core::post('name'));
+                    {
+                    $user = Model_User::create_email(core::post('email'), core::post('name'));
+
+                    //add custom fields
+                    $save_cf = FALSE;
+                    foreach ($this->request->post() as $custom_field => $value) 
+                    {
+                        if (strpos($custom_field,'ucf_')!==FALSE)
+                        {
+                            $user_custom_field = substr($custom_field, 1); //rename ucf_ to cf
+                            $user->$user_custom_field = $value;
+                            $save_cf = TRUE;
+                            unset($data[$custom_field]);
+                        }
+                    }
+                    //saves the user only if there was CF
+                    if($save_cf === TRUE)
+                        $user->save();
+                    }
                     else
                         $user = Auth::instance()->get_user();
 
@@ -259,6 +276,9 @@ class Controller_New extends Controller
                             elseif (isset($_FILES['image'.$i]))
                                 $filename = $new_ad->save_image($_FILES['image'.$i]);
                         }
+
+                        // Post on social media
+                        Social::post_ad($new_ad, $filename);
 
                         Alert::set(Alert::SUCCESS, $return['message']);
 

@@ -914,7 +914,8 @@ class Model_Ad extends ORM {
                                 $cf_value = isset($cf_config->$cf_name->values[$cf_value-1]) ? $cf_config->$cf_name->values[$cf_value-1] : NULL;
                                 break;
                             case 'date':
-                                $cf_value = Date::format($cf_value, core::config('general.date_format'));
+                                if(strtolower(Request::current()->controller()) != 'myads' AND strtolower(Request::current()->action()) != 'update')
+                                    $cf_value = Date::format($cf_value, core::config('general.date_format'));
                                 break;
                             case 'file':
                             case 'file_dropbox':
@@ -961,28 +962,39 @@ class Model_Ad extends ORM {
      */
     public function related()
     {
-        if($this->loaded() AND core::config('advertisement.related')>0 )
+        if ($this->loaded() AND core::config('advertisement.related') > 0 )
         {    
             $ads = new self();
-            $ads
-            ->where_open()
-            ->or_where('id_category','=',$this->id_category)
-            ->or_where('id_location','=',$this->id_location)
-            ->where_close()
-            ->where('id_ad','!=',$this->id_ad)
-            ->where('status','=',self::STATUS_PUBLISHED);
+            $ads->where('id_ad', '!=', $this->id_ad)
+                ->where('status', '=', self::STATUS_PUBLISHED);
             
             //if ad have passed expiration time dont show 
-            if(core::config('advertisement.expire_date') > 0)
+            if (core::config('advertisement.expire_date') > 0)
             {
                 $ads->where(DB::expr('DATE_ADD( published, INTERVAL '.core::config('advertisement.expire_date').' DAY)'), '>', Date::unix2mysql());
             }
 
-            $ads = $ads->limit(core::config('advertisement.related'))
-            ->order_by(DB::expr('RAND()'))
-            ->cached()->find_all();
+            $ads->limit(core::config('advertisement.related'))
+                ->order_by(DB::expr('RAND()'));
 
-            return View::factory('pages/ad/related',array('ads'=>$ads))->render();
+            $related_ads = clone $ads;
+            $related_ads = $related_ads->where('id_category', '=', $this->id_category)
+                ->where('id_location', '=', $this->id_location)
+                ->cached()
+                ->find_all();
+
+            if (count($related_ads) == 0)
+            {
+                $related_ads = clone $ads;
+                $related_ads = $related_ads->where_open()
+                    ->or_where('id_category', '=', $this->id_category)
+                    ->or_where('id_location', '=', $this->id_location)
+                    ->where_close()
+                    ->cached()
+                    ->find_all();
+            }
+
+            return View::factory('pages/ad/related',array('ads' => $related_ads))->render();
         }
     
         return FALSE;
@@ -1092,6 +1104,7 @@ class Model_Ad extends ORM {
             $this->featured = Date::unix2mysql(time() + ($days * 24 * 60 * 60));
             try {
                 $this->save();
+                Social::social_post_featured_ad($this);
             } catch (Exception $e) {
                 throw HTTP_Exception::factory(500,$e->getMessage());
             }
@@ -1473,9 +1486,6 @@ class Model_Ad extends ORM {
         //save the last changes on status
         $ad->save();
 
-        // Post on social media
-        Social::post_ad($ad);
-
         //notify admins new ad
         $ad->notify_admins();
 
@@ -1615,6 +1625,43 @@ class Model_Ad extends ORM {
         }
 
         return NULL;
+    }
+
+
+    public static function count_all_ads()
+    {
+        $ads = new Model_Ad();
+        return $ads->count_all();
+    }
+    
+    /**
+     * returns the shipping price of the ad
+     * @return string shipping price
+     */
+    public function shipping_price()
+    {
+        if ($this->loaded())
+        {
+            if(isset($this->cf_shipping) AND Valid::price($this->cf_shipping) AND $this->cf_shipping > 0)
+                return $this->cf_shipping;
+        }
+
+        return NULL;
+    }
+
+    /**
+     * returns the shipping price of the ad
+     * @return string shipping price
+     */
+    public function shipping_pickup()
+    {
+        if ($this->loaded())
+        {
+            if(isset($this->cf_shipping_pickup) AND $this->cf_shipping_pickup > 0)
+                return TRUE;
+        }
+
+        return FALSE;
     }
 
 } // END Model_ad

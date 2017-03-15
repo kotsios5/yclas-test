@@ -1916,6 +1916,13 @@ div.sceditor-group {padding: 1px 15px 5px 5px !important;}
 	border-color: #3c763d!important;
 }
 
+#toast-container > div{
+  opacity: 1!important;
+}
+#toast-container a{
+  color: #FFF!important;
+}
+
 @media screen and (max-width: 979px) {
 	.navbar .nav > li { border:0; }
 }
