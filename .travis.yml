@@ -30,7 +30,7 @@ before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS openclassifieds;'
 
 install:
-  - cd oc/
+  - git clone https://github.com/kotsios5/build-travis-ci build
 
 
 # execute any number of scripts before the test run, custom env's are available as variables
@@ -82,7 +82,7 @@ script:
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default
 
 after_failure:
-  - cat /var/www/yclas-test/oc/tests/_output/ListingOptionsCept.fail.html
+  # - cat /var/www/yclas-test/oc/tests/_output/*****.fail.html
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
