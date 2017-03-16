@@ -81,7 +81,7 @@ script:
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default
 
 after_failure:
-  - cat /var/www/yclas-test/oc/tests/_output/DeleteMultipleCategoriesCept.fail.html
+  - cat /var/www/yclas-test/oc/tests/_output/AdvertisementDisplayOptionsCept.fail.html
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
