@@ -213,7 +213,7 @@ $I->see('All cache deleted');
 
 //Read
 $I->amOnPage('/jobs/some-nice-title-here.html');
-$I->see("#fb-root");
+$I->seeElement('div', ['id' => 'fb-root']);
 
 // Back to default
 $I->amOnPage('/oc-panel/Config/update/fbcomments');
@@ -224,7 +224,7 @@ $I->amOnPage('/oc-panel/tools/cache?force=1'); // Delete cache ALL
 $I->see('All cache deleted');
 //Read
 $I->amOnPage('/jobs/some-nice-title-here.html');
-$I->dontSee("#fb-root");
+$I->dontSeeElement('div', ['id' => 'fb-root']);
 
 
 
