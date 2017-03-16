@@ -213,7 +213,7 @@ $I->see('All cache deleted');
 
 //Read
 $I->amOnPage('/jobs/some-nice-title-here.html');
-$I->see("//connect.facebook.net/en_US/all.js#xfbml=1&appId=367576600118660");
+$I->see("Facebook Comments Plugin");
 
 // Back to default
 $I->amOnPage('/oc-panel/Config/update/fbcomments');
