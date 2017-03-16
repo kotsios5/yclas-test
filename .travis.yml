@@ -31,8 +31,6 @@ before_install:
 
 install:
   - cd oc/
-  - sudo rm -rf common
-  - git clone https://github.com/kotsios5/common 
 
 
 # execute any number of scripts before the test run, custom env's are available as variables
@@ -83,7 +81,7 @@ script:
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default
 
 after_failure:
-  - cat /var/www/yclas-test/oc/tests/_output/CustomFieldsCept.fail.html
+  - cat /var/www/yclas-test/oc/tests/_output/DeleteMultipleCategoriesCept.fail.html
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
