@@ -31,6 +31,8 @@ before_install:
 
 install:
   - git clone https://github.com/kotsios5/build-travis-ci build
+  - pwd
+  - ls
 
 
 # execute any number of scripts before the test run, custom env's are available as variables
