@@ -216,12 +216,12 @@ $I->activate_theme('basecap_free');
 $I->amOnPage('/jobs/some-nice-title-here.html');
 $I->see('Free');
 
-$I->activate_theme('default');
-
 $I->amOnPage('/oc-panel/Config/update/free');
 $I->fillField('#formorm_config_value','0');
 $I->click('button[type="submit"]');
 $I->see('Item updated. Please to see the changes delete the cache');
+
+$I->activate_theme('default');
 
 $I->amOnPage('/jobs/some-nice-title-here.html');
 $I->dontSee('Price : Free');
