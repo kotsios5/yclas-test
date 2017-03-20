@@ -226,7 +226,7 @@ $I->see('Item updated. Please to see the changes delete the cache');
 $I->amOnPage('/jobs/some-nice-title-here.html');
 $I->dontSee('Price : Free');
 
-$I->activate_theme('basecap_free');
+$I->activate_theme('basecamp_free');
 
 $I->amOnPage('/jobs/some-nice-title-here.html');
 $I->dontSee('Free');
