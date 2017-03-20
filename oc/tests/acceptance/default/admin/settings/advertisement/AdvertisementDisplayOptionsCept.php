@@ -202,6 +202,36 @@ $I->see('just random title here');
 $I->see('Related ads','h3');
 
 
+// Show Free tag
+$I->amOnPage('/oc-panel/Config/update/free');
+$I->fillField('#formorm_config_value','1');
+$I->click('button[type="submit"]');
+$I->see('Item updated. Please to see the changes delete the cache');
+
+$I->amOnPage('/jobs/some-nice-title-here.html');
+$I->see('Price : Free');
+
+$I->activate_theme('basecap_free');
+
+$I->amOnPage('/jobs/some-nice-title-here.html');
+$I->see('Free');
+
+$I->activate_theme('default');
+
+$I->amOnPage('/oc-panel/Config/update/free');
+$I->fillField('#formorm_config_value','0');
+$I->click('button[type="submit"]');
+$I->see('Item updated. Please to see the changes delete the cache');
+
+$I->amOnPage('/jobs/some-nice-title-here.html');
+$I->dontSee('Price : Free');
+
+$I->activate_theme('basecap_free');
+
+$I->amOnPage('/jobs/some-nice-title-here.html');
+$I->dontSee('Free');
+
+$I->activate_theme('default');
 
 // Facebook Comments
 $I->amOnPage('/oc-panel/Config/update/fbcomments');
