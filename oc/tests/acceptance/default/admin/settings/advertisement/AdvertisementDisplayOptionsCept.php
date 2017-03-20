@@ -176,6 +176,39 @@ $I->dontSeeElement('.st_email_large');
 $I->dontSeeElement('.st_print_large');
 
 
+// Show Report this ad button
+$I->amOnPage('/oc-panel/Config/update/report');
+$I->fillField('#formorm_config_value','0');
+$I->click('button[type="submit"]');
+$I->see('Item updated. Please to see the changes delete the cache');
+
+$I->amOnPage('/jobs/some-nice-title-here.html');
+$I->dontSee('Report this ad');
+
+$I->activate_theme('basecamp_free');
+
+$I->amOnPage('/jobs/some-nice-title-here.html');
+$I->dontSee('Report this ad');
+
+$I->activate_theme('default');
+
+$I->amOnPage('/oc-panel/Config/update/report');
+$I->fillField('#formorm_config_value','1');
+$I->click('button[type="submit"]');
+$I->see('Item updated. Please to see the changes delete the cache');
+
+$I->amOnPage('/jobs/some-nice-title-here.html');
+$I->see('Report this ad');
+
+$I->activate_theme('basecamp_free');
+
+$I->amOnPage('/jobs/some-nice-title-here.html');
+$I->see('Report this ad');
+
+$I->activate_theme('default');
+
+
+
 
 // Related Ads
 $I->amOnPage('/oc-panel/Config/update/related');
