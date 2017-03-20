@@ -229,7 +229,7 @@ $I->dontSee('Price : Free');
 $I->activate_theme('basecamp_free');
 
 $I->amOnPage('/jobs/some-nice-title-here.html');
-$I->dontSee('Free');
+$I->see('N/A');
 
 $I->activate_theme('default');
 
