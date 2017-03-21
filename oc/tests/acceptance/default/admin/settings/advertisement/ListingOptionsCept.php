@@ -129,10 +129,10 @@ $I->click('submit');
 // Read
 $I->amOnPage('/all');
 $I->seeElement('.pagination');
-$I->see('title for the ad');
+$I->see('some nice title here');
+$I->dontSee('title for the ad');
 $I->dontSee('just random title here');
 $I->dontSee('another great title');
-$I->dontSee('some nice title here');
 
 $I->amOnPage('/oc-panel/settings/form');
 $I->fillField('#advertisements_per_page','10');
