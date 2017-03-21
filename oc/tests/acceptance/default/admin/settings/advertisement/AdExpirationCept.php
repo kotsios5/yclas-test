@@ -41,15 +41,15 @@ $I->fillField('#formorm_config_value','1');
 $I->click('button[type="submit"]');
 $I->see('Item updated. Please to see the changes delete the cache');
 
-// try to activate the ad
-$I->amOnPage('/oc-panel/myads/activate/1');
-$I->see('Advertisement is active and published');
-
 // Ad expiration date to 0 - no expiration for ads
 $I->amOnPage('/oc-panel/Config/update/expire_date');
 $I->fillField('#formorm_config_value','0');
 $I->click('button[type="submit"]');
 $I->see('Item updated. Please to see the changes delete the cache');
+
+// try to activate the ad
+$I->amOnPage('/oc-panel/myads/activate/1');
+$I->see('Advertisement is active and published');
 
 // Ad is active
 $I->amOnPage('/jobs/');
