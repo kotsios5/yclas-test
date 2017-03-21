@@ -35,7 +35,7 @@ install:
 
 # execute any number of scripts before the test run, custom env's are available as variables
 before_script:
-  - sudo apt-get update
+  # - sudo apt-get update
 
 
   - if [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then sh $TRAVIS_BUILD_DIR/build/php5-6.sh; fi
@@ -47,7 +47,7 @@ before_script:
   - sudo cp -f $TRAVIS_BUILD_DIR/build/travis-ci-apache /etc/apache2/sites-available/reoc.lo.conf 
   - sudo a2ensite reoc.lo.conf 
   - sudo sed -i 's/localhost/reoc.lo/g' /etc/hosts
-  - sudo service apache2 restart
+  # - sudo service apache2 restart
   - sudo cp -r $TRAVIS_BUILD_DIR /var/www
   
   # Enable mod_rewrite
