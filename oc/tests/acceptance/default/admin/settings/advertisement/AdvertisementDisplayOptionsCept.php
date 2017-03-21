@@ -58,11 +58,13 @@ $I->fillField('#formorm_config_value','0');
 $I->click('button[type="submit"]');
 $I->see('Item updated. Please to see the changes delete the cache');
 
+$I->click('button[@data-target=#contact-modal]');
 $I->amOnPage('/jobs/just-random-title-here.html');
 $I->dontSee('//*[@id="contact-modal"]//input[@name="price"]');
 
 $I->activate_theme('basecamp_free');
 
+$I->click('button[@data-target=#contact-modal]');
 $I->amOnPage('/jobs/just-random-title-here.html');
 $I->dontSee('//*[@id="contact-modal"]//input[@name="price"]');
 
@@ -73,11 +75,13 @@ $I->fillField('#formorm_config_value','1');
 $I->click('button[type="submit"]');
 $I->see('Item updated. Please to see the changes delete the cache');
 
+$I->click('button[@data-target=#contact-modal]');
 $I->amOnPage('/jobs/just-random-title-here.html');
 $I->see('//*[@id="contact-modal"]//input[@name="price"]');
 
 $I->activate_theme('basecamp_free');
 
+$I->click('button[@data-target=#contact-modal]');
 $I->amOnPage('/jobs/just-random-title-here.html');
 $I->see('//*[@id="contact-modal"]//input[@name="price"]');
 
