@@ -60,13 +60,13 @@ $I->see('Item updated. Please to see the changes delete the cache');
 
 // $I->click('button[@data-target=#contact-modal]');
 $I->amOnPage('/jobs/just-random-title-here.html');
-$I->dontSee('//*[@id="contact-modal"]//input[@name="price"]');
+$I->dontSee('input[@name="price"]');
 
 $I->activate_theme('basecamp_free');
 
 // $I->click('button[@data-target=#contact-modal]');
 $I->amOnPage('/jobs/just-random-title-here.html');
-$I->dontSee('//*[@id="contact-modal"]//input[@name="price"]');
+$I->dontSee('input[@name="price"]');
 
 $I->activate_theme('default');
 
@@ -77,13 +77,13 @@ $I->see('Item updated. Please to see the changes delete the cache');
 
 // $I->click('button[@data-target=#contact-modal]');
 $I->amOnPage('/jobs/just-random-title-here.html');
-$I->see('//*[@id="contact-modal"]//input[@name="price"]');
+$I->see('input[@name="price"]');
 
 $I->activate_theme('basecamp_free');
 
 // $I->click('button[@data-target=#contact-modal]');
 $I->amOnPage('/jobs/just-random-title-here.html');
-$I->see('//*[@id="contact-modal"]//input[@name="price"]');
+$I->see('input[@name="price"]');
 
 $I->activate_theme('default');
 
