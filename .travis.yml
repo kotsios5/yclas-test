@@ -51,7 +51,7 @@ before_script:
   
   # Enable mod_rewrite
   - sudo a2enmod rewrite
-  - sudo service apache2 restart
+  - sudo service apache2 reload
 
   # permissions
   - sudo chown -R root:root /var/www
