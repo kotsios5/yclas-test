@@ -28,7 +28,7 @@ git:
 
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS openclassifieds;'
-  - phpenv config-rm xdebug.ini
+  # - phpenv config-rm xdebug.ini
 
 install:
   - git clone https://github.com/kotsios5/build-travis-ci build
@@ -76,7 +76,7 @@ script:
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default/admin/UpdateDBCept.php
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default/admin/SetUsersPasswordsCept.php
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default
-  # - php /var/www/yclas-test/oc/codecept.phar run --coverage --coverage-xml --coverage-html
+  - php /var/www/yclas-test/oc/codecept.phar run --coverage --coverage-xml --coverage-html
 
 after_failure:
   # - cat /var/www/yclas-test/oc/tests/_output/MultiCategoryLocationSearchCept.fail.html
