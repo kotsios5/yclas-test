@@ -65,4 +65,11 @@ $I->see('Item updated. Please to see the changes delete the cache');
 $I->amOnPage('/jobs/just-random-title-here.html');
 $I->see('RUB300,00');
 
+// back to default
+$I->amOnPage('/oc-panel/Config/update/number_format');
+$I->fillField('#formorm_config_value','%n');
+$I->click('formorm[submit]');
+$I->see('Item updated. Please to see the changes delete the cache');
 
+$I->amOnPage('/jobs/just-random-title-here.html');
+$I->see('$300.00');
