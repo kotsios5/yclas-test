@@ -69,7 +69,8 @@ before_script:
   # Install codecept
   - cd /var/www/yclas-test/oc
   - sudo wget http://codeception.com/codecept.phar
-  - sudo chmod -R 755 codecept.phar
+  - sudo wget https://raw.githubusercontent.com/Codeception/c3/2.0/c3.php
+  - sudo chmod -R 755 codecept.phar c3.php
 
 script: 
   # - set -e # don't stop on failure

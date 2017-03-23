@@ -9,6 +9,11 @@
  */
 define('OC_DEBUG', FALSE);
 
+include 'oc/c3.php';
+
+define('MY_APP_STARTED', true);
+
+
 /**
  * Where the application for Open Classifieds is installed.
  */
