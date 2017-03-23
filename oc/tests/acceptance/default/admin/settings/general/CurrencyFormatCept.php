@@ -72,4 +72,4 @@ $I->click('formorm[submit]');
 $I->see('Item updated. Please to see the changes delete the cache');
 
 $I->amOnPage('/jobs/just-random-title-here.html');
-$I->see('$300.00');
+$I->see('300.00');
