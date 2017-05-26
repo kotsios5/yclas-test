@@ -67,6 +67,13 @@ before_script:
   - sudo apt-get install postfix -y
   - sudo service postfix reload
 
+  # Install codecept
+  - cd /var/www/yclas-test/oc
+  - if [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then sudo wget http://codeception.com/php5/codecept.phar; fi
+  - if [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then sudo wget http://codeception.com/codecept.phar; fi
+  - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then sudo wget http://codeception.com/codecept.phar; fi
+  - sudo chmod -R 755 codecept.phar
+
 script: 
   # - set -e # don't stop on failure
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default/admin/UpdateDBCept.php
