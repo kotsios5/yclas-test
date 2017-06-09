@@ -81,8 +81,8 @@ script:
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default
 
 after_failure:
-  - ls /etc/php/5.6/mods-available/
-  - locate -i apcu.ini
+  - ls /etc/php5/apache2
+  - ls /etc/php5/apache2/conf.d/
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
