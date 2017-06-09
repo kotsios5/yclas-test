@@ -72,10 +72,10 @@ class Model_Category extends ORM {
 
     /**
      * creates a category by name
-     * @param  string  $name               
-     * @param  integer $id_category_parent 
-     * @param  string  $description        
-     * @return Model_Category                      
+     * @param  string  $name
+     * @param  integer $id_category_parent
+     * @param  string  $description
+     * @return Model_Category
      */
     public static function create_name($name,$order=0, $id_category_parent = 1, $parent_deep=0, $price=0, $description = NULL)
     {
@@ -151,7 +151,7 @@ class Model_Category extends ORM {
                     'has_image'             => __('Has image'),
                     );
     }
-    
+
     /**
      * Filters to run when data is set in this model. The password filter
      * automatically hashes the password when it's set in the model.
@@ -171,17 +171,18 @@ class Model_Category extends ORM {
     }
 
     /**
-     * we get the categories in an array 
-     * @return array 
+     * we get the categories in an array
+     * @return array
      */
     public static function get_as_array($limit = NULL)
     {
         $cache_name = is_int($limit) ? 'cats_arr'.'_'.$limit : 'cats_arr';
-
+        self::cache_list($cache_name);
         //transform the cats to an array
         if ( ($cats_arr = Core::cache($cache_name))===NULL)
         {
             $cats = new self;
+            $cats->order_by('id_category_parent','asc');
             $cats->order_by('order','asc');
 
             if (is_int($limit))
@@ -190,7 +191,7 @@ class Model_Category extends ORM {
             $cats = $cats->find_all()->cached()->as_array('id_category');
 
             $cats_arr = array();
-            foreach ($cats as $cat) 
+            foreach ($cats as $cat)
             {
                 $cats_arr[$cat->id_category] =  array('name'               => $cat->name,
                                                       'order'              => $cat->order,
@@ -202,19 +203,20 @@ class Model_Category extends ORM {
                                                     );
             }
             Core::cache($cache_name, $cats_arr);
-        }   
+        }
 
         return $cats_arr;
     }
 
     /**
      * we get the categories in an array using as key the deep they are, perfect fro chained selects
-     * @return array 
+     * @return array
      * @deprecated function DO NOT use, just here so we do not break the API to old themes
      */
     public static function get_by_deep()
     {
-        // array by parent deep, 
+        self::cache_list('cats_parent_deep');
+        // array by parent deep,
         // each parent deep is one array with categories of the same index
         if ( ($cats_parent_deep = Core::cache('cats_parent_deep'))===NULL)
         {
@@ -222,7 +224,7 @@ class Model_Category extends ORM {
             $cats = $cats->order_by('order','asc')->find_all()->cached()->as_array('id_category');
 
             $cats_parent_deep = array();
-            foreach ($cats as $cat) 
+            foreach ($cats as $cat)
             {
                 $cats_parent_deep[$cat->parent_deep][$cat->id_category] =  array('name'               => $cat->name,
                                                                                   'id_category_parent' => $cat->id_category_parent,
@@ -243,16 +245,17 @@ class Model_Category extends ORM {
 
     /**
      * we get the categories in an array miltidimensional by deep.
-     * @return array 
+     * @return array
      */
     public static function get_multidimensional($limit = NULL)
     {
         $cache_name = is_int($limit) ? 'cats_m'.'_'.$limit : 'cats_m';
-        
+        self::cache_list($cache_name);
         //multidimensional array
         if ( ($cats_m = Core::cache($cache_name))===NULL)
         {
             $cats = new self;
+            $cats->order_by('id_category_parent','asc');
             $cats->order_by('order','asc');
 
             if (is_int($limit))
@@ -262,9 +265,9 @@ class Model_Category extends ORM {
 
             //for each category we get his siblings
             $cats_s = array();
-            foreach ($cats as $cat) 
+            foreach ($cats as $cat)
                  $cats_s[$cat->id_category_parent][] = $cat->id_category;
-            
+
 
             //last build multidimensional array
             if (count($cats_s)>1)
@@ -280,18 +283,18 @@ class Model_Category extends ORM {
     /**
      * gets a multidimensional array wit the categories
      * @param  array  $cats_s      id_category->array(id_siblings)
-     * @param  integer $id_category 
-     * @param  integer $deep        
-     * @return array               
+     * @param  integer $id_category
+     * @param  integer $deep
+     * @return array
      */
     public static function multi_cats($cats_s,$id_category = 1, $deep = 0)
-    {    
+    {
         $ret = NULL;
         //we take all the siblings and try to set the grandsons...
         //we check that the id_category sibling has other siblings
         if (isset($cats_s[$id_category]))
         {
-            foreach ($cats_s[$id_category] as $id_sibling) 
+            foreach ($cats_s[$id_category] as $id_sibling)
             {
                 //we check that the id_category sibling has other siblings
                 if (isset($cats_s[$id_sibling]))
@@ -302,9 +305,9 @@ class Model_Category extends ORM {
                     }
                 }
                 //no siblings we only set the key
-                else 
+                else
                     $ret[$id_sibling] = NULL;
-                
+
             }
         }
         return $ret;
@@ -313,7 +316,7 @@ class Model_Category extends ORM {
     /**
      * we get the categories in an array and a multidimensional array to know the deep @todo refactor this, is a mess
      * @deprecated function DO NOT use, just here so we do not break the API to old themes
-     * @return array 
+     * @return array
      */
     public static function get_all()
     {
@@ -325,14 +328,14 @@ class Model_Category extends ORM {
 
         //array by deep
         $cats_parent_deep = self::get_by_deep();
-        
+
         return array($cats_arr,$cats_m, $cats_parent_deep);
     }
 
     /**
      * counts how many ads have each category
-     * @param  boolean $location_filter filters by location 
-     * @param  Model_Location $location 
+     * @param  boolean $location_filter filters by location
+     * @param  Model_Location $location
      * @return array
      */
     public static function get_category_count($location_filter = TRUE, $location = NULL)
@@ -347,7 +350,7 @@ class Model_Category extends ORM {
 
         //name used in the cache for storage
         $cache_name = 'get_category_count_'.$id_location;
-
+        self::cache_list($cache_name);
         if ( ($cats_count = Core::cache($cache_name))===NULL)
         {
 
@@ -368,7 +371,7 @@ class Model_Category extends ORM {
                 $count_ads = $count_ads->where('a.id_location', 'in', $location->get_siblings_ids());
             elseif ($location_filter === TRUE AND Model_Location::current()->loaded())
                 $count_ads = $count_ads->where('a.id_location', 'in', Model_Location::current()->get_siblings_ids());
-            
+
 
             $count_ads = $count_ads->group_by('c.id_category')
                                    ->order_by('c.order','asc')
@@ -377,31 +380,32 @@ class Model_Category extends ORM {
 
             $count_ads = $count_ads->as_array('id_category');
 
-
             //getting the count of ads into the parents
             $parents_count = array();
-            foreach ($count_ads as $count_ad) 
+            foreach ($count_ads as $count_ad)
             {
-                $id_category = $count_ad['id_category'];    
+                $id_category = $count_ad['id_category'];
                 $count = $count_ad['count'];
 
                 //adding himself if doesnt exists
                 if (!isset($parents_count[$id_category]))
                 {
-                    $parents_count[$id_category] = $count_ad;
+                    $parents_count[$id_category]['count'] = $count;
                     $parents_count[$id_category]['has_siblings'] = FALSE;
                 }
+                else
+                    $parents_count[$id_category]['count']+= $count;
 
                 $category = new Model_Category($id_category);
 
                 //for each parent of this category add the count
                 $parents_ids = $category->get_parents_ids();
-
                 if (count($parents_ids)>0)
                 {
-                    foreach ($parents_ids as $id ) 
+                    foreach ($parents_ids as $id )
                     {
-                        if (isset($parents_count[$id]))
+
+                        if (isset($parents_count[$id]) AND isset($parents_count[$id]['count']) )
                             $parents_count[$id]['count']+= $count_ads[$category->id_category]['count'];
                         else
                             $parents_count[$id]['count'] = $count_ads[$category->id_category]['count'];
@@ -409,7 +413,7 @@ class Model_Category extends ORM {
                         $parents_count[$id]['has_siblings'] = TRUE;
                     }
                 }
-                
+
             }
 
             //get all the categories with level 0 and 1
@@ -418,10 +422,10 @@ class Model_Category extends ORM {
 
             //generating the array
             $cats_count = array();
-            foreach ($categories as $category) 
+            foreach ($categories as $category)
             {
                 $has_siblings = isset($parents_count[$category->id_category])?$parents_count[$category->id_category]['has_siblings']:FALSE;
-                
+
                 //they may not have counted the siblings since the count was 0 but he actually has siblings...
                 if ($has_siblings===FALSE AND $category->has_siblings())
                     $has_siblings = TRUE;
@@ -431,6 +435,7 @@ class Model_Category extends ORM {
                 $cats_count[$category->id_category] = array(   'id_category'   => $category->id_category,
                                                                 'seoname'       => $category->seoname,
                                                                 'name'          => $category->name,
+                                                                'description'          => $category->description,
                                                                 'id_category_parent'        => $category->id_category_parent,
                                                                 'parent_deep'   => $category->parent_deep,
                                                                 'order'         => $category->order,
@@ -469,14 +474,14 @@ class Model_Category extends ORM {
             {
 
                 //d($categories);
-                foreach ($categories as $category) 
+                foreach ($categories as $category)
                 {
                     //d($category);
                     if ($category['id_category_parent'] == $this->id_category AND $category['id_category'] != $this->id_category)
                         return TRUE;
                 }
             }
-            
+
         }
 
         return FALSE;
@@ -492,7 +497,7 @@ class Model_Category extends ORM {
         {
             //name used in the cache for storage
             $cache_name = 'get_siblings_ids_category_'.$this->id_category;
-
+            self::cache_list($cache_name);
             if ( ($ids_siblings = Core::cache($cache_name))===NULL)
             {
                 //array that contains all the siblings as keys (1,2,3,4,..)
@@ -506,13 +511,13 @@ class Model_Category extends ORM {
                                         ->where('parent_deep','<',5)//we are limiting the recurrency....5 levels deep should be more than enough.
                                         ->cached()->find_all();
 
-                foreach ($categories as $category) 
+                foreach ($categories as $category)
                 {
                     $ids_siblings[] = $category->id_category;
 
                     //adding his children recursevely if they have any
-                    if ( count($siblings_cats = $category->get_siblings_ids())>1 ) 
-                        $ids_siblings = array_merge($ids_siblings,$siblings_cats);       
+                    if ( count($siblings_cats = $category->get_siblings_ids())>1 )
+                        $ids_siblings = array_merge($ids_siblings,$siblings_cats);
                 }
 
                 //removing repeated values
@@ -540,7 +545,7 @@ class Model_Category extends ORM {
         {
             //name used in the cache for storage
             $cache_name = 'get_parents_ids_category_'.$this->id_category;
-
+            self::cache_list($cache_name);
             if ( ($ids_parents = Core::cache($cache_name))===NULL)
             {
                 //array that contains all the parents as keys (1,2,3,4,..)
@@ -552,10 +557,10 @@ class Model_Category extends ORM {
                     if ($this->parent->loaded())
                     {
                         $ids_parents[] = $this->parent->id_category;
-                        $ids_parents = array_merge($ids_parents,$this->parent->get_parents_ids()); //recursive 
+                        $ids_parents = array_merge($ids_parents,$this->parent->get_parents_ids()); //recursive
                     }
                     //removing repeated values
-                    $ids_parents = array_unique($ids_parents);  
+                    $ids_parents = array_unique($ids_parents);
                 }
 
                 //cache the result is expensive!
@@ -570,16 +575,16 @@ class Model_Category extends ORM {
     }
 
     /**
-     * 
+     *
      * formmanager definitions
-     * 
+     *
      */
     public function form_setup($form)
-    {   
+    {
         $form->fields['description']['display_as'] = 'textarea';
 
         $form->fields['id_category_parent']['display_as']   = 'select';
-        $form->fields['id_category_parent']['caption']      = 'name';   
+        $form->fields['id_category_parent']['caption']      = 'name';
 
         $form->fields['order']['display_as']   = 'select';
         $form->fields['order']['options']      = range(1, 100);
@@ -595,7 +600,7 @@ class Model_Category extends ORM {
      * return the title formatted for the URL
      *
      * @param  string $title
-     * 
+     *
      */
     public function gen_seoname($seoname)
     {
@@ -615,7 +620,7 @@ class Model_Category extends ORM {
         $banned_names = array(__('category'),'category','blog','faq','forum','oc-panel','rss','oc-error',URL::title(__('all')),URL::title(__('reviews')),'user','stripe','paymill','bitpay','paypal');
         //same name as a route..shit!
         if (in_array($seoname, $banned_names))
-            $seoname = URL::title(__('category')).'-'.$seoname; 
+            $seoname = URL::title(__('category')).'-'.$seoname;
 
         if ($seoname != $this->seoname)
         {
@@ -646,15 +651,15 @@ class Model_Category extends ORM {
                 }
             }
         }
-        
+
 
         return $seoname;
     }
 
     /**
      * rule to verify that we selected a parent if not put the root location
-     * @param  integer $id_parent 
-     * @return integer                     
+     * @param  integer $id_parent
+     * @return integer
      */
     public function check_parent($id_parent)
     {
@@ -679,13 +684,13 @@ class Model_Category extends ORM {
             $id_category_parent = $cats_arr[$this->id_category]['id_category_parent'];
 
             //counting till we find the begining
-            while ($id_category_parent != 1 AND $id_category_parent != 0 AND $deep<100) 
+            while ($id_category_parent != 1 AND $id_category_parent != 0 AND $deep<100)
             {
                 $id_category_parent = $cats_arr[$id_category_parent]['id_category_parent'];
                 $deep++;
             }
         }
-        
+
         return $deep;
     }
 
@@ -700,62 +705,64 @@ class Model_Category extends ORM {
             {
                 $protocol = Core::is_HTTPS() ? 'https://' : 'http://';
                 $version = $this->last_modified ? '?v='.Date::mysql2unix($this->last_modified) : NULL;
-                
+
                 return $protocol.core::config('image.aws_s3_domain').'images/categories/'.$this->seoname.'.png'.$version;
             }
             else
                 return URL::base().'images/categories/'.$this->seoname.'.png'
                         .(($this->last_modified) ? '?v='.Date::mysql2unix($this->last_modified) : NULL);
         }
-        
+
         return FALSE;
     }
 
     /**
      * deletes the icon of the category
-     * @return boolean 
+     * @return boolean
      */
     public function delete_icon()
     {
         if ( ! $this->_loaded)
             throw new Kohana_Exception('Cannot delete :model model because it is not loaded.', array(':model' => $this->_object_name));
 
-
-        if (core::config('image.aws_s3_active'))
+        if ($this->has_image) 
         {
-            require_once Kohana::find_file('vendor', 'amazon-s3-php-class/S3','php');
-            $s3 = new S3(core::config('image.aws_access_key'), core::config('image.aws_secret_key'));
-        }
+            if (core::config('image.aws_s3_active'))
+            {
+                require_once Kohana::find_file('vendor', 'amazon-s3-php-class/S3','php');
+                $s3 = new S3(core::config('image.aws_access_key'), core::config('image.aws_secret_key'));
+            }
 
-        $root = DOCROOT.'images/categories/'; //root folder
-            
-        if (!is_dir($root)) 
-        {
-            return FALSE;
-        }
-        else
-        {   
-            //delete icon
-            @unlink($root.$this->seoname.'.png');
-            
-            // delete icon from Amazon S3
-            if(core::config('image.aws_s3_active'))
-                $s3->deleteObject(core::config('image.aws_s3_bucket'), 'images/categories/'.$this->seoname.'.png');
-            
-            // update category info
-            $this->has_image = 0;
-            $this->last_modified = Date::unix2mysql();
-            $this->save();
-            
-        }
+            $root = DOCROOT.'images/categories/'; //root folder
 
+            if (!is_dir($root))
+            {
+                return FALSE;
+            }
+            else
+            {
+                //delete icon
+                @unlink($root.$this->seoname.'.png');
+
+                // delete icon from Amazon S3
+                if(core::config('image.aws_s3_active'))
+                    $s3->deleteObject(core::config('image.aws_s3_bucket'), 'images/categories/'.$this->seoname.'.png');
+
+                // update category info
+                $this->has_image = 0;
+                $this->last_modified = Date::unix2mysql();
+                $this->save();
+
+            }
+        }
+        
         return TRUE;
     }
 
     /**
      * rename category icon
      * @param string $new_name
-     * @return boolean 
+     * @return boolean
     */
     public function rename_icon($new_name)
     {
@@ -795,9 +802,9 @@ class Model_Category extends ORM {
         parent::delete();
     }
 
-protected $_table_columns =  
+protected $_table_columns =
 array (
-  'id_category' => 
+  'id_category' =>
   array (
     'type' => 'int',
     'min' => '0',
@@ -813,7 +820,7 @@ array (
     'key' => 'PRI',
     'privileges' => 'select,insert,update,references',
   ),
-  'name' => 
+  'name' =>
   array (
     'type' => 'string',
     'column_name' => 'name',
@@ -828,7 +835,7 @@ array (
     'key' => '',
     'privileges' => 'select,insert,update,references',
   ),
-  'order' => 
+  'order' =>
   array (
     'type' => 'int',
     'min' => '0',
@@ -844,7 +851,7 @@ array (
     'key' => '',
     'privileges' => 'select,insert,update,references',
   ),
-  'created' => 
+  'created' =>
   array (
     'type' => 'string',
     'column_name' => 'created',
@@ -857,7 +864,7 @@ array (
     'key' => '',
     'privileges' => 'select,insert,update,references',
   ),
-  'id_category_parent' => 
+  'id_category_parent' =>
   array (
     'type' => 'int',
     'min' => '0',
@@ -873,7 +880,7 @@ array (
     'key' => '',
     'privileges' => 'select,insert,update,references',
   ),
-  'parent_deep' => 
+  'parent_deep' =>
   array (
     'type' => 'int',
     'min' => '0',
@@ -889,7 +896,7 @@ array (
     'key' => '',
     'privileges' => 'select,insert,update,references',
   ),
-  'seoname' => 
+  'seoname' =>
   array (
     'type' => 'string',
     'column_name' => 'seoname',
@@ -904,7 +911,7 @@ array (
     'key' => 'UNI',
     'privileges' => 'select,insert,update,references',
   ),
-  'description' => 
+  'description' =>
   array (
     'type' => 'string',
     'character_maximum_length' => '65535',
@@ -919,7 +926,7 @@ array (
     'key' => '',
     'privileges' => 'select,insert,update,references',
   ),
-  'price' => 
+  'price' =>
   array (
     'type' => 'float',
     'exact' => true,
@@ -935,7 +942,7 @@ array (
     'key' => '',
     'privileges' => 'select,insert,update,references',
   ),
-  'last_modified' => 
+  'last_modified' =>
   array (
     'type' => 'string',
     'column_name' => 'last_modified',
@@ -948,7 +955,7 @@ array (
     'key' => '',
     'privileges' => 'select,insert,update,references',
   ),
-  'has_image' => 
+  'has_image' =>
   array (
     'type' => 'int',
     'min' => '-128',

@@ -73,7 +73,8 @@ class Controller_Panel_Forum extends Auth_Crud {
                 }
                 $order++;
             }
-            Core::delete_cache();
+            //Core::delete_cache();
+            Model_Forum::cache_delete();
 
             $this->template->content = __('Saved');
         }
@@ -115,7 +116,6 @@ class Controller_Panel_Forum extends Auth_Crud {
             
             try {
                 $forum->save();
-                Core::delete_cache();
                 Alert::set(Alert::SUCCESS, __('Forum is created.'));
             } catch (Exception $e) {
                 Alert::set(Alert::ERROR, $e->getMessage());
@@ -155,13 +155,11 @@ class Controller_Panel_Forum extends Auth_Crud {
             
             try {
                 $forum->update();
-                Core::delete_cache();
                 Alert::set(Alert::SUCCESS, __('Forum is updated.'));
-                HTTP::redirect(Route::url('oc-panel',array('controller'  => 'forum','action'=>'index')));  
             } catch (Exception $e) {
                 Alert::set(Alert::ERROR, $e->getMessage());
-                HTTP::redirect(Route::url('oc-panel',array('controller'  => 'forum','action'=>'index'))); 
             }
+            HTTP::redirect(Route::url('oc-panel',array('controller'  => 'forum','action'=>'index'))); 
         }
         else
             $this->template->content = View::factory('oc-panel/pages/forum/update', array('forum_parents'=>$forum_parents,
@@ -185,7 +183,6 @@ class Controller_Panel_Forum extends Auth_Crud {
             {
                 $forum->delete();
                 $this->template->content = 'OK';
-                Core::delete_cache();
                 Alert::set(Alert::SUCCESS, __('Forum deleted'));
                 
             }

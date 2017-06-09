@@ -26,7 +26,7 @@
                                 }
                             } else $select = $field['values']?>
                             <?= FORM::label('cfuser_'.$name, $field['label'], array('for'=>'cfuser_'.$name))?>
-                            <div>
+                            <div <?=($field['type']=='checkbox')?'class="text-center"':''?>>
                                 <?=Form::cf_form_field('cf_'.$name, array(
                                 'display'   => $field['type'],
                                 'label'     => $field['label'],
@@ -72,15 +72,15 @@
 
 <div class="row" id="users">
     <?$i = 1; foreach($users as $user ):?>
-        <div class="col-sm-6 col-md-4" style="min-height:350px">
+        <div class="col-sm-4" style="min-height:350px">
             <div class="thumbnail">
                 <a title="<?=HTML::chars($user->name)?>" href="<?=Route::url('profile',  array('seoname'=>$user->seoname))?>">
-                    <img class="img-responsive" src="<?=Core::imagefly($user->get_profile_image(),203,203)?>" alt="<?=__('Profile Picture')?>">
+                    <img class="img-responsive" src="<?=Core::imagefly($user->get_profile_image(),250,250)?>" alt="<?=__('Profile Picture')?>">
                 </a>
                 <div class="caption">
                     <h3>
                         <a title="<?=HTML::chars($user->name)?>" href="<?=Route::url('profile',  array('seoname'=>$user->seoname))?>">
-                            <?=$user->name?> <span class="badge"><?=$user->ads_count?> <?=_e('Ads')?></span>
+                            <?=$user->name?> <?=$user->is_verified_user();?> <span class="badge"><?=$user->ads_count?> <?=_e('Ads')?></span>
                         </a>
                     </h3>
                     <?if (Core::config('advertisement.reviews')==1):?>
@@ -97,7 +97,7 @@
                 </div>
             </div>
         </div>
-        <?if ($i%3 == 0) :?>
+    <?if ($i%3 == 0) :?>
             <div class="clearfix"></div>
         <?endif?>
     <?$i++; endforeach?>

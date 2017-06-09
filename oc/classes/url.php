@@ -42,7 +42,7 @@ class URL extends Kohana_URL {
      * @return  string
      * @uses    URL::base
      */
-    public static function site($uri = '', $protocol = NULL, $index = TRUE)
+    public static function site($uri = '', $protocol = NULL, $index = TRUE, $subdomain = NULL)
     {
         // Chop off possible scheme, host, port, user and pass parts
         $path = preg_replace('~^[-a-z0-9+.]++://[^/]++/?~', '', trim($uri, '/'));
@@ -67,7 +67,7 @@ class URL extends Kohana_URL {
         if (!isset($_SERVER['QUERY_STRING']) OR Request::$current == NULL OR defined('SUPPRESS_REQUEST'))
             return URL::base();
 
-        return substr(URL::base(),0,-1) . $_SERVER['REQUEST_URI'];
+        return Request::initial()->referrer();
     }
 
     /**

@@ -434,6 +434,10 @@ class Controller_Ad extends Controller {
 
                 if (Core::get('amp') == '1')
                 {
+                    //disable newrelic
+                    if (function_exists('newrelic_disable_autorum'))
+                        newrelic_disable_autorum();
+
                     $this->template = 'amp/main';
                     $this->before();
                     $this->template->canonical = Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle));
@@ -873,6 +877,7 @@ class Controller_Ad extends Controller {
     public function action_checkoutfree()
     {
         $order = new Model_Order($this->request->param('id'));
+        $ad = new Model_Ad($order->id_ad);
 
         if ($order->loaded())
         {
@@ -897,7 +902,11 @@ class Controller_Ad extends Controller {
             else//mark as paid
             {
                 $order->confirm_payment('cash');
-                $this->redirect(Route::url('oc-panel', array('controller'=>'profile','action'=>'orders')));
+
+                if(Auth::instance()->logged_in())
+                    $this->redirect(Route::url('oc-panel', array('controller'=>'profile','action'=>'orders')));
+                else
+                    $this->redirect(Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle)));
             }
 
         }

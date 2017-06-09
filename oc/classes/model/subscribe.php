@@ -20,6 +20,23 @@ class Model_Subscribe extends ORM {
      */
     protected $_primary_key = 'id_subscribe';
 
+    /**
+     * @var  array  ORM Dependency/hirerachy
+     */
+    protected $_belongs_to = array(
+        'user' => array(
+                'model'       => 'user',
+                'foreign_key' => 'id_user',
+            ),
+        'category' => array(
+                'model'       => 'category',
+                'foreign_key' => 'id_category',
+            ),
+        'location' => array(
+                'model'       => 'location',
+                'foreign_key' => 'id_location',
+            ),
+    );
 
     public function form_setup($form){}
 
@@ -100,7 +117,7 @@ array (
     'type' => 'int',
     'min' => '0',
     'max' => '4294967295',
-    'column_name' => 'id_ad',
+    'column_name' => 'id_subscribe',
     'column_default' => NULL,
     'data_type' => 'int unsigned',
     'is_nullable' => false,
@@ -163,7 +180,7 @@ array (
   array (
     'type' => 'float',
     'exact' => true,
-    'column_name' => 'price',
+    'column_name' => 'min_price',
     'column_default' => '0.000',
     'data_type' => 'decimal',
     'is_nullable' => false,
@@ -179,7 +196,7 @@ array (
   array (
     'type' => 'float',
     'exact' => true,
-    'column_name' => 'price',
+    'column_name' => 'max_price',
     'column_default' => '0.000',
     'data_type' => 'decimal',
     'is_nullable' => false,

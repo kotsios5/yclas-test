@@ -1,6 +1,6 @@
 <?php
 /**
- * Sociual auth class
+ * Social auth class
  *
  * @package    OC
  * @category   Core
@@ -86,7 +86,7 @@ class Social {
         }
     }
 
-    public static function post_ad(Model_Ad $ad, $file)
+    public static function post_ad(Model_Ad $ad)
     {
         if($ad->status == Model_Ad::STATUS_PUBLISHED AND core::config('advertisement.social_post_only_featured') == FALSE)
         {   
@@ -97,17 +97,17 @@ class Social {
                 self::facebook($ad);
 
             if(core::config('advertisement.instagram'))
-                self::instagram($ad, $file);
+                self::instagram($ad);
 
             if(core::config('advertisement.pinterest'))
-                self::pinterest($ad, $file);
+                self::pinterest($ad);
+
         }
     }
 
-    public static function pinterest(Model_Ad $ad, $file = NULL)
+    public static function pinterest(Model_Ad $ad)
     {
-        if($file == NULL)
-            $file = $ad->get_first_image('image');
+        $file = $ad->get_first_image('image');
 
         if($file !== NULL)
         {
@@ -156,10 +156,9 @@ class Social {
         }
     }
 
-    public static function instagram(Model_Ad $ad, $file = NULL)
+    public static function instagram(Model_Ad $ad)
     {
-            if($file == NULL)
-                $file = $ad->get_first_image('image');
+            $file = $ad->get_first_image('image');
 
             if($file !== NULL)
             {
@@ -261,10 +260,10 @@ class Social {
         if($ad->price>0)
             $description .= ' - '.__('Price').': '.i18n::money_format($ad->price);
 
-        $message = $ad->title.', ';
+        $message = $ad->title;
 
         if($ad->category->id_category_parent != 1 AND $ad->category->parent->loaded())
-            $message .= $ad->category->parent->name;
+            $message .= ', '.$ad->category->parent->name;
 
         $message .= ' - '.$ad->category->name;
 
@@ -309,6 +308,8 @@ class Social {
 
         $paramsfb = null;
         parse_str($contents, $paramsfb);  
+
+        $paramsfb = json_decode($contents, true);
 
         if($err == '200')
             model_config::set_value('advertisement','facebook_access_token',$paramsfb['access_token']);

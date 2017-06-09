@@ -9,13 +9,12 @@
                                       'meta_keywords'     => $meta_keywords,
                                       'meta_description'  => $meta_description,
                                       'meta_copyright'    => $meta_copyright,
-                                      'amphtml'           => $amphtml,))?> 
+                                      'amphtml'           => $amphtml,))?>
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 7]><link rel="stylesheet" href="//blueimp.github.com/cdn/css/bootstrap-ie6.min.css"><![endif]-->
     <!--[if lt IE 9]>
       <script type="text/javascript" src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
     <![endif]-->
-    <?=Theme::styles($styles)?> 
+    <?=Theme::styles($styles)?>
     <?=Theme::scripts($scripts)?>
     <?=core::config('general.html_head')?>
     <?=View::factory('analytics')?>
@@ -45,17 +44,25 @@
                       <?=$content?>
                     </div>
                 </div>
-                <?= FORM::open(Route::url('search'), array('class'=>'col-xs-3', 'method'=>'GET', 'action'=>''))?>
+                <?if(Core::config('general.algolia_search') == 1):?>
+                  <div class="col-xs-3">
                     <div class="form-group">
-                        <input type="text" name="search" class="search-query form-control" placeholder="<?=__('Search')?>">
-                    </div>  
-                <?= FORM::close()?>
+                      <?=View::factory('pages/algolia/autocomplete')?>
+                    </div>
+                  </div>
+                <?else:?>
+                  <?= FORM::open(Route::url('search'), array('class'=>'col-xs-3', 'method'=>'GET', 'action'=>''))?>
+                      <div class="form-group">
+                          <input type="text" name="title" class="search-query form-control" placeholder="<?=__('Search')?>">
+                      </div>
+                  <?= FORM::close()?>
+                <?endif?>
                 <?=View::fragment('sidebar_front','sidebar')?>
             <?endif?>
         </div>
         <?=$footer?>
     </div>
-  
+
   <?=Theme::scripts($scripts,'footer')?>
   <?=Theme::scripts($scripts,'async_defer', 'default', ['async' => '', 'defer' => ''])?>
   <?=core::config('general.html_footer')?>

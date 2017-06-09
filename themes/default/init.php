@@ -3,7 +3,7 @@
   * Theme Name: Ocean Free
   * Description: Clean free theme that includes full admin. It has publicity. Do not delete this theme, all the views depend in this theme.
   * Tags: HTML5, Admin, Free
-  * Version: 3.1.0
+  * Version: 3.2.0
   * Author: Chema <chema@open-classifieds.com> , <slobodan@open-classifieds.com>
   * License: GPL v3
   * Skins: default,green,orange 
@@ -73,6 +73,12 @@ if (Core::config('general.pusher_notifications')){
     Theme::$styles['//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css'] = 'screen';
     Theme::$scripts['footer'][] = '//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js';
     Theme::$scripts['footer'][] = '//js.pusher.com/4.0/pusher.min.js';
+}
+
+if (Core::config('general.algolia_search')){
+    Theme::$styles['css/algolia/algolia-autocomplete.css'] = 'screen';
+    Theme::$scripts['footer'][] = '//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js';
+    Theme::$scripts['footer'][] = '//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js';
 }
 
 /**
