@@ -687,12 +687,13 @@ function getResizeValue(value) {
 $(function(){
     var user = $('#pusher-subscribe').data('user');
     var key = $('#pusher-subscribe').data('key');
+    var cluster = $('#pusher-subscribe').data('cluster');
 
     // subscribe user if is logged in
     if(user != undefined && user != ''){
 
         var pusher = new Pusher(key, {
-          cluster: 'eu',
+          cluster: cluster,
           encrypted: true
         });
 
@@ -810,4 +811,29 @@ $(function(){
             }
         });
     }
+});
+
+$(function(){
+    // Modal confirmation
+    $('a[data-toggle="confirmation"]').click(function(event) {
+        var href = $(this).attr('href');
+        var title = $(this).attr('title');
+        var text = $(this).data('text');
+        var confirmButtonText = $(this).data('btnoklabel');
+        var cancelButtonText = $(this).data('btncancellabel');
+        event.preventDefault();
+        swal({
+            title: title,
+            text: text,
+            type: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: confirmButtonText,
+            cancelButtonText: cancelButtonText,
+            allowOutsideClick: true,
+        },
+        function(){
+            window.open(href,"_self");
+        });
+    });
 });

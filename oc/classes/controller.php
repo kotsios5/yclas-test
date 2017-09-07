@@ -61,8 +61,8 @@ class Controller extends Kohana_Controller
         //check 2 step
         if ( strtolower($this->request->controller())!='auth' AND
             Auth::instance()->logged_in() AND
-            core::config('general.google_authenticator')==TRUE AND 
-            Auth::instance()->get_user()->google_authenticator!='' AND 
+            core::config('general.google_authenticator')==TRUE AND
+            Auth::instance()->get_user()->google_authenticator!='' AND
             Cookie::get('google_authenticator')!=Auth::instance()->get_user()->id_user )
         {
             //redirect to 2step page
@@ -70,14 +70,27 @@ class Controller extends Kohana_Controller
             $this->redirect($url);
         }
 
+        //check 2 step SMS
+        if ( strtolower($this->request->controller())!='auth' AND
+            Auth::instance()->logged_in() AND
+            core::config('general.sms_auth')==TRUE AND
+            Cookie::get('sms_auth')!=Auth::instance()->get_user()->id_user AND
+            Valid::phone($this->user->phone) )
+        {
+            //redirect to 2step sms page
+            $url = Route::url('oc-panel',array('controller'=>'auth','action'=>'sms')).'?auth_redirect='.URL::current();
+            $this->redirect($url);
+        }
+
         //expired subscription
         if (strtolower($this->request->controller())!='plan' AND
+            strtolower($this->request->controller())!='auth' AND
             strtolower($this->request->action())!='pay' AND
             strtolower($this->request->action())!='checkoutfree' AND
             Auth::instance()->logged_in() AND
-            Core::config('general.subscriptions') == TRUE AND 
-            Core::config('general.subscriptions_expire') == TRUE AND 
-            Theme::get('premium') == TRUE 
+            Core::config('general.subscriptions') == TRUE AND
+            Core::config('general.subscriptions_expire') == TRUE AND
+            Theme::get('premium') == TRUE
             AND !$this->user->subscription()->loaded() )
         {
             //control loop
@@ -93,10 +106,10 @@ class Controller extends Kohana_Controller
                     $this->redirect($url);
                 }
             }
-            
+
             Alert::set(Alert::INFO, __('Please, choose a plan first'));
             HTTP::redirect(Route::url('pricing'));
-            
+
         }
     }
 
@@ -109,10 +122,10 @@ class Controller extends Kohana_Controller
         parent::before();
 
         Theme::checker();
-        
+
         $this->maintenance();
         $this->private_site();
-        
+
         /**
          * selected category
          */
@@ -131,14 +144,14 @@ class Controller extends Kohana_Controller
         {
         	// Load the template
             if ($template!==NULL)
-                $this->template= $template; 
+                $this->template= $template;
         	$this->template = View::factory($this->template);
-        	
+
             // Initialize template values
             $this->template->title            = core::config('general.site_name');
             $this->template->meta_keywords    = '';
             $this->template->meta_description = '';
-            $this->template->meta_copyright   = 'Open Classifieds '.Core::VERSION;
+            $this->template->meta_copyright   = 'Yclas '.Core::VERSION;
             $this->template->meta_copywrite   = $this->template->meta_copyright;//legacy for old themes
             $this->template->content          = '';
             $this->template->styles           = array();
@@ -155,11 +168,11 @@ class Controller extends Kohana_Controller
             //     $this->template->header  = View::fragment('header_front_login','header');
             // else
             //     $this->template->header  = View::fragment('header_front','header');
-                
+
             //$this->template->footer = View::fragment('footer_front','footer');
         }
     }
-    
+
     /**
      * Fill in default values for our properties before rendering the output.
      */
@@ -191,12 +204,12 @@ class Controller extends Kohana_Controller
                 Theme::$scripts['footer'] [] = 'js/advertisement.js';
                 Theme::$scripts['footer'] [] = 'js/jquery.adi.js';
                 $this->template->scripts['footer'][] = Route::url('default',array('controller'=>'jslocalization','action'=>'adi'));
-            }            
+            }
 
     		// Add defaults to template variables.
     		$this->template->styles  = array_merge_recursive(Theme::$styles, $this->template->styles);
     		$this->template->scripts = array_reverse(array_merge_recursive(Theme::$scripts,$this->template->scripts));
-    		
+
             //in case theres no description given
             if ($this->template->meta_description == '')
                 $this->template->meta_description = $this->template->title;
@@ -211,14 +224,14 @@ class Controller extends Kohana_Controller
             seo::$charset = Kohana::$charset;
 
             $this->template->title = seo::text($this->template->title, 70);
-    		
+
             //not meta keywords given
             //remember keywords are useless :( http://googlewebmastercentral.blogspot.com/2009/09/google-does-not-use-keywords-meta-tag.html
     		if ($this->template->meta_keywords == '')
     		    $this->template->meta_keywords = seo::keywords($this->template->meta_description);
-    		
+
     		$this->template->meta_description = seo::text($this->template->meta_description);
-    		
+
     	}
 
         //no cache for logged users / actions, so we can use varnish or whatever ;)
@@ -227,12 +240,12 @@ class Controller extends Kohana_Controller
 
         //d($this->template);
     	$this->response->body($this->template->render());
-       
+
     }
 
     /**
      * in case you set up general.maintenance to TRUE
-     * @return void 
+     * @return void
      */
     public function maintenance()
     {
@@ -246,11 +259,11 @@ class Controller extends Kohana_Controller
             else
                 $this->redirect(Route::url('maintenance'));
         }
-    }    
-      
+    }
+
     /**
      * in case you set up general.private_site to TRUE
-     * @return void 
+     * @return void
      */
     public function private_site()
     {
@@ -264,6 +277,6 @@ class Controller extends Kohana_Controller
             // Return the response
             die($this->response);
         }
-    }      
+    }
 
 }

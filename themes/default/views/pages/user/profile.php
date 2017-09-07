@@ -14,6 +14,13 @@
     </div>
     <div class="col-xs-12 col-sm-9">
         <h3><?=$user->name?> <?=$user->is_verified_user();?></h3>
+        <?if (Core::config('advertisement.reviews')==1):?>
+                <?if ($user->rate!==NULL):?>
+                    <?for ($i=0; $i < round($user->rate,1); $i++):?>
+                        <span class="glyphicon glyphicon-star"></span>
+                    <?endfor?>
+                <?endif?>
+        <?endif?>
         <div class="text-description">
             <?=Text::bb2html($user->description,TRUE)?>
         </div>
@@ -23,15 +30,6 @@
 <div class="page-header">
     <article class="well">
         <ul class="list-unstyled">
-            <?if (Core::config('advertisement.reviews')==1):?>
-                <li>
-                    <?if ($user->rate!==NULL):?>
-                        <?for ($i=0; $i < round($user->rate,1); $i++):?>
-                            <span class="glyphicon glyphicon-star"></span>
-                        <?endfor?>
-                    <?endif?>
-                </li>
-            <?endif?>
             <li><strong><?=_e('Created')?>:</strong> <?= Date::format($user->created, core::config('general.date_format')) ?></li>
             <?if ($user->last_login!=NULL):?>
             <li><strong><?=_e('Last Login')?>:</strong> <?= Date::format($user->last_login, core::config('general.date_format'))?></li>
@@ -57,13 +55,13 @@
         </ul>
         <?if (Theme::get('premium')==1):?>
             <?if(isset($user->cf_whatsapp) AND $user->cf_whatsapp!=''):?>
-                <a href="intent://send/<?=$user->cf_whatsapp?>#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end" title="Whatsapp" alt="Whatsapp"><i class="fa fa-2x fa-whatsapp" style="color:#43d854"></i></a>
+                <a href="intent://send/<?=$user->cf_whatsapp?>#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end" title="Chat with <?=$user->name?>" alt="Whatsapp"><i class="fa fa-2x fa-whatsapp" style="color:#43d854"></i></a>
             <?endif?>
             <?if(isset($user->cf_skype) AND $user->cf_skype!=''):?>
-                <a href="skype:<?=$user->cf_skype?>?chat" title="Skype" alt="Skype"><i class="fa fa-2x fa-skype" style="color:#00aff0"></i></a>
+                <a href="skype:<?=$user->cf_skype?>?chat" title="Chat with <?=$user->name?>" alt="Skype"><i class="fa fa-2x fa-skype" style="color:#00aff0"></i></a>
             <?endif?>
             <?if(isset($user->cf_telegram) AND $user->cf_telegram!=''):?>
-                <a href="tg://resolve?domain=<?=$user->cf_telegram?>" id="telegram" title="Telegram" alt="Telegram"><i class="fa fa-2x fa-telegram" style="color:#0088cc"></i></a>
+                <a href="tg://resolve?domain=<?=$user->cf_telegram?>" id="telegram" title="Chat with <?=$user->name?>" alt="Telegram"><i class="fa fa-2x fa-telegram" style="color:#0088cc"></i></a>
             <?endif?>
         <?endif?>
 		<div class="clearfix">&nbsp;</div>
@@ -154,14 +152,19 @@
             <?else:?>
                 <article id="user_profile_ads" class="well">
             <?endif?>
-
-                <h4><a href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>"><?=$ad->title?></a></h4>
-
+                <div class="col-xs-12">
+                    <h4><a href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>"><?=$ad->title?></a></h4>
+                    <?if ($ad->rate!==NULL):?>
+                        <?for ($i=0; $i < round($user->rate,1); $i++):?>
+                            <span class="glyphicon glyphicon-star"></span>
+                        <?endfor?>
+                    <?endif?>
+                </div>
                 <div class="col-xs-12 col-sm-3 picture">
                     <a title="<?=HTML::chars($ad->title)?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>">
                         <figure>
                             <?if($ad->get_first_image() !== NULL):?>
-                                <img src="<?=Core::imagefly($ad->get_first_image(),160,160)?>" class="img-responsive center-block" alt="<?=HTML::chars($ad->title)?>" />
+                                <img src="<?=Core::imagefly($ad->get_first_image('image'),160,160)?>" class="img-responsive center-block" alt="<?=HTML::chars($ad->title)?>" />
                             <?elseif(( $icon_src = $ad->category->get_icon() )!==FALSE ):?>
                                 <img src="<?=Core::imagefly($icon_src,160,160)?>" class="img-responsive center-block" alt="<?=HTML::chars($ad->title)?>" />
                             <?elseif(( $icon_src = $ad->location->get_icon() )!==FALSE ):?>

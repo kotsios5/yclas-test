@@ -9,33 +9,36 @@
     <h1><?=$ad->title?> <small><?=_e('Edit Advertisement')?></small></h1>
     <?$str=NULL;switch ($ad->status) {
         case Model_Ad::STATUS_NOPUBLISHED:
-            $str = __('NOPUBLISHED');
+            $str = _e('NOPUBLISHED');
             break;
         case Model_Ad::STATUS_PUBLISHED:
-            $str = __('PUBLISHED');
+            $str = _e('PUBLISHED');
             break;
         case Model_Ad::STATUS_UNCONFIRMED:
-            $str = __('UNCONFIRMED');
+            $str = _e('UNCONFIRMED');
             break;
         case Model_Ad::STATUS_SPAM:
-            $str = __('SPAM');
+            $str = _e('SPAM');
             break;
         case Model_Ad::STATUS_UNAVAILABLE:
-            $str = __('UNAVAILABLE');
+            $str = _e('UNAVAILABLE');
+            break;
+        case Model_Ad::STATUS_SOLD:
+            $str = _e('SOLD');
             break;
         default:
             break;
     }?>
     <p><span class="label label-warning label-as-badge"><?=$str?></span></p>
 
-    <? if( $ad->status == Model_Ad::STATUS_UNAVAILABLE AND !in_array(core::config('general.moderation'), Model_Ad::$moderation_status)  
+    <? if (in_array($ad->status, [Model_Ad::STATUS_UNAVAILABLE, Model_Ad::STATUS_SOLD]) AND !in_array(core::config('general.moderation'), Model_Ad::$moderation_status)
             ):?>
             <a
-                href="<?=Route::url('oc-panel', array('controller'=>'myads','action'=>'activate','id'=>$ad->id_ad))?>" 
-                class="btn btn-success" 
-                title="<?=__('Activate?')?>" 
-                data-toggle="confirmation" 
-                data-btnOkLabel="<?=__('Yes, definitely!')?>" 
+                href="<?=Route::url('oc-panel', array('controller'=>'myads','action'=>'activate','id'=>$ad->id_ad))?>"
+                class="btn btn-success"
+                title="<?=__('Activate?')?>"
+                data-toggle="confirmation"
+                data-btnOkLabel="<?=__('Yes, definitely!')?>"
                 data-btnCancelLabel="<?=__('No way!')?>">
                 <i class="glyphicon glyphicon-ok"></i> <?=_e('Activate')?>
             </a>
@@ -44,7 +47,7 @@
 <div class="row">
     <div class="col-md-12">
         <!-- PAYPAL buttons to featured and to top -->
-        <?if((core::config('payment.pay_to_go_on_top') > 0  
+        <?if((core::config('payment.pay_to_go_on_top') > 0
                 AND core::config('payment.to_top') != FALSE )
                 OR (core::config('payment.to_featured') != FALSE AND $ad->featured < Date::unix2mysql() )):?>
             <div id="recomentadion" class="well recomentadion clearfix">
@@ -62,7 +65,7 @@
 
         <?if (count($orders) > 0) :?>
             <div class="panel panel-default">
-                <div class="panel-body">	
+                <div class="panel-body">
                     <?foreach ($orders as $order):?>
                         <a class="btn btn-warning" href="<?=Route::url('default', array('controller'=> 'ad','action'=>'checkout' , 'id' => $order->id_order))?>">
                             <i class="glyphicon glyphicon-shopping-cart"></i> <?=_e('Pay')?> <?=$order->description?>  
@@ -86,33 +89,36 @@
                     <tbody>
                         <tr>
                             <td><p><?= $ad->id_user?></p></td>
-                            <td>	
+                            <td>
                                 <a href="<?=Route::url('profile', array('seoname'=>$owner->seoname))?>" alt="<?=HTML::chars($owner->seoname)?>"><?= $owner->seoname?></a>
                             </td>
                             <td><p><?= $owner->name?></p></td>
-                            <td>	
+                            <td>
                                 <a href="<?=Route::url('contact')?>"><?= $owner->email?></a>
                             </td>
                             <td>
                                 <?$str=NULL;switch ($ad->status) {
                                     case Model_Ad::STATUS_NOPUBLISHED:
-                                        $str = __('NOPUBLISHED');
+                                        $str = _e('NOPUBLISHED');
                                         break;
                                     case Model_Ad::STATUS_PUBLISHED:
-                                        $str = __('PUBLISHED');
+                                        $str = _e('PUBLISHED');
                                         break;
                                     case Model_Ad::STATUS_UNCONFIRMED:
-                                        $str = __('UNCONFIRMED');
+                                        $str = _e('UNCONFIRMED');
                                         break;
                                     case Model_Ad::STATUS_SPAM:
-                                        $str = __('SPAM');
+                                        $str = _e('SPAM');
                                         break;
                                     case Model_Ad::STATUS_UNAVAILABLE:
-                                        $str = __('UNAVAILABLE');
+                                        $str = _e('UNAVAILABLE');
+                                        break;
+                                    case Model_Ad::STATUS_SOLD:
+                                        $str = _e('SOLD');
                                         break;
                                     default:
                                         break;
-                                }?>	
+                                }?>
                                 <b><?=$str?></b>
                             </td>
                         </tr>
@@ -124,7 +130,7 @@
         <div class="well">
             <?= FORM::open(Route::url('oc-panel', array('controller'=>'myads','action'=>'update','id'=>$ad->id_ad)), array('class'=>'form-horizontal edit_ad_form', 'enctype'=>'multipart/form-data'))?>
                 <fieldset>
-                    
+
                     <div class="form-group">
                         <div class="col-sm-8 col-xs-12">
                             <?= FORM::label('title', _e('Title'), array('class'=>'', 'for'=>'title'))?>
@@ -136,8 +142,8 @@
                         <div class="col-md-8 col-xs-12">
                             <?= FORM::label('category', _e('Category'), array('for'=>'category'))?>
                             <div id="category-chained" class="row hidden"
-                                data-apiurl="<?=Route::url('api', array('version'=>'v1', 'format'=>'json', 'controller'=>'categories'))?>" 
-                                data-price0="<?=i18n::money_format(0)?>" 
+                                data-apiurl="<?=Route::url('api', array('version'=>'v1', 'format'=>'json', 'controller'=>'categories'))?>"
+                                data-price0="<?=i18n::money_format(0)?>"
                                 <?=(core::config('advertisement.parent_category')) ? 'data-isparent' : NULL?>
                             >
                                 <div id="select-category-template" class="col-md-6 hidden">
@@ -160,7 +166,7 @@
                             <input id="category-selected" name="category" value="<?=$ad->id_category?>" class="form-control invisible" style="height: 0; padding:0; width:1px; border:0;" required></input>
                         </div>
                     </div>
-                        
+
                     <!-- location select -->
                     <div class="form-group">
                         <div class="col-md-8">
@@ -196,7 +202,7 @@
                         <div class="form-group">
                             <div class="col-sm-8 col-xs-12">
                                 <?= FORM::label('phone', _e('Phone'), array('class'=>'', 'for'=>'phone'))?>
-                                <?= FORM::input('phone', $ad->phone, array('class'=>'form-control', 'id'=>'phone', 'placeholder'=>__('Phone')))?>
+                                <?= FORM::input('phone', $ad->phone, array('class'=>'form-control', 'id'=>'phone', 'placeholder'=>__('Phone'), 'data-country' => core::config('general.country')))?>
                             </div>
                         </div>
                     <?endif?>
@@ -222,10 +228,10 @@
                         </div>
                         <?if(core::config('advertisement.map_pub_new')):?>
                             <div class="popin-map-container">
-                                <div class="map-inner" id="map" 
-                                    data-lat="<?=($ad->latitude)? $ad->latitude:core::config('advertisement.center_lat')?>" 
+                                <div class="map-inner" id="map"
+                                    data-lat="<?=($ad->latitude)? $ad->latitude:core::config('advertisement.center_lat')?>"
                                     data-lon="<?=($ad->longitude)? $ad->longitude:core::config('advertisement.center_lon')?>"
-                                    data-zoom="<?=core::config('advertisement.map_zoom')?>" 
+                                    data-zoom="<?=core::config('advertisement.map_zoom')?>"
                                     style="height:200px;max-width:400px;margin-bottom:5px;">
                                 </div>
                             </div>
@@ -276,11 +282,11 @@
                         </div>
                     <?endif?>
                     <!-- /endcustom fields -->
-                    <div class="form-group images" 
-                        data-max-image-size="<?=core::config('image.max_image_size')?>" 
-                        data-image-width="<?=core::config('image.width')?>" 
-                        data-image-height="<?=core::config('image.height') ? core::config('image.height') : 0?>" 
-                        data-image-quality="<?=core::config('image.quality')?>" 
+                    <div class="form-group images"
+                        data-max-image-size="<?=core::config('image.max_image_size')?>"
+                        data-image-width="<?=core::config('image.width')?>"
+                        data-image-height="<?=core::config('image.height') ? core::config('image.height') : 0?>"
+                        data-image-quality="<?=core::config('image.quality')?>"
                         data-swaltext="<?=sprintf(__('Is not of valid size. Size is limited to %s MB per image'),core::config('image.max_image_size'))?>">
                         <div class="col-md-12 col-xs-12">
                             <div class="row">
@@ -291,21 +297,21 @@
                                             <div id="img<?=$key?>" class="col-md-4 col-sm-4 col-md-4 edit-image">
                                                 <a><img src="<?=$value['thumb']?>" class="img-rounded thumbnail img-responsive"></a>
                                                 <button class="btn btn-danger index-delete img-delete"
-                                                        data-title="<?=__('Are you sure you want to delete?')?>" 
-                                                        data-btnOkLabel="<?=__('Yes, definitely!')?>" 
+                                                        data-title="<?=__('Are you sure you want to delete?')?>"
+                                                        data-btnOkLabel="<?=__('Yes, definitely!')?>"
                                                         data-btnCancelLabel="<?=__('No way!')?>"
-                                                        type="submit" 
+                                                        type="submit"
                                                         name="img_delete"
-                                                        value="<?=$key?>" 
+                                                        value="<?=$key?>"
                                                         href="<?=Route::url('oc-panel', array('controller'=>'myads','action'=>'update','id'=>$ad->id_ad))?>">
                                                         <?=_e('Delete')?>
                                                 </button>
                                                 <?if ($key > 1) :?>
                                                     <button class="btn btn-info img-primary"
-                                                        type="submit" 
+                                                        type="submit"
                                                         name="primary_image"
-                                                        value="<?=$key?>" 
-                                                        href="<?=Route::url('oc-panel', array('controller'=>'myads','action'=>'update','id'=>$ad->id_ad))?>" 
+                                                        value="<?=$key?>"
+                                                        href="<?=Route::url('oc-panel', array('controller'=>'myads','action'=>'update','id'=>$ad->id_ad))?>"
                                                         action="<?=Route::url('oc-panel', array('controller'=>'myads','action'=>'update','id'=>$ad->id_ad))?>"
                                                     >
                                                             <?=_e('Primary image')?>
@@ -324,17 +330,22 @@
                                 <?= FORM::label('images', _e('Add image'), array('class'=>'', 'for'=>'images0'))?>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
-                                            <div>
-                                                <span class="btn btn-default btn-file">
-                                                    <span class="fileinput-new"><?=_e('Select')?></span>
-                                                    <span class="fileinput-exists"><?=_e('Edit')?></span>
-                                                    <input type="file" name="image0" id="fileInput0" accept="<?='image/'.str_replace(',', ', image/', rtrim(core::config('image.allowed_formats'),','))?>">
-                                                </span>
-                                                <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput"><?=_e('Delete')?></a>
+                                        <?for ($i = 0; $i < (core::config('advertisement.num_images') - count($images)); $i++):?>
+                                            <div class="fileinput fileinput-new <?=($i >= 1) ? 'hidden' : NULL?>" data-provides="fileinput">
+                                                <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
+                                                <div>
+                                                    <span class="btn btn-default btn-file">
+                                                        <span class="fileinput-new"><?=_e('Select')?></span>
+                                                        <span class="fileinput-exists"><?=_e('Edit')?></span>
+                                                        <input type="file" name="<?='image'.$i?>" id="<?='fileInput'.$i?>" accept="<?='image/'.str_replace(',', ', image/', rtrim(core::config('image.allowed_formats'),','))?>">
+                                                    </span>
+                                                    <?if (core::config('image.upload_from_url')):?>
+                                                        <button type="button" class="btn btn-default fileinput-url" data-toggle="modal" data-target="#<?='urlInputimage'.$i?>"><?=_e('Image URL')?></button>
+                                                    <?endif?>
+                                                    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput"><?=_e('Delete')?></a>
+                                                </div>
                                             </div>
-                                        </div>
+                                        <?endfor?>
                                     </div>
                                 </div>
                             </div>
@@ -363,4 +374,31 @@
         </div>
     </div>
 </div>
+
+<?if (core::config("advertisement.num_images") > 0 AND core::config('image.upload_from_url')):?>
+    <?for ($i=0; $i < core::config("advertisement.num_images") ; $i++):?>
+        <div class="modal fade" id="<?='urlInputimage'.$i?>" tabindex="-1" role="dialog" aria-labelledby="<?='urlInputimage'.$i?>Label">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form class="imageURL">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="<?='urlInput'.$i?>Label"><?=_e('Insert Image')?></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label><?=_e('Image URL')?></label>
+                                <input name="<?='image'.$i?>" class="note-image-url form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary"><?=_e('Insert Image')?></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?endfor?>
+<?endif?>
+
 <?=View::factory('pages/ad/new_scripts')?>

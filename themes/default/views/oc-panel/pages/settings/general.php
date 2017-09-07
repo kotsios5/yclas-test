@@ -149,6 +149,37 @@
                             </div>
 
                             <div class="form-group">
+                                <?= FORM::label($forms['sms_auth']['id'], __("2 Step SMS Authentication"), array('class'=>'control-label', 'for'=>$forms['sms_auth']['id']))?>
+                                <a target="_blank" href="https://docs.yclas.com/2-step-sms-authentication/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <div class="radio radio-primary">
+                                    <?=Form::radio($forms['sms_auth']['key'], 1, (bool) $forms['sms_auth']['value'], array('id' => $forms['sms_auth']['id'].'1'))?>
+                                    <?=Form::label($forms['sms_auth']['id'].'1', __('Enabled'))?>
+                                    <?=Form::radio($forms['sms_auth']['key'], 0, ! (bool) $forms['sms_auth']['value'], array('id' => $forms['sms_auth']['id'].'0'))?>
+                                    <?=Form::label($forms['sms_auth']['id'].'0', __('Disabled'))?>
+                                </div>
+                                <span class="help-block">
+                                    <?=__("2 step SMS Authentication")?>
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <?= FORM::label($forms['sms_clickatell_api']['id'], __('Clickatell'), array('class'=>'control-label', 'for'=>$forms['sms_clickatell_api']['id']))?>
+                                <a target="_blank" href="https://docs.yclas.com/2-step-sms-authentication/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <?= FORM::input($forms['sms_clickatell_api']['key'], $forms['sms_clickatell_api']['value'], array(
+                                    'placeholder' => '',
+                                    'class' => 'form-control',
+                                    'id' => $forms['sms_clickatell_api']['id'],
+                                ))?>
+                                <span class="help-block">
+                                    <?=__("Clickatell SMS API Key, needed for SMS Authentication to work.")?>
+                                </span>
+                            </div>
+
+                            <div class="form-group">
                                 <?= FORM::label($forms['cookie_consent']['id'], __("Cookie consent"), array('class'=>'control-label', 'for'=>$forms['cookie_consent']['id']))?>
                                 <div class="radio radio-primary">
                                     <?=Form::radio($forms['cookie_consent']['key'], 1, (bool) $forms['cookie_consent']['value'], array('id' => $forms['cookie_consent']['id'].'1'))?>
@@ -359,6 +390,17 @@
                             <hr>
 
                             <div class="form-group">
+                                <?=FORM::label($forms['country']['id'], __('Country'), array('class'=>'control-label','for'=>$forms['country']['id']))?>
+                                <a target="_blank" href="https://docs.yclas.com/2-step-sms-authentication/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <?=Form::select($forms['country']['key'], array_merge(['' => __('None')], EUVAT::countries()), $forms['country']['value'])?>
+                                <span class="help-block">
+                                    <?=__("Set an inital country for the phone field.")?>
+                                </span>
+                            </div>
+
+                            <div class="form-group">
                                 <?=FORM::label($forms['number_format']['id'], __('Money format'), array('class'=>'control-label','for'=>$forms['number_format']['id']))?>
                                 <a target="_blank" href="https://docs.yclas.com/how-to-currency-format/">
                                     <i class="fa fa-question-circle"></i>
@@ -453,8 +495,10 @@
                                         <?=__("Once set to TRUE, if user subscription expires, the user and the ads get disabled, until renewal.")?>
                                     </span>
                                 </div>
+                            <?else:?>
+                                <?= FORM::hidden($forms['subscriptions_expire']['key'], $forms['subscriptions_expire']['value']);?>
                             <?endif?>
-                            
+
                             <hr>
                             <p>
                                 <?=FORM::button('submit', __('Save'), array('type'=>'submit', 'class'=>'btn btn-primary', 'action'=>Route::url('oc-panel',array('controller'=>'settings', 'action'=>'general'))))?>
@@ -591,6 +635,14 @@
                                     'placeholder' => "",
                                     'class' => 'form-control',
                                     'id' => $forms['pusher_notifications_secret']['id'],
+                                ))?>
+                            </div>
+                            <div class="form-group">
+                                <?=FORM::label($forms['pusher_notifications_cluster']['id'], __('Cluster'), array('class'=>'control-label', 'for'=>$forms['pusher_notifications_cluster']['id']))?>
+                                    <?= FORM::select($forms['pusher_notifications_cluster']['key'],
+                                        array('mt1'=>'us-east-1','eu'=>'eu-west-1','ap1'=>'ap-southeast-1','ap2'=>'ap-south-1','us2'=>'us-east-2'), $forms['pusher_notifications_cluster']['value'], array(
+                                    'class' => 'form-control',
+                                    'id' => $forms['pusher_notifications_cluster']['id'],
                                 ))?>
                             </div>
                             <hr>

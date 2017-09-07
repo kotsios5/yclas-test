@@ -78,6 +78,30 @@ ol, ul {
 	top: 5px;
 }
 
+.navbar-btn .btn-success {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+.navbar-btn .btn-success:hover, .navbar-btn .btn-success:active, .navbar-btn .btn-success:focus{
+    color: #fff;
+    background-color: #449d44!important;
+    border-color: #398439!important;
+}
+
+.btn-success{
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+.btn-success:hover,
+.btn-success:active,
+.btn-success:focus{
+  color: #fff;
+  background-color: #286090!important;
+  border-color: #204d74!important;
+}
+
 .featured{
 	background:#C5DBFA;
 }
@@ -292,6 +316,49 @@ img#captcha_img_publish_new {
 #user_profile_info h3{margin-top: 0}
 #user_profile_ads img{max-width: 100%}
 .fa-check-circle{color:#1da1f2;}
+
+/* Forums */
+.table > tbody > tr.success > td{
+    background-color: #f2f9fd;
+}
+.table > tbody > tr.success:hover > td {
+    background-color: #e6f3fc;
+}
+
+/* Follow us widget */
+.widget_follow a:hover{
+  text-decoration: none;
+}
+.widget_follow i{
+  margin: 2px;
+}
+.widget_follow a:hover .fa{
+    color: #ccc;
+}
+.widget_follow .fa-facebook-square{
+    color: #3a5795;
+}
+.widget_follow .fa-twitter-square{
+    color: #55acee;
+}
+.widget_follow .fa-instagram{
+    color: #b09375;
+}
+.widget_follow .fa-pinterest-square{
+    color: #cb2027;
+}
+.widget_follow .fa-google-plus-square{
+    color: #d73d32;
+}
+.widget_follow .fa-linkedin-square{
+    color: #0077b5;
+}
+.widget_follow .fa-youtube-square{
+    color: #e12b28;
+}
+.widget_follow .fa-flickr{
+    color: #ff0084;
+}
 
 /*Media screens*/
 @media only screen and (max-width : 480px) {

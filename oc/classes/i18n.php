@@ -503,6 +503,7 @@ class I18n extends Kohana_I18n {
         'XCD' => array('EC$',2,'.',',',0),          //  East Caribbean Dollar
         'EGP' => array(NULL,2,'.',',',0),          //  Egyptian Pound
         'SVC' => array(NULL,2,'.',',',0),          //  El Salvador Colon
+        'ETB' => array('ብር',2,'.',',',1),          //  Ethiopean Birr
         'EUR' => array('&euro;',2,',','.',0),          //  Euro
         'ESP' => array('&euro;',2,',','.',1),          //  Euro in spanish format
         'GHC' => array('&#8373;',2,'.',',',0),          //  Old Ghana, Cedi
@@ -560,17 +561,19 @@ class I18n extends Kohana_I18n {
         'TOP' => array(NULL,2,'.',',',0),          //  Tonga, Paanga
         'AED' => array(NULL,2,'.',',',0),          //  UAE Dirham
         'UAH' => array(NULL,2,',',' ',0),          //  Ukraine, Hryvnia
+        'UGX' => array('USh',2,'.',',',0),          //  Ugandan Shilling
         'USD' => array('$',2,'.',',',0),          //  US Dollar
         'VUV' => array(NULL,0,'',',',0),           //  Vanuatu, Vatu
         'VEF' => array(NULL,2,',','.',0),          //  Venezuela Bolivares Fuertes
         'VEB' => array(NULL,2,',','.',0),          //  Venezuela, Bolivar
         'VND' => array('&#x20ab;',0,'','.',0),           //  Viet Nam, Dong ₫
         'ZWD' => array(NULL,2,'.',' ',0),          //  Zimbabwe Dollar
-        'XPF' => array('F',0,'.',',',1),          //  Polynesian franc
+        'XPF' => array('F',0,'.',' ',1),          //  Polynesian franc
         'LKR' => array('₨',2,'.',',',0),          //  Sri Lankan Rupee
         'MAD' => array('.د.م',2,'.',',',1),          //  Moroccan Dirham
         'NGN' => array('₦',2,'.',',',0),          //  Nigerian Naira
         'DZD' => array('دج',2,'.',',',0),          //  Algerian Dinar
+        'XOF' => array('CFA',2,'.',',',1),          //  West African CFA Franc
     );
     
     /**
@@ -836,6 +839,7 @@ class I18n extends Kohana_I18n {
         'XCD' => 'East Caribbean Dollar',
         'EGP' => 'Egyptian Pound',
         'SVC' => 'El Salvador Colon',
+        'ETB' => 'Ethiopean Birr',
         'GHC' => 'Old Ghana, Cedi',
         'GHS' => 'Ghana, Cedi',
         'GIP' => 'Gibraltar Pound',
@@ -890,10 +894,12 @@ class I18n extends Kohana_I18n {
         'TOP' => 'Tonga, Paanga',
         'AED' => 'UAE Dirham',
         'UAH' => 'Ukraine, Hryvnia',
+        'UGX' => 'Ugandan Shilling',
         'VUV' => 'Vanuatu, Vatu',
         'VEF' => 'Venezuela Bolivares Fuertes',
         'VEB' => 'Venezuela, Bolivar',
         'VND' => 'Viet Nam, Dong ₫',
+        'XOF' => 'West African CFA Franc',
         'ZWD' => 'Zimbabwe Dollar',
         );
     }

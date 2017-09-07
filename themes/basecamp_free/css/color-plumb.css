@@ -19,10 +19,10 @@ a {
     background-color: #483D4E;
 }
 
-.navbar-inverse .navbar-brand {
+.navbar-inverse .navbar-brand h1 {
 	color: #FFFFFF;
 }
-.navbar-inverse .navbar-brand:focus, .navbar-inverse .navbar-brand:hover {
+.navbar-inverse .navbar-brand:focus h1, .navbar-inverse .navbar-brand:hover h1 {
     color: #E2E2E2;
 }
 .navbar-inverse .navbar-nav>li>a {
@@ -322,6 +322,11 @@ background: #92BB62;
 #users .user-block .thumb-img p.u-name {
 background: #92BB62;
     color: #fff;
+}
+
+.slider-handle{
+    background-color: #92bb62;
+    background-image: linear-gradient(to bottom, #92bb62, #9cc171);
 }
 
 .badge {

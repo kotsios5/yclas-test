@@ -140,7 +140,7 @@
                     <td class="col-md-9">
                         <em><?=_e('VAT')?> <?=number_format($order->VAT,2)?>%</em>
                     </td>
-                    <td class="col-md-2 text-center text-danger">
+                    <td class="col-md-2 text-center">
                         <?if($order->id_product == Model_Order::PRODUCT_AD_SELL):?>
                             <?=i18n::money_format($order->original_price()*$order->VAT/100, $order->currency)?>
                         <?else:?>
@@ -250,13 +250,15 @@
         <?endif?>
 
         <?else:?>
-            <ul class="list-inline text-right">
+            <ul class="list-unstyled text-right">
                 <li>
                     <a title="<?=__('Click to proceed')?>" class="btn btn-success" href="<?=Route::url('default', array('controller'=> 'ad', 'action'=>'checkoutfree','id'=>$order->id_order))?>">
                         <?=_e('Click to proceed')?>
                     </a>
                 </li>
-                <?=View::factory('coupon')?>
+                <li>
+                    <?=View::factory('coupon')?>
+                </li>
             </ul>
         <?endif?>
 

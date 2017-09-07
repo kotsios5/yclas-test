@@ -230,43 +230,15 @@ $('#location-edit button').click(function(){
 });
 
 // sceditor
-$('textarea[name=description]:not(.disable-bbcode)').sceditorBBCodePlugin({
+$('textarea[name=description]:not(.disable-bbcode)').sceditor({
+    plugins: "bbcode,plaintext",
     toolbar: "bold,italic,underline,strike,|left,center,right,justify|" +
     "bulletlist,orderedlist|link,unlink,youtube|source",
     resizeEnabled: "true",
     emoticonsEnabled: false,
+    width: '88%',
     rtl: $('meta[name="application-name"]').data('rtl'),
-    width: "88%",
     style: $('meta[name="application-name"]').data('baseurl') + "themes/default/css/jquery.sceditor.default.min.css",
-});
-
-// paste plain text in sceditor
-$(".sceditor-container iframe").contents().find("body").bind('paste', function(e) {
-    var text = ''; var that = $(this);
-
-    if (e.clipboardData)
-        text = e.clipboardData.getData('text/plain');
-    else if (window.clipboardData)
-        text = window.clipboardData.getData('Text');
-    else if (e.originalEvent.clipboardData)
-        text = $('<div></div>').text(e.originalEvent.clipboardData.getData('text'));
-
-
-    if (document.queryCommandSupported('insertText')) {
-        $(".sceditor-container iframe")[0].contentWindow.document.execCommand('insertHTML', false, $(text).html());
-        return false;
-    }
-    else { // IE > 7
-        that.find('*').each(function () {
-             $(this).addClass('within');
-        });
-
-        setTimeout(function () {
-            that.find('*').each(function () {
-                $(this).not('.within').contents().unwrap();
-            });
-        }, 1);
-    }
 });
 
 function initLocationsGMap() {
@@ -434,11 +406,59 @@ $('.fileinput').on('change.bs.fileinput', function() {
 
     //unhide next box image after selecting first
     $(this).next('.fileinput').removeClass('hidden');
+
+    //hide image url button
+    $(this).find('.fileinput-url').addClass('hidden');
 });
 
 $('.fileinput').on('clear.bs.fileinput', function() {
     var $input = $(this).find('input[name^="image"]');
     $('input[name="base64_' + $input.attr('name') + '"]').remove();
+
+    //unhide image url button
+    $(this).find('.fileinput-url').removeClass('hidden');
+});
+
+function convertFunction(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            callback(reader.result);
+        }
+        reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.onerror = function() {
+        alert("The image could not be loaded")
+    }
+    xhr.send();
+}
+
+$('.imageURL').submit(function(event) {
+    var $input = $(this).find('[name^="image"]');
+    var $fileInput = $('.fileinput [name="' + $input.attr('name') + '"]').closest('.fileinput');
+    var $fileInputPreview = $fileInput.find('.fileinput-preview');
+
+    convertFunction($input.val(), function(base64Img) {
+        $('<input>').attr({
+            type: 'hidden',
+            name: 'base64_' + $input.attr('name'),
+            value: base64Img
+            }).appendTo('#publish-new');
+        $('<img>').attr({
+            src: base64Img
+            }).appendTo($fileInputPreview);
+        $fileInput.removeClass('fileinput-new').addClass('fileinput-exists');
+        $fileInput.find('.fileinput-url').addClass('hidden');
+        $('#urlInput' + $input.attr('name')).modal('hide');
+
+        //unhide next box image after selecting first
+        $fileInput.next('.fileinput').removeClass('hidden');
+    });
+
+    event.preventDefault();
 });
 
 // VALIDATION with chosen fix
@@ -568,3 +588,11 @@ $("#price").keyup(function() {
     else
         $(this).val($(this).val().replace(/[^\d.]/g, ''));
 });
+
+
+if ($('#phone').length) {
+    $("#phone").intlTelInput({
+        formatOnDisplay: false,
+        initialCountry: $('#phone').data('country')
+    });
+}
