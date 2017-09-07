@@ -76,7 +76,7 @@ before_script:
 
 script: 
   # - set -e # don't stop on failure
-  - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default/RegisterAdminCept.php
+  - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/RegisterAdminCept.php
   - mysql -uroot openclassifieds < /var/www/yclas-test/build/install/user-admin.sql
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default/admin/UpdateDBCept.php
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default
