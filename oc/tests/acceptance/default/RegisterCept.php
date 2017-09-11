@@ -26,15 +26,6 @@ $I->click(".register button[type=submit]");
 $I->expectTo('see error message');
 $I->see('User already exists');
 
-$I->amGoingTo('register without filling Name field');
-$I->fillField('name','');
-$I->fillField(".register input[name='email']", 'user11@gmail.com');
-$I->fillField('password1','123456');
-$I->fillField('password2','123456');
-$I->click(".register button[type=submit]");
-$I->expectTo('see error message');
-$I->see('name must not be empty');
-
 $I->amGoingTo('register without filling Email field');
 $I->fillField('name','user');
 $I->fillField(".register input[name='email']", '');
