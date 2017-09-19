@@ -87,4 +87,8 @@ after_failure:
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
-  email: false
+  email:
+    recipients:
+      - constantinos@open-classifieds.com
+    on_success: never # default: change
+    on_failure: always # default: always
