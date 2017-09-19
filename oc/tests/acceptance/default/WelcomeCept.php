@@ -5,5 +5,5 @@ $I->amOnPage('/');
 $I->see('Listing');
 $I->see('Categories');
 $I->see('Login');
-$I->see('Publish Newa');
+$I->see('Publish New');
 ?>
