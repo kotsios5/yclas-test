@@ -68,7 +68,7 @@ class Model_User extends ORM {
     {
         return array(
                         'id_user'       => array(array('numeric')),
-                        'name'          => array(array('not_empty'), array('min_length', array(':value', 2)), array('max_length', array(':value', 145)), ),
+                        'name'          => array(array('not_empty'), array('min_length', array(':value', 1)), array('max_length', array(':value', 145)), ),
                         'email'         => array(
                                                     array('not_empty'),
                                                     array('email'),
@@ -244,8 +244,10 @@ class Model_User extends ORM {
             {
                 $this->update();
             }
-            catch(Exception $e)
+            catch(ORM_Validation_Exception $e)
             {
+                foreach ($e->errors('models') as $error)
+                    Kohana::$log->add(Log::ERROR, 'Error: ' . $error);
                 throw HTTP_Exception::factory(500,$e->getMessage());
             }
         }
@@ -614,7 +616,7 @@ class Model_User extends ORM {
         //get the user or create it
         try
         {
-            $user = self::create_email(core::post('email'),core::post('name'),core::post('password1'));
+            $user = self::create_email($email,$name);
         }
         catch (ORM_Validation_Exception $e)
         {
@@ -701,6 +703,22 @@ class Model_User extends ORM {
         }
 
         return $images;
+    }
+
+
+    /**
+     * Deletes image from user
+     * @return bool
+     */
+    public function delete_images()
+    {
+        if (!$this->loaded())
+            return FALSE;
+
+        for ($i=1; $i <= $this->has_image; $i++)
+            $this->delete_image($i);
+
+        return TRUE;
     }
 
     /**
@@ -989,9 +1007,6 @@ class Model_User extends ORM {
         if ( ! $this->_loaded)
             throw new Kohana_Exception('Cannot delete :model model because it is not loaded.', array(':model' => $this->_object_name));
 
-        //remove image
-        $this->delete_image();
-
         //remove ads, will remove reviews, images etc...
         $ads = new Model_Ad();
         $ads = $ads->where('id_user','=',$this->id_user)->find_all();
@@ -999,8 +1014,8 @@ class Model_User extends ORM {
         foreach ($ads as $ad)
             $ad->delete();
 
-        //bye profile pic
-        $this->delete_image();
+        //bye profile pics
+        $this->delete_images();
 
         //delete favorites
         DB::delete('favorites')->where('id_user', '=',$this->id_user)->execute();
