@@ -63,6 +63,7 @@ class Sms  {
                 if($message['accepted'] == TRUE){
                     return TRUE;
                 } else {
+                    Alert::set(Alert::ALERT, $message['error']);
                     return FALSE;
                 }
             }

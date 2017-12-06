@@ -261,7 +261,7 @@ class Controller_Panel_Settings extends Auth_Controller {
                         if ($c->config_key == 'sms_auth' AND $c->config_value == 1){
 
                             if(!empty(Kohana::$_POST_ORIG['general']['sms_clickatell_api'][0]) 
-                                AND !Kohana::$_POST_ORIG['general']['sms_clickatell_api'][0] == NULL){
+                                OR (!Kohana::$_POST_ORIG['general']['sms_clickatell_api'][0] == NULL)){
                                 
                                 $test_sms_auth = SMS::testAPIkey(Kohana::$_POST_ORIG['general']['sms_clickatell_api'][0]);
 
@@ -270,7 +270,7 @@ class Controller_Panel_Settings extends Auth_Controller {
                                     $c->config_value = 0;
                                     Alert::set(Alert::ALERT, 'Please configure <a href="//docs.yclas.com/2-step-sms-authentication/">Clickatell</a> to enable 2 Step SMS Authentication!');
                                 } else {
-                                    Alert::set(Alert::SUCCESS, '2 Step SMS Authentication activated1'.Kohana::$_POST_ORIG['general']['sms_clickatell_api'][0]);
+                                    Alert::set(Alert::SUCCESS, '2 Step SMS Authentication activated');
                                 }
                             } else {
                                 $c->config_value = 0;
