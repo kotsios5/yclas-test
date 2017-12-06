@@ -497,21 +497,40 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <?=FORM::label($forms['upload_file']['key'], __('Upload file'), array('class'=>'control-label', 'for'=>$forms['upload_file']['key']))?>
-                                <div class="radio radio-primary">
-                                    <?=Form::radio($forms['upload_file']['key'], 1, (bool) $forms['upload_file']['value'], array('id' => $forms['upload_file']['key'].'1'))?>
-                                    <?=Form::label($forms['upload_file']['key'].'1', __('Enabled'))?>
-                                    <?=Form::radio($forms['upload_file']['key'], 0, ! (bool) $forms['upload_file']['value'], array('id' => $forms['upload_file']['key'].'0'))?>
-                                    <?=Form::label($forms['upload_file']['key'].'0', __('Disabled'))?>
+                            
+                        <?if (!Core::config('general.messaging')) :?>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <?=FORM::label($forms['upload_file']['key'], __('Upload file'), array('class'=>'control-label', 'for'=>$forms['upload_file']['key']))?>
+                                    <div class="radio radio-primary">
+                                        <?=Form::radio($forms['upload_file']['key'], 1, (bool) $forms['upload_file']['value'], array('id' => $forms['upload_file']['key'].'1'))?>
+                                        <?=Form::label($forms['upload_file']['key'].'1', __('Enabled'))?>
+                                        <?=Form::radio($forms['upload_file']['key'], 0, ! (bool) $forms['upload_file']['value'], array('id' => $forms['upload_file']['key'].'0'))?>
+                                        <?=Form::label($forms['upload_file']['key'].'0', __('Disabled'))?>
+                                    </div>
+                                    <span class="help-block">
+                                        <?=__("Allows buyer to upload a file in the Ad contact form.")?>
+                                    </span>
                                 </div>
-                                <span class="help-block">
-                                    <?=__("Allows buyer to upload a file in the Ad contact form.")?>
-                                </span>
                             </div>
-                        </div>
+                        <?else:?>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <?=FORM::label($forms['upload_file']['key'], __('Upload file'), array('class'=>'control-label', 'for'=>$forms['upload_file']['key']))?>
+                                    <div class="radio radio-primary">
+                                        <?=Form::radio($forms['upload_file']['key'], 1, FALSE, array('id' => $forms['upload_file']['key'].'1', 'disabled'))?>
+                                        <?=Form::label($forms['upload_file']['key'].'1', __('Enabled'))?>
+                                        <?=Form::radio($forms['upload_file']['key'], 0, TRUE, array('id' => $forms['upload_file']['key'].'0', 'disabled'))?>
+                                        <?=Form::label($forms['upload_file']['key'].'0', __('Disabled'))?>
+                                    </div>
+                                    <span class="help-block">
+                                        <?=__("Disable the Messaging System to be able to use this feature.")?>
+                                    </span>
+                                </div>
+                            </div>
+                        <?endif?>
                     </div>
+                    
                     <hr>
                     <p>
                         <?=FORM::button('submit', __('Save'), array('type'=>'submit', 'class'=>'btn btn-primary', 'action'=>Route::url('oc-panel',array('controller'=>'settings', 'action'=>'form'))))?>
@@ -595,7 +614,7 @@
                         </div>
 
                         <div class="form-group">
-                            <?=FORM::label($forms['map']['key'], __('Google Maps in Ad'), array('class'=>'control-label', 'for'=>$forms['map']['key']))?>
+                            <?=FORM::label($forms['map']['key'], __('Google Maps in Ad and Profile page'), array('class'=>'control-label', 'for'=>$forms['map']['key']))?>
                             <div class="radio radio-primary">
                                 <?=Form::radio($forms['map']['key'], 1, (bool) $forms['map']['value'], array('id' => $forms['map']['key'].'1'))?>
                                 <?=Form::label($forms['map']['key'].'1', __('Enabled'))?>

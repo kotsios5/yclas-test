@@ -32,7 +32,7 @@ $(function(){
         animation : 'popFade'
     });
 
-    $('#contact-notification').click(function(event) {
+    $('a#contact-notification').click(function(event) {
         $.get($(this).data('url'));
         $(document).mouseup(function (e)
         {
@@ -51,7 +51,7 @@ $(function(){
     });
 
     //intial value
-    favicon.badge($('#contact-notification span').text());
+    favicon.badge($('#contact-notification span').first().text());
 });
 
 //validate auth pages
@@ -477,7 +477,26 @@ $(function(){
                 change: true,
                 target: '.price-curry',
                 base: savedCurrency == undefined ? siteCurrency : savedCurrency,
-                symbols: {}
+                symbols: {
+                  // 'USD': '&#36;',
+                  // 'AUD': '&#36;',
+                  // 'CAD': '&#36;',
+                  // 'MXN': '&#36;',
+                  // 'BRL': '&#36;',
+                  // 'GBP': '&pound;',
+                  // 'EUR': '&euro;',
+                  // 'JPY': '&yen;',
+                  // 'INR': '&#8377;',
+                  // 'BDT': '&#2547;',
+                  // 'PHP': '&#8369;',
+                  // 'VND': '&#8363;',
+                  // 'CNY': '&#165;',
+                  // 'UAH': '&#8372;',
+                  // 'HKD': '&#36;',
+                  // 'SGD': '&#36;',
+                  // 'TWD': '&#36;',
+                  // 'THB': '&#3647;'
+            }
             }).change(function(){
                 var selected = $(this).find(':selected'), // get selected currency
                 currency = selected.val(); // get currency name
@@ -490,15 +509,33 @@ $(function(){
 });
 
 function getRate(from, to) {
-    var script = document.createElement('script');
-    script.setAttribute('src', "https://query.yahooapis.com/v1/public/yql?q=select%20rate%2Cname%20from%20csv%20where%20url%3D'http%3A%2F%2Fdownload.finance.yahoo.com%2Fd%2Fquotes%3Fs%3D"+from+to+"%253DX%26f%3Dl1n'%20and%20columns%3D'rate%2Cname'&format=json&callback=parseExchangeRate");
-    document.body.appendChild(script);
-}
+    
+    var jqxhr = $.ajax({
+      url: 'https://api.fixer.io/latest',
+      dataType: 'jsonp',
+      data: {
+        symbols: to,
+        base: from
+      }
+    });
 
-function parseExchangeRate(data) {
-    var name = data.query.results.row.name;
-    var rate = parseFloat(data.query.results.row.rate, 10);
-    setCookie('site_rate', rate, { expires: 7, path: '' });
+	if(getSiteCurrency() == to){
+    	rate = 1;
+    	setCookie('site_rate', rate, { expires: 7, path: '' });
+	}
+
+    jqxhr.done(function(data) {
+
+        var initrates = data.rates;
+
+        for ( var currency in initrates ) {
+
+            rate = initrates[currency];
+
+           	setCookie('site_rate', rate, { expires: 7, path: '' });
+        }
+
+    });
 }
 
 function setCookie(c_name,value,exdays)

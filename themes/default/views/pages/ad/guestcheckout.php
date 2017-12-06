@@ -34,7 +34,7 @@
                     <tr>
                         <td class="col-md-1" style="text-align: center"><?=$ad->id_ad?></td>
                         <td class="col-md-9"><?=$ad->title?> <em>(<?=Model_Order::product_desc(Model_Order::PRODUCT_AD_SELL)?>)</em></td>
-                        <td class="col-md-2 text-center"><?=i18n::money_format($ad->price, core::config('payment.paypal_currency'))?></td>
+                        <td class="col-md-2 text-center"><?=i18n::money_format($ad->price, $ad->currency())?></td>
                     </tr>
                     <tr>
                         <td class="col-md-1" style="text-align: center"></td>
@@ -59,9 +59,9 @@
                         </td>
                         <td class="col-md-2 text-center">
                             <?if ($ad->shipping_pickup() AND core::get('shipping_pickup')):?>
-                                <?=i18n::money_format(0, core::config('payment.paypal_currency'))?>
+                                <?=i18n::money_format(0, $ad->currency())?>
                             <?else:?>
-                                <?=i18n::money_format($ad->shipping_price(), core::config('payment.paypal_currency'))?>    
+                                <?=i18n::money_format($ad->shipping_price(), $ad->currency())?>
                             <?endif?>
                         </td>
                     </tr>
@@ -70,7 +70,7 @@
                         <td class="col-md-1" style="text-align: center"><?=$ad->id_ad?></td>
                         <td class="col-md-9"><?=$ad->title?> <em>(<?=Model_Order::product_desc(Model_Order::PRODUCT_AD_SELL)?>)</em></td>
                         <td class="col-md-2 text-center">
-                        <?=i18n::format_currency($ad->price, core::config('payment.paypal_currency'))?>
+                        <?=i18n::money_format($ad->price, $ad->currency())?>
                         </td>
                     </tr>
                 <?endif?>
@@ -78,11 +78,11 @@
                     <td>   </td>
                     <td class="text-right"><h4><strong><?=_e('Total')?>: </strong></h4></td>
                     <?if($ad->shipping_price() AND $ad->shipping_pickup() AND core::get('shipping_pickup')):?>
-                        <td class="text-center text-danger"><h4><strong><?=i18n::money_format($ad->price, core::config('payment.paypal_currency'))?></stronge></h4></td>
+                        <td class="text-center text-danger"><h4><strong><?=i18n::money_format($ad->price, $ad->currency())?></stronge></h4></td>
                     <?elseif($ad->shipping_price()):?>
-                        <td class="text-center text-danger"><h4><strong><?=i18n::money_format($ad->price + $ad->shipping_price(), core::config('payment.paypal_currency'))?></strong></h4></td>
+                        <td class="text-center text-danger"><h4><strong><?=i18n::money_format($ad->price + $ad->shipping_price(), $ad->currency())?></strong></h4></td>
                     <?else:?>
-                        <td class="text-center text-danger"><h4><strong><?=i18n::money_format($ad->price, core::config('payment.paypal_currency'))?></strong></h4></td>
+                        <td class="text-center text-danger"><h4><strong><?=i18n::money_format($ad->price, $ad->currency())?></strong></h4></td>
                     <?endif?>
                 </tr>
             </tbody>
@@ -91,7 +91,7 @@
         <?if ($ad->price>0):?>
 
             <?=StripeKO::button_guest_connect($ad)?>
-            
+
             <?if (Core::config('payment.paypal_account')!=''):?>
                 <p class="text-right">
                     <a class="btn btn-success btn-lg" href="<?=Route::url('default', array('controller'=> 'paypal','action'=>'guestpay' , 'id' => $ad->id_ad))?><?=core::get('shipping_pickup') ? '?shipping_pickup=1' : NULL?>">
@@ -103,9 +103,19 @@
         <?else:?>
             <ul class="list-inline text-right">
                 <li>
-                    <a title="<?=__('Click to proceed')?>" class="btn btn-success" href="<?=Route::url('default', array('controller'=> 'ad', 'action'=>'checkoutfree','id'=>$order->id_order))?>">
-                        <?=_e('Click to proceed')?>
-                    </a>
+                    <form method="post" action="<?=Route::url('default', array('controller'=> 'ad', 'action'=>'checkoutfree','id'=>$ad->id_ad))?>" class="form-inline">
+                        <div class="form-group">
+                            <label class="control-label"><?=_e('Email')?></label>
+                            <input
+                                class="form-control"
+                                type="text"
+                                name="email"
+                                value="<?=Request::current()->post('email')?>"
+                                placeholder="<?=__('Email')?>"
+                            >
+                        </div>
+                        <button type="submit" class="btn btn-primary"><?=_e('Click to proceed')?></button>
+                    </form>
                 </li>
             </ul>
         <?endif?>
@@ -123,7 +133,7 @@
             e.src = ('https:' === document.location.protocol ? 'https://' : 'http://') + 'cdn.fraudlabspro.com/s.js';
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(e, s);
-        }             
+        }
         (window.attachEvent) ? window.attachEvent('onload', s) : window.addEventListener('load', s, false);
     })();
 </script>

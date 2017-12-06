@@ -119,16 +119,40 @@ class Controller_Panel_Profile extends Auth_Frontcontroller {
 
 	public function action_edit()
 	{
-        $this->template->styles = ['css/jasny-bootstrap.min.css' => 'screen'];
-        $this->template->scripts['footer'] = ['js/jasny-bootstrap.min.js', 'js/canvasResize.js', 'js/load-image.all.min.js', 'js/oc-panel/edit_profile.js'];
+        $this->template->styles = ['css/jasny-bootstrap.min.css' => 'screen', '//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/css/selectize.bootstrap3.min.css' => 'screen'];
+        $this->template->scripts['footer'] = ['js/jasny-bootstrap.min.js', 'js/canvasResize.js', 'js/load-image.all.min.js', 'js/oc-panel/edit_profile.js','//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/js/standalone/selectize.min.js'];
 
 		Breadcrumbs::add(Breadcrumb::factory()->set_title(__('Edit profile')));
 		// $this->template->title = $user->name;
 		//$this->template->meta_description = $user->name;//@todo phpseo
 		$user = Auth::instance()->get_user();
 
+        //get locations
+        $locations = new Model_Location;
+        $locations = $locations->where('id_location', '!=', '1');
+
+        $id_location = ($user->id_location)?$user->id_location:null;
+        $selected_location = new Model_Location();
+
+        // if user set his location already
+        if ($id_location!==NULL)
+        {
+            if (is_numeric($id_location))
+                $selected_location->where('id_location','=',$id_location)->limit(1)->find();
+            else
+                $selected_location->where('seoname','=',$id_location)->limit(1)->find();
+
+            if ($selected_location->loaded())
+                $id_location = $selected_location->id_location;
+        }
+
 		$this->template->bind('content', $content);
-		$this->template->content = View::factory('oc-panel/profile/edit',array('user'=>$user,'custom_fields'=>Model_UserField::get_all()));
+		$this->template->content = View::factory('oc-panel/profile/edit',array(
+                            'user'=>$user,
+                            'custom_fields'=>Model_UserField::get_all(),
+                            'id_location'=>$id_location,
+                            'selected_location'=>$selected_location
+                            ));
 
 		if($this->request->post())
 		{
@@ -143,6 +167,26 @@ class Controller_Panel_Profile extends Auth_Frontcontroller {
 			$user->email = core::post('email');
 			$user->subscriber = core::post('subscriber',0);
             $user->phone = core::post('phone');
+            $user->id_location = core::post('location');
+            $user->address = core::post('address');
+
+            if(Core::config('advertisement.map') AND $user->address)
+            {
+
+                $url = 'http://maps.google.com/maps/api/geocode/json?sensor=false&address='.urlencode($user->address);
+                
+                //get contents from google
+                if($result = core::curl_get_contents($url))
+                {
+                    $result = json_decode($result);
+
+                    if($result AND $result->status=="OK") {
+                        $user->latitude  = $result->results[0]->geometry->location->lat;
+                        $user->longitude = $result->results[0]->geometry->location->lng;
+                    }
+                }
+
+            }
 
 			//$user->seoname = $user->gen_seo_title(core::post('name'));
             $user->last_modified = Date::unix2mysql();

@@ -53,12 +53,47 @@
                                     <?=FORM::label('phone', _e('Phone'), array('class'=>'col-xs-4 control-label', 'for'=>'phone'))?>
                                 <?endif?>
                                 <div class="col-sm-8">
-                                    <?= FORM::input('phone', $user->phone, array('class'=>'form-control', 'id'=>'phone', 'type'=>'phone' ,'required', 'placeholder'=>__('Phone'), 'data-country' => core::config('general.country')))?>
                                     <?if (core::config('general.sms_auth')==TRUE):?>
+                                        <?= FORM::input('phone', $user->phone, array('class'=>'form-control', 'id'=>'phone', 'type'=>'phone' ,'required', 'placeholder'=>__('Phone'), 'data-country' => core::config('general.country')))?>
                                         <span class="help-block"><?=_e('Used for SMS authentication.')?></span>
+                                    <?else:?>
+                                        <?= FORM::input('phone', $user->phone, array('class'=>'form-control', 'id'=>'phone', 'type'=>'phone', 'placeholder'=>__('Phone')))?>
                                     <?endif?>
                                 </div>
                             </div>
+                            
+                            <!-- location select -->
+                            <?if(core::config('advertisement.location')):?>
+                                <div class="form-group">
+                                    <?= FORM::label('locations', _e('Location'), array('for'=>'location', 'class'=>'col-xs-4 control-label'))?>
+                                    <div id="location-chained" class="col-sm-8 <?=($id_location === NULL) ? NULL : 'hidden'?>" data-apiurl="<?=Route::url('api', array('version'=>'v1', 'format'=>'json', 'controller'=>'locations'))?>">
+                                        <div id="select-location-template" class="hidden">
+                                            <select class="disable-select2 select-location" placeholder="<?=__('Pick a location...')?>"></select>
+                                        </div>
+                                    </div>
+                                    <?if($id_location !== NULL):?>
+                                        <div id="location-edit">
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    <input class="form-control" type="text" placeholder="<?=$selected_location->name?>" disabled>
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-default" type="button"><?=_e('Select another')?></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?endif?>
+                                    <input id="location-selected" name="location" value="<?=$id_location?>" class="form-control invisible" style="height: 0; padding:0; width:1px; border:0;" required></input>
+                                </div>
+                            <?endif?>
+
+                            <div class="form-group">
+                                <?= FORM::label('address', _e('Address'), array('class'=>'col-xs-4 control-label', 'for'=>'address'))?>
+                                <div class="col-sm-8">
+                                    <?= FORM::input('address', $user->address, array('class'=>'form-control', 'id'=>'address', 'required', 'placeholder'=>__('Address')))?>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <?= FORM::label('description', _e('Description'), array('class'=>'col-xs-4 control-label', 'for'=>'description'))?>
                                 <div class="col-sm-8">

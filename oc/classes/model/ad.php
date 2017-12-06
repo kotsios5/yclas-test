@@ -865,7 +865,7 @@ class Model_Ad extends ORM {
     * @param  boolean $show_listing only those fields that needs to be displayed on the list of ads show_listing===TRUE
     * @return array else false
     */
-    public function custom_columns($show_listing = FALSE)
+    public function custom_columns($show_listing = FALSE, $edit_ad = FALSE)
     {
         if($this->loaded())
         {
@@ -903,7 +903,7 @@ class Model_Ad extends ORM {
                             $display = TRUE;
                     }
 
-                    if (in_array($cf_column_name, Model_Field::fields_to_hide()))
+                    if (in_array($cf_column_name, Model_Field::fields_to_hide()) AND $edit_ad == FALSE )
                         $display = FALSE;
 
                     if(isset($cf_value) AND $display )
@@ -925,6 +925,10 @@ class Model_Ad extends ORM {
                             case 'file_dropbox':
                             case 'file_gpicker':
                                 $cf_value = '<a'.HTML::attributes(['class' => 'btn btn-success', 'href' => $cf_value]).'>'.__('Download').'</a>';
+                                break;
+                            case 'url':
+                                if ($edit_ad == FALSE)
+                                    $cf_value = '<a'.HTML::attributes(['href' => $cf_value, 'title' => $cf_config->$cf_name->tooltip, 'data-toggle' => 'tooltip', 'target' => '_blank']).'>'.$cf_config->$cf_name->label.'</a>';
                                 break;
                         }
 
@@ -949,7 +953,12 @@ class Model_Ad extends ORM {
             foreach ($cf_config as $name => $value)
             {
                 if(isset($active_custom_fields[$name]))
-                    $ad_custom_vals[$value->label] = $active_custom_fields[$name];
+                {
+                    if ($edit_ad == TRUE OR $value->type != 'url')
+                        $ad_custom_vals[$value->label] = $active_custom_fields[$name];
+                    else
+                        $ad_custom_vals[] = $active_custom_fields[$name];
+                }
             }
 
 
@@ -1670,6 +1679,24 @@ class Model_Ad extends ORM {
         }
 
         return FALSE;
+    }
+
+    /**
+     * returns the currency of the ad (GBP, USD, EUR)
+     * @return string
+     */
+    public function currency()
+    {
+        if ($this->loaded())
+        {
+            if(isset($this->cf_currency) AND $this->cf_currency != '')
+                return $this->cf_currency;
+        }
+
+        if(core::config('general.number_format') == '%n')
+            return core::config('payment.paypal_currency');
+        else
+            return core::config('general.number_format');
     }
 
 } // END Model_ad

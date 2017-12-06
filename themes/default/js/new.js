@@ -236,10 +236,13 @@ $('textarea[name=description]:not(.disable-bbcode)').sceditor({
     "bulletlist,orderedlist|link,unlink,youtube|source",
     resizeEnabled: "true",
     emoticonsEnabled: false,
-    width: '88%',
+    autoUpdate: true,
+    width: '100%',
     rtl: $('meta[name="application-name"]').data('rtl'),
     style: $('meta[name="application-name"]').data('baseurl') + "themes/default/css/jquery.sceditor.default.min.css",
 });
+
+$('textarea[name=description]').prop('required',true);
 
 function initLocationsGMap() {
     jQuery.ajax({
@@ -286,6 +289,21 @@ function locationsGMap() {
                             lat: latlng.lat(),
                             lng: latlng.lng(),
                             draggable: true,
+                            dragend: function(event) {
+                                var lat = event.latLng.lat();
+                                var lng = event.latLng.lng();
+                                GMaps.geocode({
+                                    lat: lat,
+                                    lng: lng,
+                                    callback: function(results, status) {
+                                        if (status == 'OK') {
+                                            $("input[name='address']").val(results[0].formatted_address)
+                                        }
+                                    }
+                                });
+                                $('#publish-latitude').val(lat).removeAttr("disabled");
+                                $('#publish-longitude').val(lng).removeAttr("disabled");
+                            },
                         });
                         $('#publish-latitude').val(latlng.lat()).removeAttr("disabled");
                         $('#publish-longitude').val(latlng.lng()).removeAttr("disabled");
