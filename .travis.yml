@@ -56,7 +56,6 @@ before_script:
   - sudo chown -R www-data:www-data /var/www/*
   - sudo chmod -R 755 /var/www/*
 
-  - sudo chmod 777 /var/www/yclas-test/oc/config/database.php
   - sudo chmod -R 777 /var/www/yclas-test/oc/tests # permissions for codeception output, it doesnt work without this.
 
   # install
@@ -74,6 +73,7 @@ before_script:
   - if [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then sudo wget http://codeception.com/codecept.phar; fi
   - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then sudo wget http://codeception.com/codecept.phar; fi
   - sudo chmod -R 755 codecept.phar
+  - sudo chmod 777 /var/www/yclas-test/oc/config/database.php
 
 script: 
   # - set -e # don't stop on failure
