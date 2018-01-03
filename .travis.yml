@@ -73,7 +73,7 @@ before_script:
   - if [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then sudo wget http://codeception.com/codecept.phar; fi
   - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then sudo wget http://codeception.com/codecept.phar; fi
   - sudo chmod -R 755 codecept.phar
-  - sudo chmod 777 /var/www/yclas-test/oc/config/database.php
+  - sudo chmod 775 /var/www/yclas-test/oc/config/database.php
 
 script: 
   # - set -e # don't stop on failure
