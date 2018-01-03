@@ -15,16 +15,16 @@ class Controller_Panel_Profile extends Auth_Frontcontroller {
 
 
 	public function action_changepass()
-	{
+    {
 
         $this->template->styles = ['//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/css/selectize.bootstrap3.min.css' => 'screen'];
         $this->template->scripts['footer'] = ['js/oc-panel/edit_profile.js','//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/js/standalone/selectize.min.js'];
 
-		Breadcrumbs::add(Breadcrumb::factory()->set_title(__('Change password')));
+        Breadcrumbs::add(Breadcrumb::factory()->set_title(__('Change password')));
 
-		$this->template->title   = __('Change password');
+        $this->template->title   = __('Change password');
 
-		$user = Auth::instance()->get_user();
+        $user = Auth::instance()->get_user();
 
         $id_location = ($user->id_location!==null)?$user->id_location:null;
         $selected_location = new Model_Location();
@@ -41,55 +41,55 @@ class Controller_Panel_Profile extends Auth_Frontcontroller {
                 $id_location = $selected_location->id_location;
         }
 
-		$this->template->bind('content', $content);
-		$this->template->content = View::factory('oc-panel/profile/edit',array(
+        $this->template->bind('content', $content);
+        $this->template->content = View::factory('oc-panel/profile/edit',array(
                                                     'user'=>$user,
                                                     'custom_fields'=>Model_UserField::get_all(),                            
                                                     'id_location'=>$user->id_location,
                                                     'selected_location'=>$selected_location));
-		$this->template->content->msg ='';
+        $this->template->content->msg ='';
 
-		if ($this->request->post())
-		{
-			$user = Auth::instance()->get_user();
+        if ($this->request->post())
+        {
+            $user = Auth::instance()->get_user();
 
-			if (core::post('password1')==core::post('password2'))
-			{
-				$new_pass = core::post('password1');
-				if(!empty($new_pass)){
+            if (core::post('password1')==core::post('password2'))
+            {
+                $new_pass = core::post('password1');
+                if(!empty($new_pass)){
 
-					$user->password = core::post('password1');
+                    $user->password = core::post('password1');
                     $user->last_modified = Date::unix2mysql();
 
-					try
-					{
-						$user->save();
-					}
-					catch (ORM_Validation_Exception $e)
-					{
-						throw HTTP_Exception::factory(500,$e->errors(''));
-					}
-					catch (Exception $e)
-					{
-						throw HTTP_Exception::factory(500,$e->getMessage());
-					}
+                    try
+                    {
+                        $user->save();
+                    }
+                    catch (ORM_Validation_Exception $e)
+                    {
+                        throw HTTP_Exception::factory(500,$e->errors(''));
+                    }
+                    catch (Exception $e)
+                    {
+                        throw HTTP_Exception::factory(500,$e->getMessage());
+                    }
 
-					Alert::set(Alert::SUCCESS, __('Password is changed'));
-				}
-				else
-				{
-					Form::set_errors(array(__('Nothing is provided')));
-				}
-			}
-			else
-			{
-				Form::set_errors(array(__('Passwords do not match')));
-			}
+                    Alert::set(Alert::SUCCESS, __('Password is changed'));
+                }
+                else
+                {
+                    Form::set_errors(array(__('Nothing is provided')));
+                }
+            }
+            else
+            {
+                Form::set_errors(array(__('Passwords do not match')));
+            }
 
-		}
+        }
 
 
-	}
+    }
 
 	public function action_image()
 	{
@@ -141,20 +141,20 @@ class Controller_Panel_Profile extends Auth_Frontcontroller {
 	}
 
 	public function action_edit()
-	{
+    {
         $this->template->styles = ['css/jasny-bootstrap.min.css' => 'screen', '//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/css/selectize.bootstrap3.min.css' => 'screen'];
         $this->template->scripts['footer'] = ['js/jasny-bootstrap.min.js', 'js/canvasResize.js', 'js/load-image.all.min.js', 'js/oc-panel/edit_profile.js','//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/js/standalone/selectize.min.js'];
 
-		Breadcrumbs::add(Breadcrumb::factory()->set_title(__('Edit profile')));
-		// $this->template->title = $user->name;
-		//$this->template->meta_description = $user->name;//@todo phpseo
-		$user = Auth::instance()->get_user();
+        Breadcrumbs::add(Breadcrumb::factory()->set_title(__('Edit profile')));
+        // $this->template->title = $user->name;
+        //$this->template->meta_description = $user->name;//@todo phpseo
+        $user = Auth::instance()->get_user();
 
         //get locations
         $locations = new Model_Location;
         $locations = $locations->where('id_location', '!=', '1');
 
-        $id_location = ($user->id_location)?$user->id_location:null;
+        $id_location = ($user->id_location!==null)?$user->id_location:null;
         $selected_location = new Model_Location();
 
         // if user set his location already
@@ -169,31 +169,31 @@ class Controller_Panel_Profile extends Auth_Frontcontroller {
                 $id_location = $selected_location->id_location;
         }
 
-		$this->template->bind('content', $content);
-		$this->template->content = View::factory('oc-panel/profile/edit',array(
+        $this->template->bind('content', $content);
+        $this->template->content = View::factory('oc-panel/profile/edit',array(
                             'user'=>$user,
                             'custom_fields'=>Model_UserField::get_all(),
                             'id_location'=>$id_location,
                             'selected_location'=>$selected_location
                             ));
 
-		if($this->request->post())
-		{
-			//change elastic email status, he was subscribed but not anymore
+        if($this->request->post())
+        {
+            //change elastic email status, he was subscribed but not anymore
             if ( Core::config('email.elastic_listname')!=''  AND $user->subscriber == 1 AND core::post('subscriber',0) == 0 )
                 ElasticEmail::unsubscribe(Core::config('email.elastic_listname'),$user->email);
             elseif ( Core::config('email.elastic_listname')!=''  AND $user->subscriber == 0 AND core::post('subscriber',0) == 1 )
                 ElasticEmail::subscribe(Core::config('email.elastic_listname'),$user->email,$user->name);
 
-			$user->name = core::post('name');
+            $user->name = core::post('name');
             $user->description = core::post('description');
-			$user->email = core::post('email');
-			$user->subscriber = core::post('subscriber',0);
+            $user->email = core::post('email');
+            $user->subscriber = core::post('subscriber',0);
             $user->phone = core::post('phone');
             $user->id_location = core::post('location');
             $user->address = core::post('address');
 
-            if(Core::config('advertisement.map') AND $user->address)
+            if($user->address)
             {
 
                 $url = 'http://maps.google.com/maps/api/geocode/json?sensor=false&address='.urlencode($user->address);
@@ -211,7 +211,7 @@ class Controller_Panel_Profile extends Auth_Frontcontroller {
 
             }
 
-			//$user->seoname = $user->gen_seo_title(core::post('name'));
+            //$user->seoname = $user->gen_seo_title(core::post('name'));
             $user->last_modified = Date::unix2mysql();
 
             //modify custom fields
@@ -225,7 +225,7 @@ class Controller_Panel_Profile extends Auth_Frontcontroller {
 
             if(core::post('cf_vatnumber') AND core::post('cf_vatcountry'))
             {
-                if (!euvat::verify_vies(core::post('cf_vatnumber'),core::post('cf_vatcountry')))
+                if (!euvat::verify_vies(core::post('cf_vatnumber'),core::post('cf_vatcountry')) AND euvat::is_eu_country(core::post('cf_vatcountry')))
                 {
                     Alert::set(Alert::ERROR, __('Invalid EU Vat Number, please verify number and country match'));
                     $this->redirect(Route::url('oc-panel', array('controller'=>'profile','action'=>'edit')));
@@ -244,8 +244,8 @@ class Controller_Panel_Profile extends Auth_Frontcontroller {
             }
 
             $this->redirect(Route::url('oc-panel', array('controller'=>'profile','action'=>'edit')));
-		}
-	}
+        }
+    }
 
     public function action_orders()
     {

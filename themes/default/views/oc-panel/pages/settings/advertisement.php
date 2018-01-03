@@ -497,7 +497,7 @@
                                 </span>
                             </div>
                         </div>
-                            
+
                         <?if (!Core::config('general.messaging')) :?>
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -530,7 +530,6 @@
                             </div>
                         <?endif?>
                     </div>
-                    
                     <hr>
                     <p>
                         <?=FORM::button('submit', __('Save'), array('type'=>'submit', 'class'=>'btn btn-primary', 'action'=>Route::url('oc-panel',array('controller'=>'settings', 'action'=>'form'))))?>

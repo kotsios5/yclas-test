@@ -32,7 +32,7 @@ $(function(){
         animation : 'popFade'
     });
 
-    $('a#contact-notification').click(function(event) {
+    $('#contact-notification').click(function(event) {
         $.get($(this).data('url'));
         $(document).mouseup(function (e)
         {
@@ -477,26 +477,7 @@ $(function(){
                 change: true,
                 target: '.price-curry',
                 base: savedCurrency == undefined ? siteCurrency : savedCurrency,
-                symbols: {
-                  // 'USD': '&#36;',
-                  // 'AUD': '&#36;',
-                  // 'CAD': '&#36;',
-                  // 'MXN': '&#36;',
-                  // 'BRL': '&#36;',
-                  // 'GBP': '&pound;',
-                  // 'EUR': '&euro;',
-                  // 'JPY': '&yen;',
-                  // 'INR': '&#8377;',
-                  // 'BDT': '&#2547;',
-                  // 'PHP': '&#8369;',
-                  // 'VND': '&#8363;',
-                  // 'CNY': '&#165;',
-                  // 'UAH': '&#8372;',
-                  // 'HKD': '&#36;',
-                  // 'SGD': '&#36;',
-                  // 'TWD': '&#36;',
-                  // 'THB': '&#3647;'
-            }
+                symbols: {}
             }).change(function(){
                 var selected = $(this).find(':selected'), // get selected currency
                 currency = selected.val(); // get currency name
@@ -519,10 +500,10 @@ function getRate(from, to) {
       }
     });
 
-	if(getSiteCurrency() == to){
-    	rate = 1;
-    	setCookie('site_rate', rate, { expires: 7, path: '' });
-	}
+    if(getSiteCurrency() == to){
+        rate = 1;
+        setCookie('site_rate', rate, { expires: 7, path: '' });
+    }
 
     jqxhr.done(function(data) {
 
@@ -532,7 +513,7 @@ function getRate(from, to) {
 
             rate = initrates[currency];
 
-           	setCookie('site_rate', rate, { expires: 7, path: '' });
+            setCookie('site_rate', rate, { expires: 7, path: '' });
         }
 
     });

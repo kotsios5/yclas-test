@@ -4,7 +4,7 @@ $(function(){
             toolbar: "bold,italic,underline,strike|left,center,right,justify|" +
             "bulletlist,orderedlist|link,unlink,image,youtube|source",
             resizeEnabled: "true",
-            width: '100%',
+            width: '88%',
             emoticonsEnabled: false,
             emoticonsCompat: "false",
             rtl: $('meta[name="application-name"]').data('rtl'),

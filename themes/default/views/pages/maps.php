@@ -51,7 +51,7 @@
           <?endif?>
         }];
       <?endif?>
-
+    
       $(function() {
           new Maplace({
               locations: locations,

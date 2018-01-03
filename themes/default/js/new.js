@@ -236,7 +236,6 @@ $('textarea[name=description]:not(.disable-bbcode)').sceditor({
     "bulletlist,orderedlist|link,unlink,youtube|source",
     resizeEnabled: "true",
     emoticonsEnabled: false,
-    autoUpdate: true,
     width: '100%',
     rtl: $('meta[name="application-name"]').data('rtl'),
     style: $('meta[name="application-name"]').data('baseurl') + "themes/default/css/jquery.sceditor.default.min.css",
@@ -519,7 +518,7 @@ $(function(){
     };
     $params['rules'][$integer] = {regex: "^[0-9]{1,18}([,.]{1}[0-9]{1,3})?$"};
     $params['rules'][$decimal] = {regex: "^[0-9]{1,18}([,.]{1}[0-9]{1,3})?$"};
-    $params['rules']['price'] = {regex: "^[0-9]{1,18}([,.]{1}[0-9]{1,3})?$"};
+    $params['rules']['price'] = {regex: "^[0-9]{1,18}([,.]{1}[0-9]{1,8})?$"};
     $params['rules']['title'] = {maxlength: 145};
     $params['rules']['address'] = {maxlength: 145};
     $params['rules']['phone'] = {maxlength: 30};
