@@ -64,6 +64,10 @@ mysqli_query($link,"CREATE TABLE IF NOT EXISTS  `".core::request('TABLE_PREFIX')
   `stripe_user_id` varchar(140) DEFAULT NULL,
   `stripe_agreement` varchar(40) DEFAULT NULL,
   `google_authenticator` varchar(40) DEFAULT NULL,
+  `phone` varchar(30) DEFAULT NULL,
+  `latitude` float(10,6) DEFAULT NULL,
+  `longitute` float(10,6) DEFAULT NULL,
+  `address` varchar(145) DEFAULT NULL,
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `".core::request('TABLE_PREFIX')."users_UK_email` (`email`),
   UNIQUE KEY `".core::request('TABLE_PREFIX')."users_UK_token` (`token`),
@@ -82,7 +86,7 @@ mysqli_query($link,"CREATE TABLE IF NOT EXISTS  `".core::request('TABLE_PREFIX')
   `parent_deep` int(2) unsigned NOT NULL DEFAULT '0',
   `seoname` varchar(145) NOT NULL,
   `description` text NULL DEFAULT NULL,
-  `price` decimal(10,2) NOT NULL DEFAULT '0',
+  `price` decimal(28,8) NOT NULL DEFAULT '0',
   `last_modified` DATETIME  NULL,
   `has_image` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_category`) USING BTREE,
@@ -120,7 +124,7 @@ mysqli_query($link,"CREATE TABLE IF NOT EXISTS `".core::request('TABLE_PREFIX').
   `address` varchar(145) DEFAULT '0',
   `latitude` float(10,6) NULL DEFAULT NULL,
   `longitude` float(10,6) NULL DEFAULT NULL,
-  `price` decimal(14,3) NOT NULL DEFAULT '0',
+  `price` decimal(28,8) NOT NULL DEFAULT '0',
   `phone` varchar(30) DEFAULT NULL,
   `website` varchar(200) DEFAULT NULL,
   `ip_address` bigint DEFAULT NULL,
@@ -153,9 +157,9 @@ mysqli_query($link,"CREATE TABLE IF NOT EXISTS ".core::request('TABLE_PREFIX')."
                         ) ENGINE=InnoDB DEFAULT CHARSET=".core::request('DB_CHARSET').";");
 
 
-mysqli_query($link,"CREATE TABLE IF NOT EXISTS `".core::request('TABLE_PREFIX')."config` ( 
-  `group_name` VARCHAR(128)  NOT NULL, 
-  `config_key` VARCHAR(128)  NOT NULL, 
+mysqli_query($link,"CREATE TABLE IF NOT EXISTS `".core::request('TABLE_PREFIX')."config` (
+  `group_name` VARCHAR(128)  NOT NULL,
+  `config_key` VARCHAR(128)  NOT NULL,
   `config_value` MEDIUMTEXT,
    PRIMARY KEY (`config_key`),
    UNIQUE KEY `".core::request('TABLE_PREFIX')."config_UK_group_name_AND_config_key` (`group_name`,`config_key`)
@@ -166,13 +170,13 @@ mysqli_query($link,"CREATE TABLE IF NOT EXISTS  `".core::request('TABLE_PREFIX')
   `id_order` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_user` int(10) unsigned NOT NULL,
   `id_ad` int(10) unsigned NULL,
-  `id_product` varchar(20) NOT NULL, 
+  `id_product` varchar(20) NOT NULL,
   `id_coupon` int(10) unsigned DEFAULT NULL,
   `paymethod` varchar(20) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `pay_date` DATETIME  NULL,
   `currency` char(3) NOT NULL,
-  `amount` decimal(14,3) NOT NULL DEFAULT '0',
+  `amount` decimal(28,8) NOT NULL DEFAULT '0',
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `description` varchar(145) DEFAULT NULL,
   `txn_id` varchar(255) DEFAULT NULL,
@@ -206,8 +210,8 @@ mysqli_query($link,"CREATE TABLE IF NOT EXISTS `".core::request('TABLE_PREFIX').
   `id_user` int(10) unsigned NOT NULL,
   `id_category` int(10) unsigned NOT NULL DEFAULT '0',
   `id_location` int(10) unsigned NOT NULL DEFAULT '0',
-  `min_price` decimal(14,3) NOT NULL DEFAULT '0',
-  `max_price` decimal(14,3) NOT NULL DEFAULT '0',
+  `min_price` decimal(28,8) NOT NULL DEFAULT '0',
+  `max_price` decimal(28,8) NOT NULL DEFAULT '0',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_subscribe`)
 ) ENGINE=InnoDB DEFAULT CHARSET=".core::request('DB_CHARSET').";");
@@ -294,7 +298,7 @@ mysqli_query($link,"CREATE TABLE IF NOT EXISTS ".core::request('TABLE_PREFIX')."
   `id_user_from` int(10) unsigned NOT NULL,
   `id_user_to` int(10) unsigned NOT NULL,
   `message` text NOT NULL,
-  `price` decimal(14,3) NOT NULL DEFAULT '0',
+  `price` decimal(28,8) NOT NULL DEFAULT '0',
   `read_date` datetime  DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status_to` tinyint(1) NOT NULL DEFAULT 0,
@@ -308,8 +312,8 @@ mysqli_query($link,"CREATE TABLE IF NOT EXISTS `".core::request('TABLE_PREFIX').
   `id_product` int(10) unsigned NULL DEFAULT NULL,
   `name` varchar(145) NOT NULL,
   `notes` varchar(245) DEFAULT NULL,
-  `discount_amount` decimal(14,3) NOT NULL DEFAULT '0',
-  `discount_percentage` decimal(14,3) NOT NULL DEFAULT '0',
+  `discount_amount` decimal(28,8) NOT NULL DEFAULT '0',
+  `discount_percentage` decimal(28,8) NOT NULL DEFAULT '0',
   `number_coupons` int(10) DEFAULT NULL,
   `valid_date` DATETIME  NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -323,10 +327,10 @@ mysqli_query($link,"CREATE TABLE IF NOT EXISTS `".core::request('TABLE_PREFIX').
       `name` varchar(145) NOT NULL,
       `seoname` varchar(145) NOT NULL,
       `description` MEDIUMTEXT NOT NULL,
-      `price` decimal(14,3) NOT NULL DEFAULT '0',
+      `price` decimal(28,8) NOT NULL DEFAULT '0',
       `days` int(10) DEFAULT 1,
       `amount_ads` int(10) DEFAULT 1,
-      `marketplace_fee` decimal(14,3) NOT NULL DEFAULT '0',
+      `marketplace_fee` decimal(28,8) NOT NULL DEFAULT '0',
       `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
       `status` tinyint(1) NOT NULL DEFAULT '0',
       PRIMARY KEY (`id_plan`),
@@ -350,7 +354,7 @@ mysqli_query($link,"CREATE TABLE IF NOT EXISTS `".core::request('TABLE_PREFIX').
 /**
  * add basic content like emails
  */
-mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."content` (`order`, `title`, `seotitle`, `description`, `from_email`, `type`, `status`) 
+mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."content` (`order`, `title`, `seotitle`, `description`, `from_email`, `type`, `status`)
     VALUES
 (0, 'Change Password [SITE.NAME]', 'auth-remember', 'Hello [USER.NAME],\n\nFollow this link  [URL.QL]\n\nThanks!!', '".core::request('ADMIN_EMAIL')."', 'email', 1),
 (0, 'Welcome to [SITE.NAME]!', 'auth-register', 'Welcome [USER.NAME],\n\nWe are really happy that you have joined us! [URL.QL]\n\nRemember your user details:\nEmail: [USER.EMAIL]\nPassword: [USER.PWD]\n\nWe do not have your original password anymore.\n\nRegards!', '".core::request('ADMIN_EMAIL')."', 'email', 1),
@@ -484,7 +488,7 @@ mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."content` (`loc
 ('es_ES', '¡Anuncio `[AD.TITLE]` ha sido creado en [SITE.NAME]!', 'ads-to-admin', 'Clic aquí para visitarlo [URL.AD]', '".core::request('ADMIN_EMAIL')."', 'email', 1),
 ('es_ES', '¡Anuncio `[AD.TITLE]` ha sido vendido en [SITE.NAME]!', 'ads-sold', 'ID de la orden: [ORDER.ID]\r\n\r\nID del producto: [PRODUCT.ID]\r\n\r\nPor favor, verifica tu cuenta para el pago recibido.\r\n\r\nClic aquí para visitar [URL.AD]', '".core::request('ADMIN_EMAIL')."', 'email', 1),
 ('es_ES', '¡El anuncio `[AD.TITLE]` ya no cuenta con stock en [SITE.NAME]!', 'out-of-stock', 'Hola [USER.NAME],\r\n\r\nMientras tu anuncio está fuera de stock, no estará disponible para que otros usuarios lo vean. Si deseas incrementar tu stock y activar tu anuncio, por favor sigue este enlace [URL.EDIT].\r\n\r\n¡Saludos!', '".core::request('ADMIN_EMAIL')."', 'email', 1),
-('es_ES', 'Ha comprado `[AD.TITLE]`', 'ads-purchased', 'ID de la orden: [ORDER.ID]\r\n\r\nID del producto: [PRODUCT.ID]\r\n\r\nClic aquí para visitar [URL.AD\n\n[BUYER.INSTRUCTIONS]', '".core::request('ADMIN_EMAIL')."', 'email', 1),
+('es_ES', 'Ha comprado `[AD.TITLE]`', 'ads-purchased', 'ID de la orden: [ORDER.ID]\r\n\r\nID del producto: [PRODUCT.ID]\r\n\r\nClic aquí para visitar [URL.AD]\n\n[BUYER.INSTRUCTIONS]', '".core::request('ADMIN_EMAIL')."', 'email', 1),
 ('es_ES', 'Recibo de [ORDER.DESC] #[ORDER.ID]', 'new-order', 'Hola [USER.NAME], gracias por comprar [ORDER.DESC].\r\n\r\nPor favor, completa tu pago aquí [URL.CHECKOUT]', '".core::request('ADMIN_EMAIL')."', 'email', 1),
 ('es_ES', '¡Enhorabuena! Tu anuncio `[AD.NAME]` fue creado en [SITE.NAME]!', 'ads-confirm', 'Bienvenido [USER.NAME],\r\n\r\nGracias por crear un anuncio en [SITE.NAME]! \r\n\r\nPor favor, has clic en este enlace [URL.QL] para confirmarlo.\r\n\r\n¡Saludos!', '".core::request('ADMIN_EMAIL')."', 'email', 1),
 ('es_ES', 'Tu anuncio [AD.NAME] ha expirado', 'ad-expired', 'Hola [USER.NAME], Tu anuncio [AD.NAME] ha expirado \r\n\r\nPor favor, revisa tu anuncio aquí [URL.EDITAD]', '".core::request('ADMIN_EMAIL')."', 'email', 1),
@@ -552,13 +556,13 @@ mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."content` (`loc
 /**
  * Access
  */
-mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."roles` (`id_role`, `name`, `description`) VALUES 
-    (1, 'user', 'Normal user'), 
-    (5, 'translator', 'User + Translations'), 
-    (7, 'moderator', 'Moderator'), 
+mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."roles` (`id_role`, `name`, `description`) VALUES
+    (1, 'user', 'Normal user'),
+    (5, 'translator', 'User + Translations'),
+    (7, 'moderator', 'Moderator'),
     (10, 'admin', 'Full access');");
 
-mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."access` (`id_role`, `access`) VALUES 
+mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."access` (`id_role`, `access`) VALUES
             (10, '*.*'),
             (1, 'profile.*'),(1, 'stats.user'),(1, 'myads.*'),(1, 'messages.*'),
             (5, 'translations.*'),(5, 'profile.*'),(5, 'stats.user'),(5, 'content.*'),(5, 'myads.*'),(5, 'messages.*'),
@@ -566,10 +570,10 @@ mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."access` (`id_r
             (7, 'widgets.*'),(7, 'menu.*'),(7, 'category.*'),(7, 'location.*'),(7, 'myads.*'),(7, 'messages.*');");
 
 /**
- * Create user God/Admin 
+ * Create user God/Admin
  */
 $password = hash_hmac('sha256', core::request('ADMIN_PWD'), install::$hash_key);
-mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."users` (`id_user`, `name`, `seoname`, `email`, `password`, `status`, `id_role`, `subscriber`) 
+mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."users` (`id_user`, `name`, `seoname`, `email`, `password`, `status`, `id_role`, `subscriber`)
 VALUES (1, 'admin', 'admin', '".core::request('ADMIN_EMAIL')."', '$password', 1, 10, 1)");
 
 /**
@@ -641,8 +645,16 @@ mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."config` (`grou
 ('payment', 'payfast_sandbox', '0'),
 ('payment', 'mercadopago_client_id', ''),
 ('payment', 'mercadopago_client_secret', ''),
+('payment', 'zenith_testing', '0'),
+('payment', 'zenith_merchantid', ''),
+('payment', 'zenith_uid', ''),
+('payment', 'zenith_pwd', ''),
+('payment', 'zenith_merchant_name', ''),
+('payment', 'zenith_merchant_phone', ''),
 ('general', 'subscriptions', '0'),
+('general', 'subscriptions_expire', '0'),
 ('general', 'api_key', '".core::generate_password(32)."'),
+('general', 'country', ''),
 ('general', 'number_format', '%n'),
 ('general', 'date_format', 'd-m-y'),
 ('general', 'measurement', 'metric'),
@@ -690,6 +702,15 @@ mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."config` (`grou
 ('general', 'pusher_notifications_app_id', ''),
 ('general', 'pusher_notifications_key', ''),
 ('general', 'pusher_notifications_secret', ''),
+('general', 'pusher_notifications_cluster', 'eu'),
+('general', 'algolia_search', '0'),
+('general', 'algolia_search_application_id', ''),
+('general', 'algolia_search_admin_key', ''),
+('general', 'algolia_search_only_key', ''),
+('general', 'algolia_powered_by_enabled', 1),
+('general', 'carquery', '0'),
+('general', 'sms_auth', '0'),
+('general', 'sms_clickatell_api', ''),
 ('image', 'allowed_formats', 'jpeg,jpg,png,'),
 ('image', 'max_image_size', '5'),
 ('image', 'height', ''),
@@ -706,6 +727,7 @@ mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."config` (`grou
 ('image', 'aws_s3_bucket', ''),
 ('image', 'aws_s3_domain', 0),
 ('image', 'disallow_nudes', 0),
+('image', 'upload_from_url', 0),
 ('advertisement', 'num_images', '4'),
 ('advertisement', 'expire_date', '0'),
 ('advertisement', 'expire_reactivation', '1'),
@@ -751,6 +773,7 @@ mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."config` (`grou
 ('advertisement', 'sort_by', 'published-desc'),
 ('advertisement', 'count_visits', 1),
 ('advertisement', 'login_to_contact', 0),
+('advertisement', 'login_to_view_ad', 0),
 ('advertisement', 'only_admin_post', 0),
 ('advertisement', 'sharing', '0'),
 ('advertisement', 'report', '1'),
@@ -778,6 +801,7 @@ mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."config` (`grou
 ('advertisement', 'pinterest_app_secret', ''),
 ('advertisement', 'pinterest_access_token', ''),
 ('advertisement', 'pinterest_board', ''),
+('advertisement', 'delete_ad', 0),
 ('email', 'notify_email', '".core::request('ADMIN_EMAIL')."'),
 ('email', 'notify_name', '"."no-reply ".core::request('SITE_NAME')."'),
 ('email', 'new_ad_notify', 0),
@@ -799,19 +823,19 @@ mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."config` (`grou
 
 
 //base category
-mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."categories` 
+mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."categories`
   (`id_category` ,`name` ,`order` ,`id_category_parent` ,`parent_deep` ,`seoname` ,`description` )
 VALUES (1, 'Home category', 0 , 0, 0, 'all', 'root category');");
 
 
 //base location
-mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."locations` 
+mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."locations`
   (`id_location` ,`name` ,`id_location_parent` ,`parent_deep` ,`seoname` ,`description`)
 VALUES (1 , 'Home location', 0, 0, 'all', 'root location');");
 
- 
 
-//sample values 
+
+//sample values
 if ( core::request('SAMPLE_DB') !== NULL)
 {
     //sample catpegories
@@ -854,6 +878,7 @@ mysqli_query($link,"INSERT INTO `".core::request('TABLE_PREFIX')."crontab` (`nam
 ('About to Expire Ad', '05 9 * * *', 'Cron_Ad::to_expire', NULL, 'Notify by email your ad is about to expire', 1),
 ('Renew subscription', '*/5 * * * *', 'Cron_Subscription::renew', NULL, 'Notify by email user subscription will expire.', 1),
 ('Notify new updates', '0 9 * * 1', 'Cron_Update::notify', NULL, 'Notify by email of new site updates.', 1),
-('Generate Access Token', '10 9 1 * *', 'Social::GetAccessToken', NULL, 'Generate Facebook long-lived Access Token.', 1);");
+('Generate Access Token', '10 9 1 * *', 'Social::GetAccessToken', NULL, 'Generate Facebook long-lived Access Token.', 1),
+('Algolia Search re-index', '0 * * * *', 'Cron_Algolia::reindex', NULL, 'Re-index everything', 1);");
 
 mysqli_close($link);

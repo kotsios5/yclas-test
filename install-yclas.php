@@ -52,7 +52,7 @@ class install{
      * Software install settings
      * @var string
      */
-    const VERSION   = '3.1.0';
+    const VERSION   = '3.3.0';
 
     /**
      * default locale/language of the install
@@ -178,7 +178,7 @@ class install{
      */
     public static function is_compatible()
     {
-        self::$msg = '';
+        self::$msg = [];
         $compatible = TRUE;
         foreach (install::requirements() as $name => $values)
         {
@@ -331,7 +331,7 @@ class install{
     public static function get_folder()
     {
         // Getting the folder, erasing the install-openclassifieds
-        $folder = str_replace('/install-openclassifieds.php','', $_SERVER['SCRIPT_NAME']).'/';
+        $folder = str_replace('/install-yclas.php','', $_SERVER['SCRIPT_NAME']).'/';
         
         return $folder;
     }
@@ -1442,12 +1442,12 @@ function hosting_view()
                     <br>
                     <ul>
                         <li>100% Compatible High Speed Hosting</li>
-                        <li>1 Premium Theme, of your choice worth $185</li>
-                        <li>Professional Installation and Support for 3 months</li>
+                        <li>Get $185 discount on our Pro pack with all themes.</li>
+                        <li>Professional Installation and Support.</li>
                     </ul>
                     <br>
                     <p>
-                        <a class="btn btn-default btn-large" href="https://yclas.com/self-hosted.html">
+                        <a class="btn btn-default btn-large" href="https://yclas.com/self-hosted.html#hosting">
                             <i class=" icon-shopping-cart icon-white"></i> Get Hosting! Less than $4 Month
                         </a>
                     </p>
