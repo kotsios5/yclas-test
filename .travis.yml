@@ -1,5 +1,5 @@
 sudo: required
-dist: xenial
+dist: trusty
 # see http://about.travis-ci.org/docs/user/languages/php/ for more hints
 language: php
 
@@ -86,8 +86,7 @@ script:
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default
 
 after_failure:
-  - cat /var/www/yclas-test/oc/tests/_output/AdContactFormCept.fail.html
-
+  - cat /etc/apache2/mods-enabled/php7.1.load
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
