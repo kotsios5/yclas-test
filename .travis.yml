@@ -88,6 +88,7 @@ script:
 after_failure:
   - cat /var/www/yclas-test/oc/tests/_output/AdContactFormCept.fail.html
 
+
 # configure notifications (email, IRC, campfire etc)
 notifications:
   email:
