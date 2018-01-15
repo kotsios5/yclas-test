@@ -86,7 +86,7 @@ script:
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default
 
 after_failure:
-  - cat /etc/apache2/mods-enabled/php7.2.load
+  # - cat /etc/apache2/mods-enabled/php7.2.load
 
 # configure notifications (email, IRC, campfire etc)
 notifications:
