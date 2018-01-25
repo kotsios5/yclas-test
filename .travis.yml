@@ -85,7 +85,6 @@ script:
   - sudo chmod 755 /var/www/yclas-test/oc/config/database.php
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default
 
-
 after_failure:
   # - cat /etc/apache2/mods-enabled/php7.2.load
 
