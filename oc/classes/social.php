@@ -189,7 +189,7 @@ class Social {
 
                 $caption .= ' - '.Text::limit_chars(Text::removebbcode($ad->description), 100, NULL, TRUE);
                 $caption .= ' - '.$url_ad;
-                $caption = self::GenerateHashtags($ad, $caption);
+                $caption = self::GenerateHashtags($ad);
 
                 $i = new \InstagramAPI\Instagram();
                 
@@ -214,8 +214,6 @@ class Social {
         $cb = Codebird::getInstance();
         $cb->setToken(core::config('advertisement.access_token'), core::config('advertisement.access_token_secret'));
 
-        // 'status' char limit is 140
-
         $message = Text::limit_chars($ad->title, 17, NULL, TRUE).', ';
 
         $message .= Text::limit_chars($ad->category->name, 17, NULL, TRUE);
@@ -230,7 +228,7 @@ class Social {
 
         $url_ad = Route::url('ad', array('category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle));
         $message .= ' - '.$url_ad;
-        $message = self::GenerateHashtags($ad, $message);
+        $message .= ' - '.self::GenerateHashtags($ad);
 
         $params = array(
             'status' => $message
@@ -275,7 +273,7 @@ class Social {
         }
 
         $data['link'] = $url_ad;
-        $data['message'] = $message.' - '.$description.' '.self::GenerateHashtags($ad, $description);;
+        $data['message'] = $message.' - '.$description.' '.self::GenerateHashtags($ad);
         $data['caption'] = core::config('general.base_url').' | '.core::config('general.site_name');
 
         $data['access_token'] = $page_access_token;
@@ -297,25 +295,29 @@ class Social {
 
     public static function GetAccessToken()
     {
-        $token_url = "https://graph.facebook.com/oauth/access_token?client_id=".core::config('advertisement.facebook_app_id')."&client_secret=".core::config('advertisement.facebook_app_secret')."&grant_type=fb_exchange_token&fb_exchange_token=".core::config('advertisement.facebook_access_token');
+        if(core::config('advertisement.facebook') == 1){
+            $token_url = "https://graph.facebook.com/oauth/access_token?client_id=".core::config('advertisement.facebook_app_id')."&client_secret=".core::config('advertisement.facebook_app_secret')."&grant_type=fb_exchange_token&fb_exchange_token=".core::config('advertisement.facebook_access_token');
 
-        $c = curl_init();
-        curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($c, CURLOPT_URL, $token_url);
-        $contents = curl_exec($c);
-        $err  = curl_getinfo($c,CURLINFO_HTTP_CODE);
-        curl_close($c);
+            $c = curl_init();
+            curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($c, CURLOPT_URL, $token_url);
+            $contents = curl_exec($c);
+            $err  = curl_getinfo($c,CURLINFO_HTTP_CODE);
+            curl_close($c);
 
-        $paramsfb = null;
-        parse_str($contents, $paramsfb);  
+            $paramsfb = null;
+            parse_str($contents, $paramsfb);  
 
-        $paramsfb = json_decode($contents, true);
+            $paramsfb = json_decode($contents, true);
 
-        Model_Config::set_value('advertisement','facebook_access_token',$paramsfb['access_token']);
+            if(isset($paramsfb['access_token']) AND !empty($paramsfb['access_token'])){
+                Model_Config::set_value('advertisement','facebook_access_token',$paramsfb['access_token']);
+            }
+        }
     }
 
-    public static function GenerateHashtags(Model_Ad $ad, $description)
+    public static function GenerateHashtags(Model_Ad $ad)
     {
         $hashtag1 = '#'.str_replace([' ', "'", '"', '!', '+', '$', '%', '^', '&', '*', '+', '.', ','], '', core::config('general.site_name'));
         $hashtag2 = '#'.str_replace([' ', "'", '"', '!', '+', '$', '%', '^', '&', '*', '+', '.', ','], '', $ad->category->name);

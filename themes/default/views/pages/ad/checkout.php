@@ -88,7 +88,7 @@
                                     )
                                 </em>
                                 <div class="dropdown" style="display:inline-block;">
-                                <?if ($order->id_product == Model_Order::PRODUCT_TO_FEATURED AND is_array($featured_plans=Model_Order::get_featured_plans()) AND count($featured_plans) > 1):?>
+                                <?if ($order->id_product == Model_Order::PRODUCT_TO_FEATURED AND is_array($featured_plans=Model_Order::get_featured_plans()) AND core::count($featured_plans) > 1):?>
                                     <button class="btn btn-xs btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                                         <?=_e('Change plan')?> 
                                         <span class="caret"></span>
@@ -236,6 +236,9 @@
                         <?endif?>
                         <?if(($zenith = zenith::button($order)) != ''):?>
                             <li class="text-right"><?=$zenith?></li>
+                        <?endif?>
+                        <?if(($payline = payline::button($order)) != ''):?>
+                            <li class="text-right"><?=$payline?></li>
                         <?endif?>
                         <?if( ($alt = $order->alternative_pay_button()) != ''):?>
                             <li class="text-right"><?=$alt?></li>

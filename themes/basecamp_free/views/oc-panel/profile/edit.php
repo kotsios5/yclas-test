@@ -201,6 +201,13 @@
 	                                </a>
 	                            </p>
 	                        <?else:?>
+	                            <?
+	                                require Kohana::find_file('vendor', 'GoogleAuthenticator');
+	                                $ga = new PHPGangsta_GoogleAuthenticator();
+	                                if( ($ga_secret_temp  = Session::instance()->get('ga_secret_temp'))==NULL )
+	                                    Session::instance()->set('ga_secret_temp',$ga->createSecret());
+	                            ?>
+	                            <p><img src="<?=$ga->getQRCodeGoogleUrl(Kohana::$base_url,Session::instance()->get('ga_secret_temp'))?>"></p>
 	                            <p>
 	                                <a class="btn btn-primary" href="<?=Route::url('oc-panel',array('controller'=>'profile','action'=>'2step','id'=>'enable'))?>">
 	                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <?=_e('Enable')?>
@@ -268,12 +275,12 @@
 	                                    </div>
 	                                <?endif?>
 	                            </div>
-	                            <?if (core::config('advertisement.num_images') > count($images)):?>
+	                            <?if (core::config('advertisement.num_images') > core::count($images)):?>
 	                                <hr>
 	                                <div class="form-group">
 	                                    <h5><?=_e('Add image')?></h5>
 	                                    <div>
-	                                        <?for ($i = 0; $i < (core::config('advertisement.num_images') - count($images)); $i++):?>
+	                                        <?for ($i = 0; $i < (core::config('advertisement.num_images') - core::count($images)); $i++):?>
 	                                            <div class="fileinput fileinput-new <?=($i >= 1) ? 'hidden' : NULL?>" data-provides="fileinput">
 	                                                <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
 	                                                <div>
