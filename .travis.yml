@@ -45,13 +45,14 @@ before_script:
   # configure apache virtual hosts
   # $TRAVIS_BUILD_DIR contains the path of the cloned repo
   - sudo cp -f $TRAVIS_BUILD_DIR/build/travis-ci-apache /etc/apache2/sites-available/reoc.lo.conf 
+  - sudo service apache2 start
   - sudo a2ensite reoc.lo.conf 
   - sudo sed -i 's/localhost/reoc.lo/g' /etc/hosts
   - sudo cp -r $TRAVIS_BUILD_DIR /var/www
   
   # Enable mod_rewrite
   - sudo a2enmod rewrite
-  - sudo service apache2 start
+  - sudo service apache2 restart
 
   # permissions
   - sudo chown -R root:root /var/www
