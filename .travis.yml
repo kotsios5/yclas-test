@@ -34,10 +34,10 @@ services:
 before_install:
   - sudo service mysql stop
   - sudo git clone https://github.com/kotsios5/docker-1.git
-  - sudo git clone https://github.com/kotsios5/build-travis-ci /var/www/build
+  - sudo git clone https://github.com/kotsios5/build-travis-ci $TRAVIS_BUILD_DIR/build
   - cd docker-1
   - sudo docker build -t oc .
-  - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www -p 80:80 -p 3306:3306 oc sudo sudo service mysql start
+  - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sudo service mysql start
 
 #   - mysql -e 'CREATE DATABASE IF NOT EXISTS openclassifieds;'
 #   - phpenv config-rm xdebug.ini
