@@ -32,6 +32,7 @@ script:
 - sudo docker login -u$travis_user -p$travis_pass
 - sudo docker commit -m 'commit from travis-ci' $ID kotsios/travis-ci-image:$TRAVIS_BUILD_NUMBER
 - sudo docker push $travis_user/travis-ci-image:$TRAVIS_BUILD_NUMBER
+
 after_failure:
 notifications:
   email:
