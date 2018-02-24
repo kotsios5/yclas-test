@@ -38,8 +38,6 @@ before_install:
   - sudo docker build -t oc .
   - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www -p 80:80 -p 3306:3306 oc sudo sudo service mysql start
 
-
-
 #   - mysql -e 'CREATE DATABASE IF NOT EXISTS openclassifieds;'
 #   - phpenv config-rm xdebug.ini
 
