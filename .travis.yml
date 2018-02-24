@@ -36,8 +36,7 @@ before_install:
   - sudo git clone https://github.com/kotsios5/docker-1.git
   - cd docker-1
   - sudo docker build -t oc .
-  # - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install.sh
-  - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo ls /var/www
+  - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install.sh
 
 
 #   - mysql -e 'CREATE DATABASE IF NOT EXISTS openclassifieds;'
