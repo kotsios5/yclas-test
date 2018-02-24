@@ -32,8 +32,9 @@ services:
   - docker
 
 before_install:
-  # - sudo git clone https://github.com/yclas/docker.git 
-  # - sudo docker run -t -i -p 80:80 -p 3306:3306 kotsios/env:latest /bin/bash
+  - sudo git clone https://github.com/yclas/docker.git 
+  - sudo cd docker
+  - sudo docker run -t -i -p 80:80 -p 3306:3306 kotsios/env:latest /bin/bash
 
 
 
