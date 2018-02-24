@@ -35,7 +35,7 @@ before_install:
   - sudo service mysql stop
   - sudo git clone https://github.com/yclas/docker.git 
   - cd docker
-  - sudo docker run -t -i -p 80:80 -p 3306:3306 kotsios/env:latest /bin/bash
+  - sudo docker run -d -p 80:80 -p 3306:3306 kotsios/env:latest sudo service apache2 start && sudo service mysql start && sudo service apache2 reload
 
 
 
