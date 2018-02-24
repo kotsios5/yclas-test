@@ -27,7 +27,6 @@ install:
   - sudo docker build -t oc .
 script: 
   - ID=$(sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install/install-yclas.sh)
-  - sudo docker wait $ID
   - sudo docker logs $ID
   - sudo docker login -u$travis_user -p$travis_pass
 after_failure:
