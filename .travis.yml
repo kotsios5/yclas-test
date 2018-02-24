@@ -36,7 +36,8 @@ before_install:
   - sudo git clone https://github.com/kotsios5/docker-1.git
   - cd docker-1
   - sudo docker build -t oc .
-  - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo service mysql start
+  # - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install.sh
+  - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc ls /var/www/html && ls /var/www/
 
 
 #   - mysql -e 'CREATE DATABASE IF NOT EXISTS openclassifieds;'
@@ -86,7 +87,7 @@ install:
 #   - if [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then sudo wget http://codeception.com/codecept.phar; fi
 #   - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then sudo wget http://codeception.com/codecept.phar; fi
 #   - if [ "$TRAVIS_PHP_VERSION" == "7.2" ]; then sudo wget http://codeception.com/codecept.phar; fi
-  - sudo chmod -R 755 codecept.phar
+  # - sudo chmod -R 755 codecept.phar
 
 script: 
   # - set -e # don't stop on failure
