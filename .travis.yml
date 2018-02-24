@@ -37,7 +37,7 @@ before_install:
   - cd docker-1
   - sudo docker build -t oc .
   # - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install.sh
-  - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc ls /var/www/html && ls /var/www/
+  - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc
 
 
 #   - mysql -e 'CREATE DATABASE IF NOT EXISTS openclassifieds;'
