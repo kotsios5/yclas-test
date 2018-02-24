@@ -21,8 +21,8 @@ addons:
     - reoc.lo
 
 # optionally specify a list of environments, for example to test different RDBMS
-env:
-  - DB=mysql
+# env:
+#   - DB=mysql
 
 # disable the default submodule logic
 git:
