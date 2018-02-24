@@ -22,8 +22,6 @@ addons:
 
 # optionally specify a list of environments, for example to test different RDBMS
 env:
-  - global
-    - COMMIT=${TRAVIS_COMMIT::8}
 #   - DB=mysql
 
 # disable the default submodule logic
@@ -38,9 +36,9 @@ before_install:
   - sudo git clone https://github.com/kotsios5/docker-1.git
   - cd docker-1
   - sudo docker build -t oc .
-  - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install.sh
-  - sudo docker commit -m 'commit from travis-ci' $COMMIT kotsios/travis-ci-image:$COMMIT
-  - sudo docker push kotsios/travis-ci-image:$COMMIT
+  - ID=$(sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install.sh)
+  - sudo docker commit -m 'commit from travis-ci' $ID kotsios/travis-ci-image:$ID
+  - sudo docker push kotsios/travis-ci-image:$ID
 
 
 #   - mysql -e 'CREATE DATABASE IF NOT EXISTS openclassifieds;'
