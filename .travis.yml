@@ -21,15 +21,15 @@ services:
 before_install:
 - phpenv config-rm xdebug.ini
 - sudo service mysql stop
+install: 
 - sudo git clone https://github.com/kotsios5/docker-1.git
 - cd docker-1
 - sudo docker build -t oc .
-install: 
+script: 
 - ID=$(sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install.sh)  
 - sudo docker login -u$travis_user -p$travis_pass
 - sudo docker commit -m 'commit from travis-ci' $ID kotsios/travis-ci-image:$TRAVIS_BUILD_NUMBER
 - sudo docker push $travis_user/travis-ci-image:$TRAVIS_BUILD_NUMBER
-script: 
 after_failure:
 notifications:
   email:
