@@ -19,6 +19,7 @@ git:
 services:
 - docker
 before_install:
+- phpenv config-rm xdebug.ini
 - sudo service mysql stop
 - sudo git clone https://github.com/kotsios5/docker-1.git
 - cd docker-1
