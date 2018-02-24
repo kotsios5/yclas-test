@@ -33,7 +33,8 @@ services:
 
 before_install:
   - sudo service mysql stop
-  - sudo git clone https://github.com/kotsios5/docker-1.git 
+  - sudo git clone https://github.com/kotsios5/docker-1.git
+  - sudo git clone https://github.com/kotsios5/build-travis-ci /var/www/build
   - cd docker-1
   - sudo docker build -t oc .
   - sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www -p 80:80 -p 3306:3306 oc sudo sudo service mysql start
