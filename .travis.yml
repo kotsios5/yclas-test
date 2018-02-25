@@ -23,7 +23,8 @@ before_install:
   - sudo service mysql stop
 
   - sudo mkdir /codeception
-  - sudo wget https://codeception.com/codecept.phar /codeception
+  - cd /codeception
+  - sudo wget https://codeception.com/codecept.phar
   - php /codeception/codecept.phar bootstrap
   - sudo cp -r $TRAVIS_BUILD_DIR/oc/tests /codeception/tests
   - sudo chmod -R 777 /codeception
