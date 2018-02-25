@@ -35,6 +35,7 @@ install:
   - cd /docker-1
   - sudo docker build -t oc .
 script: 
+  # Run the image
   - ID=$(sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install/install-yclas.sh)
   # Run tests
   - cd /codeception
