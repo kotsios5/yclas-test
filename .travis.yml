@@ -22,7 +22,7 @@ before_install:
   - phpenv config-rm xdebug.ini
   - sudo service mysql stop
   - sudo mkdir /codeception
-  - sudo cp $TRAVIS_BUILD_DIR/oc/tests /codeception/tests
+  - sudo cp -r $TRAVIS_BUILD_DIR/oc/tests /codeception/tests
   - ls /codeception
   - ls /
   - ls
