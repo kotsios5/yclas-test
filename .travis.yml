@@ -21,15 +21,14 @@ services:
 before_install:
   - phpenv config-rm xdebug.ini
   - sudo service mysql stop
+
   - sudo mkdir /codeception
+  - sudo wget https://codeception.com/codecept.phar /codeception
+  - php /codeception/codecept.phar bootstrap
   - sudo cp -r $TRAVIS_BUILD_DIR/oc/tests /codeception/tests
+  - sudo chmod -R 777 /codeception
 install:
   # Install Codeception
-  - cd /codeception
-  - sudo wget https://codeception.com/codecept.phar
-  - sudo chmod -R 777 /codeception
-  - php /codeception/codecept.phar bootstrap
-
   - sudo git clone https://github.com/kotsios5/docker-1.git
   - cd docker-1
   - sudo docker build -t oc .
