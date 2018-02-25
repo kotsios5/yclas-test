@@ -18,8 +18,6 @@ git:
   submodules: false
 services:
   - docker
-  volumes:
-    - /var/lib/mysql
 before_install:
   - phpenv config-rm xdebug.ini
   - sudo service mysql stop
@@ -37,7 +35,7 @@ install:
   - sudo docker build -t oc .
 script: 
   # Run the image
-  - ID=$(sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install/install-yclas.sh)
+  - ID=$(sudo docker run -d -v /var/lib/mysql -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install/install-yclas.sh)
   # Run tests
   - cd /codeception
   - php codecept.phar run acceptance /codeception/tests/acceptance/SetUsersPasswordsCept.php
