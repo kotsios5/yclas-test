@@ -26,7 +26,8 @@ before_install:
   - sudo mkdir /codeception
   - cd /codeception
   - sudo wget https://codeception.com/codecept.phar
-  - sudo cp -a $TRAVIS_BUILD_DIR/oc/tests/. /codeception/tests/
+  - ls $TRAVIS_BUILD_DIR/oc/tests/
+  - sudo cp -r $TRAVIS_BUILD_DIR/oc/tests/. /codeception/tests/
   - sudo cp $TRAVIS_BUILD_DIR/oc/codeception.yml /codeception/
   - sudo chmod -R 777 /codeception
 install:
