@@ -23,16 +23,21 @@ before_install:
   - sudo service mysql stop
   - sudo mkdir /codeception
   - sudo cp -r $TRAVIS_BUILD_DIR/oc/tests /codeception/tests
-  - ls /codeception
-  - ls /
-  - ls
-install: 
+install:
+  # Install Codeception
+  - cd /codeception
+  - sudo wget https://codeception.com/codecept.phar
+  - sudo chmod -R 777 /codeception
+
   - sudo git clone https://github.com/kotsios5/docker-1.git
   - cd docker-1
   - sudo docker build -t oc .
 script: 
   - ID=$(sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install/install-yclas.sh)
-  - sudo docker logs $ID
+  # Run tests
+  - php /codeception/tests/codecept.phar run acceptance /codeceptiontests/acceptance/SetUsersPasswordsCept.php
+  - php /codeception/tests/codecept.phar run acceptance /codeceptiontests/acceptance/UpdateDBCept.php
+  - php /codeception/tests/codecept.phar run acceptance /codeceptiontests/acceptance/default
 after_failure:
   - sudo docker login -u$travis_user -p$travis_pass
   - sudo docker commit -m 'commit from travis-ci' $ID kotsios/travis-ci-image:$TRAVIS_BUILD_NUMBER
