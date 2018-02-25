@@ -26,9 +26,8 @@ before_install:
   - sudo mkdir /codeception
   - cd /codeception
   - sudo wget https://codeception.com/codecept.phar
-  - sudo chmod -R 777 /codeception
-  - php codecept.phar bootstrap
   - sudo cp -a $TRAVIS_BUILD_DIR/oc/tests/. /codeception/tests/
+  - sudo cp $TRAVIS_BUILD_DIR/oc/codeception.yml /codeception/
   - sudo chmod -R 777 /codeception
 install:
   - sudo git clone https://github.com/kotsios5/docker-1.git /docker-1
@@ -39,8 +38,6 @@ script:
   # Run tests
   
   - cd /codeception
-  - ls /codeception
-  - ls /codeception/tests
   - ls /codeception/tests/acceptance
 
   - php codecept.phar run acceptance /codeception/tests/acceptance/SetUsersPasswordsCept.php
