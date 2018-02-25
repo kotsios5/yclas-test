@@ -28,7 +28,7 @@ before_install:
   - sudo wget https://codeception.com/codecept.phar
   - sudo chmod -R 777 /codeception
   - php codecept.phar bootstrap
-  - sudo cp -r $TRAVIS_BUILD_DIR/oc/tests /codeception/tests
+  - sudo cp -a $TRAVIS_BUILD_DIR/oc/tests/. /codeception/tests/
   - sudo chmod -R 777 /codeception
 install:
   - sudo git clone https://github.com/kotsios5/docker-1.git /docker-1
