@@ -37,10 +37,7 @@ install:
 script: 
   - ID=$(sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install/install-yclas.sh)
   # Run tests
-  
   - cd /codeception
-  - ls /codeception/tests/acceptance
-
   - php codecept.phar run acceptance /codeception/tests/acceptance/SetUsersPasswordsCept.php
   - php codecept.phar run acceptance /codeception/tests/acceptance/UpdateDBCept.php
   - php codecept.phar run acceptance /codeception/tests/acceptance/default
@@ -48,6 +45,7 @@ after_failure:
   - sudo docker login -u$travis_user -p$travis_pass
   - sudo docker commit -m 'commit from travis-ci' $ID kotsios/travis-ci-image:$TRAVIS_BUILD_NUMBER
   - sudo docker push $travis_user/travis-ci-image:$TRAVIS_BUILD_NUMBER
+  - sudo docker log $ID
 notifications:
   email:
     recipients:
