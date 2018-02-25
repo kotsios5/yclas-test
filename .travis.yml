@@ -43,6 +43,8 @@ script:
   - php codecept.phar run acceptance /codeception/tests/acceptance/UpdateDBCept.php
   - php codecept.phar run acceptance /codeception/tests/acceptance/default
 after_failure:
+  - ls /codeception/tests/_output
+  - cat /codeception/tests/_output/*.fail.html
   - sudo docker login -u$travis_user -p$travis_pass
   - sudo docker commit -m 'commit from travis-ci' $ID kotsios/travis-ci-image:$TRAVIS_BUILD_NUMBER
   - sudo docker push $travis_user/travis-ci-image:$TRAVIS_BUILD_NUMBER
