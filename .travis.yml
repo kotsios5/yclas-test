@@ -28,6 +28,7 @@ install:
   - cd /codeception
   - sudo wget https://codeception.com/codecept.phar
   - sudo chmod -R 777 /codeception
+  - php /codeception/codecept.phar bootstrap
 
   - sudo git clone https://github.com/kotsios5/docker-1.git
   - cd docker-1
