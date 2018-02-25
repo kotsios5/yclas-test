@@ -21,6 +21,10 @@ services:
 before_install:
   - phpenv config-rm xdebug.ini
   - sudo service mysql stop
+  - sudo mkdir /codeception
+  - sudo cp $TRAVIS_BUILD_DIR/oc/tests /codeception/tests
+  - ls /codeception
+  - ls /
   - ls
 install: 
   - sudo git clone https://github.com/kotsios5/docker-1.git
