@@ -21,6 +21,7 @@ services:
 before_install:
   - phpenv config-rm xdebug.ini
   - sudo service mysql stop
+
   # Install Codeception
   - sudo mkdir /codeception
   - cd /codeception
