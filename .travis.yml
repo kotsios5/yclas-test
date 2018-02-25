@@ -26,7 +26,6 @@ before_install:
   - sudo mkdir /codeception
   - cd /codeception
   - sudo wget https://codeception.com/codecept.phar
-  - ls $TRAVIS_BUILD_DIR/oc/tests/
   - sudo cp -r $TRAVIS_BUILD_DIR/oc/tests/. /codeception/tests/
   - sudo cp $TRAVIS_BUILD_DIR/oc/codeception.yml /codeception/
   - sudo chmod -R 777 /codeception
@@ -37,7 +36,8 @@ install:
 script: 
   # Run the image
   - ID=$(sudo docker run -d -v /var/lib/mysql -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install/install-yclas.sh)
-  # Run tests
+  
+  # Run the tests
   - cd /codeception
   - php codecept.phar run acceptance /codeception/tests/acceptance/SetUsersPasswordsCept.php
   - php codecept.phar run acceptance /codeception/tests/acceptance/UpdateDBCept.php
