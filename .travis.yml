@@ -22,6 +22,7 @@ before_install:
   - phpenv config-rm xdebug.ini
   - sudo service mysql stop
 
+  # Install Codeception
   - sudo mkdir /codeception
   - cd /codeception
   - sudo wget https://codeception.com/codecept.phar
@@ -30,13 +31,13 @@ before_install:
   - sudo cp -r $TRAVIS_BUILD_DIR/oc/tests /codeception/tests
   - sudo chmod -R 777 /codeception
 install:
-  # Install Codeception
-  - sudo git clone https://github.com/kotsios5/docker-1.git
-  - cd docker-1
+  - sudo git clone https://github.com/kotsios5/docker-1.git /docker-1
+  - cd /docker-1
   - sudo docker build -t oc .
 script: 
   - ID=$(sudo docker run -d -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install/install-yclas.sh)
   # Run tests
+  - cd /codeception
   - php codecept.phar run acceptance /codeception/tests/acceptance/SetUsersPasswordsCept.php
   - php codecept.phar run acceptance /codeception/tests/acceptance/UpdateDBCept.php
   - php codecept.phar run acceptance /codeception/tests/acceptance/default
