@@ -36,7 +36,7 @@ install:
 script: 
   - sudo sed -i 's/localhost/reoc.lo/g' /build/install/hosts
   # Run the image
-  - ID=$(sudo docker run -d -v /build/install/hosts:/etc/hosts -v /var/lib/mysql -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install/install-yclas.sh)
+  - ID=$(sudo docker run -d -v /var/lib/mysql -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install/install-yclas.sh)
   
   # Run the tests
   - cd /codeception
@@ -48,7 +48,6 @@ after_failure:
   - sudo docker commit -m 'commit from travis-ci' $ID kotsios/travis-ci-image:$TRAVIS_BUILD_NUMBER
   - sudo docker push $travis_user/travis-ci-image:$TRAVIS_BUILD_NUMBER
   - sudo docker logs $ID
-  - cat /etc/hosts
 notifications:
   email:
     recipients:
