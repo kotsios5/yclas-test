@@ -33,7 +33,6 @@ install:
   - sudo git clone https://github.com/kotsios5/docker-1.git /docker-1
   - cd /docker-1
   - sudo docker build -t oc .
-  - sudo sed -i 's/localhost/reoc.lo/g' /build/install/hosts
 script: 
   # Run the image
   - ID=$(sudo docker run -d -v /var/lib/mysql -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 oc sudo sh /build/install/install-yclas.sh)
