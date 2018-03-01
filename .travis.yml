@@ -6,9 +6,9 @@ php:
 - 7.0
 - 7.1
 - 7.2
-addons:
-  hosts:
-  - reoc.lo
+# addons:
+#   hosts:
+#   - reoc.lo
 env:
   global:
   - secure: isjWRm6/VGhwNmr9cs819e6vjoiD1HMCCiRl1xeJOvA8FSFFInuBnW2WZ1cW8WZOp/TwhlEmtpKtkrvyyMRnIqtRcOZkU469w4gJ3idmZbMmZCFPo+tH6O7Ax+QBYk6MSLBCvjLUbz0PFaK8LkwBQQb2HpmuwZvvKrwrp+2szLePLBVl0rzQOcOvYpJqqytMoF1jQ+k1EqjRpXdKVm5xy9z6Qtla/Z7UytTzoQi/xJx6X7KX9cfI//2dd59kJduLTq7YAHrH8fYHU+aqSlhanss0wOhD0ZEk6ziEyVmaDy07PC72U5cciSlnFsYITtQHDccUqb6frQXtiSfeFg5Bdrg5GomOR0yOR5Lz6a59r41Z0WRaAdNZoLyQZaYQVwGJrJRTWYEHK3RNgTEa/7YmKNSVvh/kmxvGQ/FligeG16DfGgmn5zBw+ndS1+tgmu2kW7ZfpuB/6BYTvcg6M1U5CHOBW4vyCook1i218rh6p3WhtimrSwDTWXlapvgRPJg7UrzwCdHQRdrRU5ujh6q4jy1Vh/65bCrcLYwu/cao1o9PuGe9cFOY/ljr0tXRCtuLPmeR0MG09cgzV7JVMqDklbzOvKsr+X1tnV0qu6GeQ5o7jLoz55pRqzio1I8Nz/0mIgMwCutq8MIRPbUnd/Eq6eGOL3/M9xKm6S0HEGFBNYQ=
