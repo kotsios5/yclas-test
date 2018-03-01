@@ -35,10 +35,9 @@ install:
   - sudo docker build -t yclas .
 script: 
   # Run the image
-  - ID=$(sudo docker run -d -v /var/lib/mysql -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 yclas sudo sh /build/install/install-yclas.sh)
+  - ID=$(sudo docker run -d --add-host reoc.lo:127.0.0.1 -v /var/lib/mysql -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 yclas sudo sh /build/install/install-yclas.sh)
   
   # Run the tests
-  - cd /codeception
   - php codecept.phar run acceptance /codeception/tests/acceptance/SetUsersPasswordsCept.php
   - php codecept.phar run acceptance /codeception/tests/acceptance/UpdateDBCept.php
   - php codecept.phar run acceptance /codeception/tests/acceptance/default
@@ -47,6 +46,7 @@ after_failure:
   - sudo docker commit -m 'commit from travis-ci' $ID kotsios/travis-ci-image:$TRAVIS_BUILD_NUMBER
   - sudo docker push $travis_user/travis-ci-image:$TRAVIS_BUILD_NUMBER
   - sudo docker logs $ID
+
 notifications:
   email:
     recipients:
