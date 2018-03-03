@@ -41,7 +41,7 @@ script:
   # - php codecept.phar run acceptance /codeception/tests/acceptance/SetUsersPasswordsCept.php
   # - php codecept.phar run acceptance /codeception/tests/acceptance/UpdateDBCept.php
   # - php codecept.phar run acceptance /codeception/tests/acceptance/default
-  - sudo docker logs $ID
+  - sudo docker logs --follow $ID
 after_failure:
   - sudo docker login -u$travis_user -p$travis_pass
   - sudo docker commit -m 'commit from travis-ci' $ID kotsios/travis-ci-image:$TRAVIS_BUILD_NUMBER
