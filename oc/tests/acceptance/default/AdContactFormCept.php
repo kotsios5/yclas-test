@@ -9,6 +9,7 @@ $I->see('Send Message','a');
 
 
 
+$I->see('NOTHING','a');
 
 
 
