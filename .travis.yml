@@ -35,12 +35,10 @@ install:
   - sudo docker build -t yclas .
 script: 
   # Run the image
-  - ID=$(sudo docker run -d --add-host reoc.lo:0.0.0.0 -v /var/lib/mysql -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 yclas sudo sh /build/install/install-yclas.sh)
+  - ID=$(sudo docker run -d --add-host reoc.lo:127.0.0.1 -v /var/lib/mysql -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 yclas sudo sh /build/install/install-yclas.sh)
   - sudo docker ps
   - sudo docker ps -a
   - curl reoc.lo
-  - curl 0.0.0.0
-  - curl 0.0.0.0:80
   - curl localhost
   # Run the tests
   - cd /codeception
