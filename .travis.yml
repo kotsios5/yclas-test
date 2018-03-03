@@ -36,10 +36,7 @@ install:
 script: 
   # Run the image
   - ID=$(sudo docker run -d --add-host reoc.lo:127.0.0.1 -v /var/lib/mysql -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 yclas sudo sh /build/install/install-yclas.sh)
-  - sudo docker ps
-  - sudo docker ps -a
-  - curl reoc.lo
-  - curl localhost
+
   # Run the tests
   # - cd /codeception
   # - php codecept.phar run acceptance /codeception/tests/acceptance/SetUsersPasswordsCept.php
