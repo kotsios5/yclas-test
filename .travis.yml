@@ -19,7 +19,7 @@ git:
 services:
   - docker
 before_install:
-  - phpenv config-rm xdebug.ini
+  # - phpenv config-rm xdebug.ini
   - sudo service mysql stop
 
   # Install Codeception
