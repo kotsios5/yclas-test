@@ -26,7 +26,7 @@ before_install:
   - phpenv config-rm xdebug.ini
 
 install:
-  - git clone https://github.com/yclas/build-travis-ci build   # get required files
+  - git clone https://github.com/kotsios5/build-travis-ci build   # get required files
 
 before_script:
   - if [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then sh $TRAVIS_BUILD_DIR/build/php5-6.sh; fi
@@ -49,7 +49,7 @@ before_script:
   - sudo chown -R www-data:www-data /var/www/*
   - sudo chmod -R 755 /var/www/*
 
-  - sudo chmod -R 777 /var/www/yclas/oc/tests # permissions for codeception output, it doesnt work without this.
+  - sudo chmod -R 777 /var/www/yclas-test/oc/tests # permissions for codeception output, it doesnt work without this.
 
   # install
   - sh /var/www/yclas/build/install/install-yclas.sh
@@ -69,14 +69,14 @@ before_script:
 
 script: 
   # - set -e # don't stop on failure
-  - php /var/www/yclas/oc/codecept.phar run acceptance tests/acceptance/SetUsersPasswordsCept.php
+  - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/SetUsersPasswordsCept.php
   - sudo chmod 777 /var/www/yclas/oc/config/database.php
-  - php /var/www/yclas/oc/codecept.phar run acceptance tests/acceptance/UpdateDBCept.php
+  - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/UpdateDBCept.php
   - sudo chmod 755 /var/www/yclas/oc/config/database.php
-  - php /var/www/yclas/oc/codecept.phar run acceptance tests/acceptance/default
+  - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default
 
 after_failure:
-  # - cat /var/www/yclas/oc/tests/_output/{test-filename}.fail.html
+  # - cat /var/www/yclas-test/oc/tests/_output/{test-filename}.fail.html
 
   # configure notifications (email, IRC, campfire etc)
 notifications:
