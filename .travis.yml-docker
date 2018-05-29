@@ -1,0 +1,56 @@
+sudo: required
+dist: trusty
+language: php
+php:
+- 5.6
+- 7.0
+- 7.1
+- 7.2
+# addons:
+#   hosts:
+#   - reoc.lo
+env:
+  global:
+  - secure: isjWRm6/VGhwNmr9cs819e6vjoiD1HMCCiRl1xeJOvA8FSFFInuBnW2WZ1cW8WZOp/TwhlEmtpKtkrvyyMRnIqtRcOZkU469w4gJ3idmZbMmZCFPo+tH6O7Ax+QBYk6MSLBCvjLUbz0PFaK8LkwBQQb2HpmuwZvvKrwrp+2szLePLBVl0rzQOcOvYpJqqytMoF1jQ+k1EqjRpXdKVm5xy9z6Qtla/Z7UytTzoQi/xJx6X7KX9cfI//2dd59kJduLTq7YAHrH8fYHU+aqSlhanss0wOhD0ZEk6ziEyVmaDy07PC72U5cciSlnFsYITtQHDccUqb6frQXtiSfeFg5Bdrg5GomOR0yOR5Lz6a59r41Z0WRaAdNZoLyQZaYQVwGJrJRTWYEHK3RNgTEa/7YmKNSVvh/kmxvGQ/FligeG16DfGgmn5zBw+ndS1+tgmu2kW7ZfpuB/6BYTvcg6M1U5CHOBW4vyCook1i218rh6p3WhtimrSwDTWXlapvgRPJg7UrzwCdHQRdrRU5ujh6q4jy1Vh/65bCrcLYwu/cao1o9PuGe9cFOY/ljr0tXRCtuLPmeR0MG09cgzV7JVMqDklbzOvKsr+X1tnV0qu6GeQ5o7jLoz55pRqzio1I8Nz/0mIgMwCutq8MIRPbUnd/Eq6eGOL3/M9xKm6S0HEGFBNYQ=
+  - secure: Xxx5ua3PPL1mVK2ooNUqVEARozBlBuejjV8AcAyWEK2B8drRDcxJ9dy5ukOU2VtPTniXGH9CrWqtzeM9vDjw0xWMi5l/kOcZkquHeUKHRJwdOCEbuz1cnLRGHr9pSlWQ4QEWmf0sAc7lvih5JDMK/FylY8N91QWQ8gqgqNNggxGUB3xEIPF5KKbfFIK0eb4ifkuXKQfFdJL618GdJD6cs/X0k0KJyrt9UG8FRQWepEpFNMCXeELPIv69AZLZCQGpcxi/BSNMojR4UTwXTcWOLBoFBe6safhl8OgCqMtcUqqsnpdNsGEXRvw5v0Czxx4V+MgL74UWe7Nn7EIlhvFfdfe3SpqrDbHdPquSYzY+RDz7RBFGjIUNRkwsKwGVlN0AXcayduUwzdnkbBOBPLY4D17uux663D/uw3qXRvZNn6KBfo7eYxnz8AHsdxFCzJ+xn03bfdyerz4PtIiEv7fDj51NzvcbgaWZxQ1Ko/6CKP8ASNGO3cB8TI98SKDP4UajKQscWf3vjfgpQXvPgqCiHzVMmrOmPu8HBNwVao6aV5yq+WIQqF/PdCiBW/k7PbGaPv1lg7L3jkxdTFdHThGA3Ix82gWlZRjwcpJrQX4PIKvVpxGLQl1T2C+PDnYXA5VfTuR115JP+tdPAJL1WBExhhLkzEVNVoUJMJi5tuFmxhc=
+  - secure: i1qoW4+/vq/vEVHED6N/nflOGHqhYxJmbrt054l7cWpI5coe58DdjtrU09hhaBmokm+vkTqQZvPOXqb0qGcQysETbbRWOdDILXchcRqZX2emekOZrm9xV3C+FppGT/Q3owvxMZjq4s8OUraU73zxUWRcd25L7H/HKbAQsqg3TbuVtsAdeuaBPxA2GFMgeekWTnIBs+6d4A76nqBPHhQb7yX0BaHhtYp4eO9KfeHBGnyyFT+5rEBKSL2E/966/3sMajcgBQcFmphyKbhvY8l++ZzcHxdJaDT1pHxjDLkJ1ALZsdA85lfII0sWNrjfNkZiGRrNTHW2A9QujgUYajAnssFA9EhJR61SeZGhK/y5DamiqIVtvZh85f6jyvI8xY9tXU7V1yBNZuWPjFIC4cA1/27FsARyw0GYCtfDp0ZV1Ho6UGKabh3n1Vx5BS+jt4mgHxa5fKXTdkkdVzOi/MZKezv3iy4q0rxFCee+ogykIXXzG6VAhk5ze4JO0J7msJvgxPImKY29PBQB+kJezggcqQAlYhIxJwJLJons4hGrEogcQ401mrydJVC8TD6LKuHwVD6+Tr4JjYtx31s+fF2vpoD8p0r+wqYZUFNrK2J6MEy4juTjm+xbtFYjA31QEQS0ADOjprY2tgLBmFEl/v0uH91Z4fWM4X+CvCACTTbphYU=
+git:
+  submodules: false
+services:
+  - docker
+before_install:
+  # - phpenv config-rm xdebug.ini
+  - sudo service mysql stop
+
+  # Install Codeception
+  - sudo mkdir /codeception
+  - cd /codeception
+  - sudo wget https://codeception.com/codecept.phar
+  - sudo cp -r $TRAVIS_BUILD_DIR/oc/tests/. /codeception/tests/
+  - sudo cp $TRAVIS_BUILD_DIR/oc/codeception.yml /codeception/
+  - sudo chmod -R 777 /codeception
+install:
+  - sudo git clone https://github.com/kotsios5/docker-1.git /docker-1
+  - cd /docker-1
+  - sudo docker build -t yclas .
+script: 
+  # Run the image
+  - ID=$(sudo docker run -d --add-host reoc.lo:127.0.0.1 -v /var/lib/mysql -v $TRAVIS_BUILD_DIR:/var/www/ -p 80:80 -p 3306:3306 yclas /bin/bash -c "sudo sh /build/install/install-yclas.sh; ")
+  - curl reoc.lo
+  # Run the tests
+  - cd /codeception
+  - php codecept.phar run acceptance /codeception/tests/acceptance/SetUsersPasswordsCept.php
+  - php codecept.phar run acceptance /codeception/tests/acceptance/UpdateDBCept.php
+  - php codecept.phar run acceptance /codeception/tests/acceptance/default
+after_failure:
+  - sudo docker login -u$travis_user -p$travis_pass
+  - sudo docker commit -m 'commit from travis-ci' $ID kotsios/travis-ci-image:$TRAVIS_BUILD_NUMBER
+  - sudo docker push $travis_user/travis-ci-image:$TRAVIS_BUILD_NUMBER
+  - sudo docker logs --follow $ID
+
+notifications:
+  email:
+    recipients:
+      - $recipient_on_failure
+    on_success: never
+    on_failure: always

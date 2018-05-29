@@ -23,31 +23,34 @@ $(function(){
             }
         });
     });
+    // advertisement location is enabled?
+    if ($('#location-chained').length ) {
 
-    // create 1st location select
-    location_select = createLocationSelect();
-    // remove hidden class
-    $('#location-chained .select-location[data-level="0"]').parent('div').removeClass('hidden');
+        // create 1st location select
+        location_select = createLocationSelect();
+        // remove hidden class
+        $('#location-chained .select-location[data-level="0"]').parent('div').removeClass('hidden');
 
-    // load options for 1st location select
-    location_select.load(function(callback) {
-        $.ajax({
-            url: $('#location-chained').data('apiurl'),
-            type: 'GET',
-            data: {
-                "id_location_parent": 1,
-                "sort": 'order',
-            },
-            success: function(results) {
-                callback(results.locations);
-                if (results.locations.length === 0)
-                    $('#location-chained').closest('.form-group').hide();
-            },
-            error: function() {
-                callback();
-            }
+        // load options for 1st location select
+        location_select.load(function(callback) {
+            $.ajax({
+                url: $('#location-chained').data('apiurl'),
+                type: 'GET',
+                data: {
+                    "id_location_parent": 1,
+                    "sort": 'order',
+                },
+                success: function(results) {
+                    callback(results.locations);
+                    if (results.locations.length === 0)
+                        $('#location-chained').closest('.form-group').hide();
+                },
+                error: function() {
+                    callback();
+                }
+            });
         });
-    });
+    }
 
     // show custom fields
     if ($('#category-selected').val().length > 0) {
@@ -254,6 +257,7 @@ $('#location-edit button').click(function(){
 
 // sceditor
 $('textarea[name=description]:not(.disable-bbcode)').sceditor({
+    format: 'bbcode',
     plugins: "bbcode,plaintext",
     toolbar: "bold,italic,underline,strike,|left,center,right,justify|" +
     "bulletlist,orderedlist|link,unlink,youtube|source",
@@ -271,7 +275,7 @@ $("button[name=submit]").click(function(){
 
 function initLocationsGMap() {
     jQuery.ajax({
-        url: ("https:" == document.location.protocol ? "https:" : "http:") + "//cdn.jsdelivr.net/gmaps/0.4.15/gmaps.min.js",
+        url: ("https:" == document.location.protocol ? "https:" : "http:") + "//cdn.jsdelivr.net/gmaps/0.4.25/gmaps.min.js",
         dataType: "script",
         cache: true
     }).done(function() {
@@ -448,6 +452,8 @@ $('.fileinput').on('change.bs.fileinput', function() {
                 if (data.exif) {
                     rotation = data.exif.get('Orientation');
                     thumbnail.css('transform', rotate[rotation]);
+                    // Safari fix
+                    thumbnail.css("-webkit-transform", rotate[rotation]);
                 }
             }
         );

@@ -319,6 +319,7 @@
                             ))?>
                             <span class="help-block">
                                 <?=__("If you choose to use terms of service, you can select activate. And to edit content, select link 'Content' on your admin panel sidebar. Find page named 'Terms of service' click 'Edit'. In section 'Description' add content that suits you.")?>
+                                <a href="ttps://www.shareasale.com/r.cfm?b=854385&u=1782794&m=65338">If you need to generate your terms of service or privacy policy click here.</a>
                             </span>
                         </div>
 
@@ -889,7 +890,58 @@
                             <?= FORM::hidden($forms['auto_locate_distance']['key'], $forms['auto_locate_distance']['value']);?>
                         <?endif?>
                     </div>
+                    
                     <hr>
+                    
+                    <h4><?=__('Google Maps on Homepage')?>
+                        <a target="_blank" href="https://docs.yclas.com//">
+                            <i class="fa fa-question-circle"></i>
+                        </a>
+                    </h4>
+
+                    <div>
+                        <div class="form-group">
+                            <?=FORM::label($forms['homepage_map']['key'], __("Homepage Map"), array('class'=>'control-label', 'for'=>$forms['homepage_map']['key']))?>
+                            <?=FORM::select($forms['homepage_map']['key'], array('None', 'Top', 'Bottom'), $forms['homepage_map']['value'], array(
+                                'placeholder' => "None",
+                                'class' => 'form-control',
+                                'id' => $forms['homepage_map']['key'],
+                            ))?>
+                            <span class="help-block">
+                                <?=__("Select where to show the map in the homepage.")?>
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <?=FORM::label($forms['homepage_map_height']['key'], __('Homepage Map height'), array('class'=>'control-label', 'for'=>$forms['homepage_map_height']['key']))?>
+                            <?=FORM::input($forms['homepage_map_height']['key'], $forms['homepage_map_height']['value'], array(
+                                'placeholder' => "400",
+                                'class' => 'form-control',
+                                'id' => $forms['homepage_map_height']['key'],
+                                'type' => 'number',
+                                'data-rule-digits' => 'true',
+                            ))?>
+                            <span class="help-block">
+                                <?=__("Enter the height of the homepage map.")?>
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <?=FORM::label($forms['homepage_map_allowfullscreen']['key'], "Homepage Map full screen option", array('class'=>'control-label', 'for'=>$forms['homepage_map_allowfullscreen']['key']))?>
+                            <div class="radio radio-primary">
+                                <?=Form::radio($forms['homepage_map_allowfullscreen']['key'], 1, (bool) $forms['homepage_map_allowfullscreen']['value'], array('id' => $forms['homepage_map_allowfullscreen']['key'].'1'))?>
+                                <?=Form::label($forms['homepage_map_allowfullscreen']['key'].'1', __('Enabled'))?>
+                                <?=Form::radio($forms['homepage_map_allowfullscreen']['key'], 0, ! (bool) $forms['homepage_map_allowfullscreen']['value'], array('id' => $forms['homepage_map_allowfullscreen']['key'].'0'))?>
+                                <?=Form::label($forms['homepage_map_allowfullscreen']['key'].'0', __('Disabled'))?>
+                            </div>
+                            <span class="help-block">
+                                <?=__("Enable full screen option.")?>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <hr>
+
                     <p>
                         <?=FORM::button('submit', __('Save'), array('type'=>'submit', 'class'=>'btn btn-primary', 'action'=>Route::url('oc-panel',array('controller'=>'settings', 'action'=>'form'))))?>
                     </p>
@@ -1150,47 +1202,49 @@
 
                     <hr>
 
-                    <div>
-                        <h4><?=__('Instagram')?></h4>
-                        <hr>
-                        <div class="form-group">
-                            <?=FORM::label($forms['instagram']['key'], __('Auto Post'), array('class'=>'control-label', 'for'=>$forms['instagram']['key']))?>
-                            <div class="radio radio-primary">
-                                <?=Form::radio($forms['instagram']['key'], 1, (bool) $forms['instagram']['value'], array('id' => $forms['instagram']['key'].'1'))?>
-                                <?=Form::label($forms['instagram']['key'].'1', __('Enabled'))?>
-                                <?=Form::radio($forms['instagram']['key'], 0, ! (bool) $forms['instagram']['value'], array('id' => $forms['instagram']['key'].'0'))?>
-                                <?=Form::label($forms['instagram']['key'].'0', __('Disabled'))?>
+                    <?if(!method_exists('Core','yclas_url')):?>
+                        <div>
+                            <h4><?=__('Instagram')?></h4>
+                            <hr>
+                            <div class="form-group">
+                                <?=FORM::label($forms['instagram']['key'], __('Auto Post'), array('class'=>'control-label', 'for'=>$forms['instagram']['key']))?>
+                                <div class="radio radio-primary">
+                                    <?=Form::radio($forms['instagram']['key'], 1, (bool) $forms['instagram']['value'], array('id' => $forms['instagram']['key'].'1'))?>
+                                    <?=Form::label($forms['instagram']['key'].'1', __('Enabled'))?>
+                                    <?=Form::radio($forms['instagram']['key'], 0, ! (bool) $forms['instagram']['value'], array('id' => $forms['instagram']['key'].'0'))?>
+                                    <?=Form::label($forms['instagram']['key'].'0', __('Disabled'))?>
+                                </div>
+                                <span class="help-block">
+                                    <?=__("Enable to post new ads on instagram automatically.")?>
+                                </span>
                             </div>
-                            <span class="help-block">
-                                <?=__("Enable to post new ads on instagram automatically.")?>
-                            </span>
+                            <div class="form-group">
+                                <?=FORM::label($forms['instagram_username']['key'], __('Instagram Username'), array('class'=>'control-label', 'for'=>$forms['instagram_username']['key']))?>
+                                <?=FORM::input($forms['instagram_username']['key'], $forms['instagram_username']['value'], array(
+                                    'placeholder' => "",
+                                    'class' => 'tips form-control',
+                                    'id' => $forms['instagram_username']['key'],
+                                ))?>
+                                <span class="help-block">
+                                    <?=__("Instagram Username")?>
+                                </span>
+                            </div>
+                            <div class="form-group">
+                                <?=FORM::label($forms['instagram_password']['key'], __('Instagram Password'), array('class'=>'control-label', 'for'=>$forms['instagram_password']['key']))?>
+                                <?=FORM::input($forms['instagram_password']['key'], $forms['instagram_password']['value'], array(
+                                    'placeholder' => "",
+                                    'class' => 'tips form-control',
+                                    'type' => 'password',
+                                    'id' => $forms['instagram_password']['key'],
+                                ))?>
+                                <span class="help-block">
+                                    <?=__("Instagram Password")?>
+                                </span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <?=FORM::label($forms['instagram_username']['key'], __('Instagram Username'), array('class'=>'control-label', 'for'=>$forms['instagram_username']['key']))?>
-                            <?=FORM::input($forms['instagram_username']['key'], $forms['instagram_username']['value'], array(
-                                'placeholder' => "",
-                                'class' => 'tips form-control',
-                                'id' => $forms['instagram_username']['key'],
-                            ))?>
-                            <span class="help-block">
-                                <?=__("Instagram Username")?>
-                            </span>
-                        </div>
-                        <div class="form-group">
-                            <?=FORM::label($forms['instagram_password']['key'], __('Instagram Password'), array('class'=>'control-label', 'for'=>$forms['instagram_password']['key']))?>
-                            <?=FORM::input($forms['instagram_password']['key'], $forms['instagram_password']['value'], array(
-                                'placeholder' => "",
-                                'class' => 'tips form-control',
-                                'type' => 'password',
-                                'id' => $forms['instagram_password']['key'],
-                            ))?>
-                            <span class="help-block">
-                                <?=__("Instagram Password")?>
-                            </span>
-                        </div>
-                    </div>
 
-                    <hr>
+                        <hr>
+                    <?endif?>
 
                     <div>
                         <h4><?=__('Pinterest')?></h4>

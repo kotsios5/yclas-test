@@ -1,30 +1,32 @@
 // selectize for location select
 $(function(){
 
-    // create 1st location select
-    location_select = createLocationSelect();
-    // remove hidden class
-    $('#location-chained .select-location[data-level="0"]').parent('div').removeClass('hidden');
+    if($('#location-chained').length > 0){
+        // create 1st location select
+        location_select = createLocationSelect();
+        // remove hidden class
+        $('#location-chained .select-location[data-level="0"]').parent('div').removeClass('hidden');
 
-    // load options for 1st location select
-    location_select.load(function(callback) {
-        $.ajax({
-            url: $('#location-chained').data('apiurl'),
-            type: 'GET',
-            data: {
-                "id_location_parent": 1,
-                "sort": 'order',
-            },
-            success: function(results) {
-                callback(results.locations);
-                if (results.locations.length === 0)
-                    $('#location-chained').closest('.form-group').hide();
-            },
-            error: function() {
-                callback();
-            }
+        // load options for 1st location select
+        location_select.load(function(callback) {
+            $.ajax({
+                url: $('#location-chained').data('apiurl'),
+                type: 'GET',
+                data: {
+                    "id_location_parent": 1,
+                    "sort": 'order',
+                },
+                success: function(results) {
+                    callback(results.locations);
+                    if (results.locations.length === 0)
+                        $('#location-chained').closest('.form-group').hide();
+                },
+                error: function() {
+                    callback();
+                }
+            });
         });
-    });
+    }
 
 });
 
@@ -170,6 +172,8 @@ $('.fileinput').on('change.bs.fileinput', function() {
                 if (data.exif) {
                     rotation = data.exif.get('Orientation');
                     thumbnail.css('transform', rotate[rotation]);
+                    // Safari fix
+                    thumbnail.css("-webkit-transform", rotate[rotation]);
                 }
             }
         );

@@ -146,7 +146,7 @@ function decodeHtml(html) {
 function initAutoLocate() {
     if ($('input[name="auto_locate"]').length) {
         jQuery.ajax({
-            url: ("https:" == document.location.protocol ? "https:" : "http:") + "//cdn.jsdelivr.net/gmaps/0.4.15/gmaps.min.js",
+            url: ("https:" == document.location.protocol ? "https:" : "http:") + "//cdn.jsdelivr.net/gmaps/0.4.25/gmaps.min.js",
             dataType: "script",
             cache: true
         }).done(function() {
@@ -375,13 +375,14 @@ $(function(){
 });
 
 function getRate(from, to) {
-    
+
     var jqxhr = $.ajax({
-      url: 'https://api.fixer.io/latest',
+      url: 'http://data.fixer.io/api/latest',
       dataType: 'jsonp',
       data: {
         symbols: to,
-        base: from
+        base: from,
+        access_key: $('.curry').data('apikey')
       }
     });
 
@@ -581,7 +582,12 @@ $(function(){
 
 function getResizeValue(value) {
     if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-        return Math.round((value/3));
+        for (i = 1; i < 100; i++) {
+            resizeValue = Math.round((value / i));
+            if (resizeValue <= 400) {
+                return resizeValue;
+            }
+        }
     } else {
         return value;
     }
@@ -740,3 +746,12 @@ $(function(){
         });
     });
 });
+
+// Set the country code if is set on general.country
+// Whatsapp number input could appear on register and edit profile page (user custom field)
+if ($('input#cf_whatsapp').length) {
+    if ($("input#cf_whatsapp").attr('data-country-code') && !$('input#cf_whatsapp').val()) {
+        var country_code = $('input#cf_whatsapp').data('country-code');
+        $('input#cf_whatsapp').val('00'+country_code);
+    }
+}

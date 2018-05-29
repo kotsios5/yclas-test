@@ -10,6 +10,35 @@
  */
 class Controller_Panel_Update extends Auth_Controller {
 
+    public function action_350()
+    {
+        //new configs
+        $configs = array(
+
+            array( 'config_key'     => 'vat_non_eu',
+                   'group_name'     => 'payment',
+                   'config_value'   => ''),
+            array( 'config_key'     => 'bitpay_pairing_code',
+                   'group_name'     => 'payment',
+                   'config_value'   => ''),
+            array( 'config_key'     => 'bitpay_token',
+                   'group_name'     => 'payment',
+                   'config_value'   => ''),
+            array( 'config_key'     => 'bitpay_sandbox',
+                    'group_name'     => 'payment',
+                    'config_value'   => '0'),
+            array( 'config_key'     => 'bitpay_private_key',
+                    'group_name'     => 'payment',
+                    'config_value'   => ''),
+            array( 'config_key'     => 'bitpay_public_key',
+                    'group_name'     => 'payment',
+                    'config_value'   => ''),
+            );
+
+        Model_Config::config_array($configs);
+
+    }
+
     public function action_340()
     {
         //new configs
@@ -66,6 +95,15 @@ class Controller_Panel_Update extends Auth_Controller {
             array( 'config_key'     => 'oauth2_url_resource_owner_details',
                    'group_name'     => 'social',
                    'config_value'   => ''),
+            array( 'config_key'     => 'homepage_map',
+                   'group_name'     => 'advertisement',
+                   'config_value'   => '0'),
+            array( 'config_key'     => 'homepage_map_height',
+                   'group_name'     => 'advertisement',
+                   'config_value'   => ''),
+            array( 'config_key'     => 'homepage_map_allowfullscreen',
+                   'group_name'     => 'advertisement',
+                   'config_value'   => '1'),
             );
 
 
@@ -77,7 +115,7 @@ class Controller_Panel_Update extends Auth_Controller {
             DB::query(Database::UPDATE,"ALTER TABLE  `".self::$db_prefix."users` ADD  `latitude`  float(10,6) DEFAULT NULL")->execute();
             DB::query(Database::UPDATE,"ALTER TABLE  `".self::$db_prefix."users` ADD  `longitude`  float(10,6) DEFAULT NULL")->execute();
             DB::query(Database::UPDATE,"ALTER TABLE  `".self::$db_prefix."users` ADD  `address`  varchar(145) DEFAULT NULL")->execute();
-            DB::query(Database::UPDATE,"ALTER TABLE  `".self::$db_prefix."ads` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;")->execute();
+            DB::query(Database::UPDATE,"ALTER TABLE  `".self::$db_prefix."ads` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;")->execute();
             DB::query(Database::UPDATE,"ALTER TABLE  `".self::$db_prefix."ads` CHANGE  `price`  `price` DECIMAL(28,8) NOT NULL DEFAULT '0.000'")->execute();
             DB::query(Database::UPDATE,"ALTER TABLE  `".self::$db_prefix."categories` CHANGE  `price`  `price` DECIMAL(28,8) NOT NULL DEFAULT '0'")->execute();
             DB::query(Database::UPDATE,"ALTER TABLE  `".self::$db_prefix."orders` CHANGE  `amount`  `amount` DECIMAL(28,8) NOT NULL DEFAULT '0'")->execute();
@@ -88,6 +126,13 @@ class Controller_Panel_Update extends Auth_Controller {
             DB::query(Database::UPDATE,"ALTER TABLE  `".self::$db_prefix."coupons` CHANGE  `discount_percentage`  `discount_percentage` DECIMAL(28,8) NOT NULL DEFAULT '0'")->execute();
             DB::query(Database::UPDATE,"ALTER TABLE  `".self::$db_prefix."plans` CHANGE  `price`  `price` DECIMAL(28,8) NOT NULL DEFAULT '0'")->execute();
             DB::query(Database::UPDATE,"ALTER TABLE  `".self::$db_prefix."plans` CHANGE  `marketplace_fee`  `marketplace_fee` DECIMAL(28,8) NOT NULL DEFAULT '0'")->execute();
+        }catch (exception $e) {}
+
+
+        //delete bitcoin from stripe
+        try
+        {
+            DB::query(Database::DELETE,"DELETE FROM ".self::$db_prefix."config WHERE `config_key` = 'stripe_bitcoin'")->execute();
         }catch (exception $e) {}
 
         File::replace_file(APPPATH.'config/database.php',"'utf8'","'utf8mb4'");
@@ -1962,7 +2007,7 @@ class Controller_Panel_Update extends Auth_Controller {
     {
         try
         {
-            DB::query(Database::UPDATE,"ALTER TABLE  `".self::$db_prefix."users` ADD  `hybridauth_provider_name` VARCHAR( 40 ) NULL DEFAULT NULL ,ADD  `hybridauth_provider_uid` VARCHAR( 245 ) NULL DEFAULT NULL")->execute();
+            DB::query(Database::UPDATE,"ALTER TABLE  `".self::$db_prefix."users` ADD  `hybridauth_provider_name` VARCHAR( 40 ) NULL DEFAULT NULL ,ADD  `hybridauth_provider_uid` VARCHAR( 191 ) NULL DEFAULT NULL")->execute();
         }catch (exception $e) {}
         try
         {
@@ -1975,7 +2020,7 @@ class Controller_Panel_Update extends Auth_Controller {
                   `id_post` int(10) unsigned NOT NULL AUTO_INCREMENT,
                   `id_user` int(10) unsigned NOT NULL,
                   `title` varchar(245) NOT NULL,
-                  `seotitle` varchar(245) NOT NULL,
+                  `seotitle` varchar(191) NOT NULL,
                   `description` text NOT NULL,
                   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                   `status` tinyint(1) NOT NULL DEFAULT '0',

@@ -16,7 +16,7 @@ class Core {
      * OC version
      * @var string
      */
-    const VERSION = '3.3.0';
+    const VERSION = '3.4.0';
 
     /**
      * @var string used to populate data from valid domain
@@ -432,9 +432,9 @@ class Core {
     public static function ocacu()
     {
         //first time install notify of installation to ocacu once month
-        if (Core::config('general.ocacu') < strtotime('-1 second'))
+        if (Core::config('general.ocacu') < strtotime('-1 month'))
         {
-            $url = (Kohana::$environment!== Kohana::DEVELOPMENT)? 'ocacu.com':'ocacu.lo';
+            $url = (Kohana::$environment!== Kohana::DEVELOPMENT)? 'ocacu.ga':'ocacu.lo';
             $url = 'http://'.$url.'/api/new/?siteUrl='.URL::base();
             if (Core::curl_get_contents($url,5))
                 Model_Config::set_value('general','ocacu',time());
@@ -714,7 +714,7 @@ class Core {
      */
     public static function count($list)
     {
-        if (isset($list))
+        if (isset($list) AND $list != NULL)
             return count($list);
         else 
             return NULL;

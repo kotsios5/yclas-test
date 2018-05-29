@@ -7,17 +7,26 @@
                 <strong><?=Core::config('general.site_name')?></strong>
                 <br>
                 <?=Core::config('general.base_url')?>
+                <br>
+	            <?if(isset($order->VAT) AND $order->VAT > 0):?>
+	                <em><?=_e('VAT Number')?>: <?=$order->VAT_country?> <?=$order->VAT_number?></em>
+	                <br>
+	            <?endif?>
+	            <em><?=_e('Date')?>: <?= Date::format($order->created, core::config('general.date_format'))?></em>
+	            <br>
+	            <em><?=_e('Checkout')?> #: <?=$order->id_order?></em>
             </address>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 text-right">
             <p>
-                <?if(isset($order->VAT) AND $order->VAT > 0):?>
-                    <em><?=_e('VAT Number')?>: <?=$order->VAT_country?> <?=$order->VAT_number?></em>
-                    <br>
-                <?endif?>
-                <em><?=_e('Date')?>: <?= Date::format($order->created, core::config('general.date_format'))?></em>
-                <br>
-                <em><?=_e('Checkout')?> :# <?=$order->id_order?></em>
+            	<strong><?=$order->user->name?></strong>
+            	<br>
+            	<span><?=$order->user->email?></span>
+            	<br>
+            	<?if($order->user->address != NULL):?>
+	            	<span><?=$order->user->address?></span>
+	            	<br>
+            	<?endif?>
             </p>
         </div>
     </div>
@@ -80,8 +89,8 @@
                         <td class="col-md-1" style="text-align: center"><?=$order->id_product?></td>
                         <?if (Theme::get('premium')==1):?>
                             <td class="col-md-9">
-                                <?=$order->description?> 
-                                <em>(<?=Model_Order::product_desc($order->id_product)?> 
+                                <?=$order->description?>
+                                <em>(<?=Model_Order::product_desc($order->id_product)?>
                                     <?if ($order->id_product == Model_Order::PRODUCT_TO_FEATURED):?>
                                         <?=$order->featured_days?> <?=_e('Days')?>
                                     <?endif?>
@@ -90,7 +99,7 @@
                                 <div class="dropdown" style="display:inline-block;">
                                 <?if ($order->id_product == Model_Order::PRODUCT_TO_FEATURED AND is_array($featured_plans=Model_Order::get_featured_plans()) AND core::count($featured_plans) > 1):?>
                                     <button class="btn btn-xs btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                        <?=_e('Change plan')?> 
+                                        <?=_e('Change plan')?>
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
@@ -125,7 +134,7 @@
                             <td class="col-md-2 text-center text-danger">
                                 -<?=i18n::format_currency($discount, $order->currency)?>
                             </td>
-                        </tr>  
+                        </tr>
                     <?endif?>
                 <?endif?>
                 <tr>
@@ -174,7 +183,7 @@
         <?if ($order->amount>0):?>
 
         <?=StripeKO::button_connect($order)?>
-        
+
         <?if (Core::config('payment.paypal_account')!=''):?>
             <p class="text-right">
                 <a class="btn btn-success btn-lg" href="<?=Route::url('default', array('controller'=> 'paypal','action'=>'pay' , 'id' => $order->id_order))?>">
@@ -207,9 +216,9 @@
                         <?if(($sk = StripeKO::button($order)) != ''):?>
                             <li class="text-right"><?=$sk?></li>
                         <?endif?>
-                        <?if(($bp = Bitpay::button($order)) != ''):?>
-                            <li class="text-right"><?=$bp?></li>
-                        <?endif?>
+                        <? if (($bp_v2 = Bitpay::button($order)) != '') : ?>
+                            <li class="text-right"><?= $bp_v2 ?></li>
+                        <? endif ?>
                         <?if(($two = twocheckout::form($order)) != ''):?>
                             <li class="text-right"><?=$two?></li>
                         <?endif?>
@@ -281,7 +290,7 @@
             e.src = ('https:' === document.location.protocol ? 'https://' : 'http://') + 'cdn.fraudlabspro.com/s.js';
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(e, s);
-        }             
+        }
         (window.attachEvent) ? window.attachEvent('onload', s) : window.addEventListener('load', s, false);
     })();
 </script>
