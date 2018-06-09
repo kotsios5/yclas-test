@@ -52,7 +52,7 @@ before_script:
   - sudo chmod -R 777 /var/www/yclas-test/oc/tests # permissions for codeception output, it doesnt work without this.
 
   # install
-  - sh /var/www/yclas/build/install/install-yclas.sh
+  - sh /var/www/yclas-test/build/install/install-yclas.sh
 
   # Install postfix
   - sudo debconf-set-selections <<< "postfix postfix/mailname string reoc.lo"
