@@ -44,7 +44,7 @@ before_script:
   - sudo cp $TRAVIS_BUILD_DIR/build/install/robots /var/www/yclas-test/robots.txt
   - sudo cp $TRAVIS_BUILD_DIR/build/install/sitemap /var/www/yclas-test/sitemap.xml
   - sudo cp $TRAVIS_BUILD_DIR/build/install/htaccess-install /var/www/yclas-test/.htaccess
-  - mysql -uroot -p1234 openclassifieds < $TRAVIS_BUILD_DIR/build/install/openclassifieds.sql
+  - mysql -uroot openclassifieds < $TRAVIS_BUILD_DIR/build/install/openclassifieds.sql
 
   # Enable mod_rewrite
   - sudo a2enmod rewrite
