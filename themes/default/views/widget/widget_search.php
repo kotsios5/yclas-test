@@ -10,12 +10,12 @@
     <?= FORM::open(Route::url('search'), array('class'=>'form-horizontal', 'method'=>'GET', 'action'=>'','enctype'=>'multipart/form-data'))?>
         <!-- if categories on show selector of categories -->
         <div class="form-group">
-            <div class="col-xs-12">  
+            <div class="col-xs-12">
                 <?= FORM::label('advertisement', _e('Advertisement Title'), array('class'=>'', 'for'=>'title'))?>
                 <input type="text" id="title" name="title" class="form-control" value="" placeholder="<?=__('Search')?>">
             </div>
         </div>
-        
+
         <?if($widget->advanced != FALSE):?>
             <?if($widget->cat_items !== NULL):?>
                 <div class="form-group">
@@ -25,25 +25,25 @@
                             <option></option>
                             <?function lili_search($item, $key, $params){?>
                                 <?if (core::config('general.search_multi_catloc')):?>
-                                    <option value="<?=$params['cats'][$key]['seoname']?>" data-id="<?=$params['cats'][$key]['id']?>" <?=(is_array($params['selected_category']) AND in_array($params['cats'][$key]['seoname'], $params['selected_category']))?"selected":''?> ><?=$params['cats'][$key]['name']?></option>
+                                    <option value="<?=$params['cats'][$key]['seoname']?>" data-id="<?=$params['cats'][$key]['id']?>" <?=(is_array($params['selected_category']) AND in_array($params['cats'][$key]['seoname'], $params['selected_category']))?"selected":''?> ><?=$params['cats'][$key]['translate_name']?></option>
                                 <?else:?>
-                                    <option value="<?=$params['cats'][$key]['seoname']?>" data-id="<?=$params['cats'][$key]['id']?>" <?=($params['selected_category'] == $params['cats'][$key]['seoname'])?"selected":''?> ><?=$params['cats'][$key]['name']?></option>
+                                    <option value="<?=$params['cats'][$key]['seoname']?>" data-id="<?=$params['cats'][$key]['id']?>" <?=($params['selected_category'] == $params['cats'][$key]['seoname'])?"selected":''?> ><?=$params['cats'][$key]['translate_name']?></option>
                                 <?endif?>
                                 <?if (core::count($item)>0):?>
-                                    <optgroup label="<?=$params['cats'][$key]['name']?>">  
+                                    <optgroup label="<?=$params['cats'][$key]['translate_name']?>">
                                         <? if (is_array($item)) array_walk($item, 'lili_search', array('cats' => $params['cats'], 'selected_category' => $params['selected_category']));?>
                                     </optgroup>
                                 <?endif?>
                             <?}
-                            $cat_order = $widget->cat_order_items; 
+                            $cat_order = $widget->cat_order_items;
                             if (is_array($cat_order))
                                 array_walk($cat_order , 'lili_search', array('cats' => $widget->cat_items, 'selected_category' => $widget->selected_category));?>
-                        </select> 
+                        </select>
                     </div>
                 </div>
             <?endif?>
             <!-- end categories/ -->
-            
+
             <!-- locations -->
             <?if($widget->loc_items !== NULL):?>
                 <?if(core::count($widget->loc_items) > 1 AND core::config('advertisement.location') != FALSE):?>
@@ -59,12 +59,12 @@
                                         <option value="<?=$params['locs'][$key]['seoname']?>" data-id="<?=$params['locs'][$key]['id']?>" <?=($params['selected_location'] == $params['locs'][$key]['seoname'])?"selected":''?> ><?=$params['locs'][$key]['name']?></option>
                                     <?endif?>
                                     <?if (core::count($item)>0):?>
-                                        <optgroup label="<?=$params['locs'][$key]['name']?>">  
+                                        <optgroup label="<?=$params['locs'][$key]['name']?>">
                                             <? if (is_array($item)) array_walk($item, 'lolo_search', array('locs' => $params['locs'], 'selected_location' => $params['selected_location']));?>
                                         </optgroup>
                                     <?endif?>
                                 <?}
-                                $loc_order_search = $widget->loc_order_items; 
+                                $loc_order_search = $widget->loc_order_items;
                                 if (is_array($loc_order_search))
                                     array_walk($loc_order_search , 'lolo_search', array('locs' => $widget->loc_items, 'selected_location' => $widget->selected_location));?>
                             </select>
@@ -72,15 +72,15 @@
                     </div>
                 <?endif?>
             <?endif?>
-    
+
             <?if(core::config('advertisement.price')):?>
                 <div class="form-group">
-                    <div class="col-xs-12"> 
+                    <div class="col-xs-12">
                         <label class="" for="price-min"><?=_e('Price from')?> </label>
                         <input type="text" id="price-min" name="price-min" class="form-control" value="<?=core::get('price-min')?>" placeholder="<?=__('Price from')?>">
                     </div>
                 </div>
-            
+
                 <div class="form-group">
                     <div class="col-xs-12">
                         <label class="" for="price-max"><?=_e('Price to')?></label>
@@ -118,7 +118,7 @@
                             'tooltip'   => (isset($field['tooltip']))? $field['tooltip'] : "",
                             'default'   => $field['values'],
                             'options'   => (!is_array($field['values']))? $field['values'] : $select,
-                            ),core::get('cfuser_'.$name), FALSE, TRUE)?> 
+                            ),core::get('cfuser_'.$name), FALSE, TRUE)?>
                         </div>
                     </div>
                 <?endif?>
@@ -126,7 +126,7 @@
             <!-- /endcustom fields -->
         <?endif?>
         <div class="clearfix"></div>
-    
-        <?= FORM::button('submit', _e('Search'), array('type'=>'submit', 'class'=>'btn btn-primary'))?> 
+
+        <?= FORM::button('submit', _e('Search'), array('type'=>'submit', 'class'=>'btn btn-primary'))?>
     <?= FORM::close()?>
 </div>

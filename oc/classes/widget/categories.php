@@ -13,12 +13,12 @@ class Widget_Categories extends Widget
 {
 
 	public function __construct()
-	{	
+	{
 
 		$this->title = __('Categories');
 		$this->description = __('Display categories');
 
-		$this->fields = array(	
+		$this->fields = array(
 						 		'categories_title'  => array(	'type'		=> 'text',
 						 		  						'display'	=> 'text',
 						 		  						'label'		=> __('Categories title displayed'),
@@ -31,13 +31,13 @@ class Widget_Categories extends Widget
     /**
      * get the title for the widget
      * @param string $title we will use it for the loaded widgets
-     * @return string 
+     * @return string
      */
     public function title($title = NULL)
     {
         return parent::title($this->categories_title);
     }
-	
+
 	/**
 	 * Automatically executed before the widget action. Can be used to set
 	 * class properties, do authorization checks, and execute other custom code.
@@ -52,7 +52,7 @@ class Widget_Categories extends Widget
         if (Model_Category::current()->loaded())
         {
     	    $category = Model_Category::current()->id_category; // id_category
-    	    
+
     	    //list of children of current category
             // if list_cat dosent have siblings take brothers
             $list_cat = $cat->where('id_category_parent','=',$category)->order_by('order','asc')->cached()->find_all();
@@ -65,9 +65,11 @@ class Widget_Categories extends Widget
 
             // array with name and seoname of a category and his parent. Is to build breadcrumb in widget
     	   	$current_and_parent = array('name'			=> Model_Category::current()->name,
+                                        'translate_name' => Model_Category::current()->translate_name(),
                                         'id'            => Model_Category::current()->id_category,
     	    					        'seoname'		=> Model_Category::current()->seoname,
     	    					        'parent_name'	=> $cat_parent_deep->name,
+    	    					        'parent_translate_name'	=> $cat_parent_deep->translate_name(),
                                         'id_parent'     => $cat_parent_deep->id_category_parent,
     	    					        'parent_seoname'=> $cat_parent_deep->seoname);
        	}
@@ -76,7 +78,7 @@ class Widget_Categories extends Widget
 			$list_cat = $cat->where('id_category_parent','=',1)->order_by('order','asc')->cached()->find_all();
 			$current_and_parent = NULL;
         }
-        
+
 
 		$this->cat_items = $list_cat;
 		$this->cat_breadcrumb = $current_and_parent;

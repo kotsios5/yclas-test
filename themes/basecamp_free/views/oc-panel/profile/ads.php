@@ -18,7 +18,7 @@
 							<?if($ad->get_first_image() !== NULL):?>
 								<img src="<?=$ad->get_first_image()?>" alt="<?=HTML::chars($ad->title)?>" />
 							<?else:?>
-								<img data-src="holder.js/<?=core::config('image.width_thumb')?>x<?=core::config('image.height_thumb')?>?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->name, 'size' => 14, 'auto' => 'yes')))?>" alt="<?=HTML::chars($ad->title)?>">
+								<img data-src="holder.js/<?=core::config('image.width_thumb')?>x<?=core::config('image.height_thumb')?>?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->translate_name(), 'size' => 14, 'auto' => 'yes')))?>" alt="<?=HTML::chars($ad->title)?>">
 							<?endif?>
 							</div>
 						</div>

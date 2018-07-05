@@ -18,30 +18,30 @@ class Controller_Panel_Location extends Auth_Crud {
     /**
      * overwrites the default crud index
      * @param  string $view nothing since we don't use it
-     * @return void      
+     * @return void
      */
     public function action_index($view = NULL)
     {
         //template header
         $this->template->title  = __('Locations');
 
-        $this->template->styles  = array('css/sortable.css' => 'screen', 
+        $this->template->styles  = array('css/sortable.css' => 'screen',
                                          '//cdn.jsdelivr.net/bootstrap.tagsinput/0.3.9/bootstrap-tagsinput.css' => 'screen');
         $this->template->scripts['footer'][] = 'js/jquery-sortable-min.js';
         $this->template->scripts['footer'][] = 'js/oc-panel/locations.js';
         $this->template->scripts['footer'][] = '//cdn.jsdelivr.net/bootstrap.tagsinput/0.3.9/bootstrap-tagsinput.min.js';
-        
+
         if (intval(Core::get('id_location', 1)) > 0)
         {
             $location = new Model_Location(intval(Core::get('id_location', 1)));
-            
+
             if ($location->loaded())
             {
                 if ($location->parent->loaded() AND $location->parent->id_location != 1)
                 {
                     Breadcrumbs::add(Breadcrumb::factory()->set_title($location->parent->name)->set_url(Route::url('oc-panel',array('controller'=>'location','action'=>''.'?id_location='.$location->parent->id_location))));
                 }
-                
+
                 $locs = new Model_Location();
                 $locs = $locs->where('id_location_parent','=',Core::get('id_location', 1))->order_by('order','asc')->find_all()->cached()->as_array('id_location');
             }
@@ -51,7 +51,7 @@ class Controller_Panel_Location extends Auth_Crud {
                 $this->redirect(Route::get($this->_route_name)->uri(array('controller'=> Request::current()->controller())));
             }
         }
-        
+
         $this->template->content = View::factory('oc-panel/pages/locations/index',array('locs' => $locs,'location' => $location));
     }
 
@@ -62,13 +62,13 @@ class Controller_Panel_Location extends Auth_Crud {
     {
 
         $this->template->title = __('New').' '.__($this->_orm_model);
-        
+
         $this->template->scripts['footer'][] = 'js/gmaps.min.js';
         $this->template->scripts['footer'][] = 'js/oc-panel/locations-gmap.js';
         $this->template->scripts['async_defer'][] = '//maps.google.com/maps/api/js?libraries=geometry&v=3&key='.core::config("advertisement.gm_api_key").'&callback=initLocationsGMap';
 
         $location = new Model_Location();
-        
+
         if ($post = $this->request->post())
         {
             //check if the parent is loaded/exists avoiding errors
@@ -80,7 +80,7 @@ class Controller_Panel_Location extends Auth_Crud {
                 $this->redirect(Route::get($this->_route_name)->uri(array('controller'=> Request::current()->controller(),'action'=>'create')));
             }
 
-            foreach ($post as $name => $value) 
+            foreach ($post as $name => $value)
             {
                 //for description we accept the HTML as comes...a bit risky but only admin can
                 if ($name=='description')
@@ -102,20 +102,20 @@ class Controller_Panel_Location extends Auth_Crud {
                 $location->seoname = $post['seoname'];
             }
 
-            try 
+            try
             {
                 $location->save();
-            } 
-            catch (Exception $e) 
+            }
+            catch (Exception $e)
             {
-                throw HTTP_Exception::factory(500,$e->getMessage());  
+                throw HTTP_Exception::factory(500,$e->getMessage());
             }
 
             $this->action_deep();
             Model_Location::cache_delete();
 
             Alert::set(Alert::SUCCESS, __('Location created'));
-            
+
             $this->redirect(Route::get($this->_route_name)->uri(array('controller'=> Request::current()->controller())).(Core::post('id_location_parent') ? '?id_location='.Core::post('id_location_parent') : NULL));
 
        }
@@ -126,7 +126,7 @@ class Controller_Panel_Location extends Auth_Crud {
         {
             $locations[$location['id']] = $location['name'];
         }
-    
+
         return $this->render('oc-panel/pages/locations/create', compact('locations'));
 
     }
@@ -136,14 +136,14 @@ class Controller_Panel_Location extends Auth_Crud {
     public function action_update()
     {
         $this->template->title = __('Update').' '.__($this->_orm_model).' '.$this->request->param('id');
-    
+
         $this->template->scripts['footer'][] = 'js/gmaps.min.js';
         $this->template->scripts['footer'][] = 'js/oc-panel/locations-gmap.js';
         $this->template->scripts['async_defer'][] = '//maps.google.com/maps/api/js?libraries=geometry&v=3&key='.core::config("advertisement.gm_api_key").'&callback=initLocationsGMap&language='.i18n::get_gmaps_language(i18n::$locale);
 
         $form = new FormOrm($this->_orm_model,$this->request->param('id'));
         $location = new Model_Location($this->request->param('id'));
-        
+
         if ($this->request->post())
         {
             if ( $success = $form->submit() )
@@ -167,7 +167,7 @@ class Controller_Panel_Location extends Auth_Crud {
                 try {
                     $form->object->save();
                 } catch (Exception $e) {
-                    throw HTTP_Exception::factory(500,$e->getMessage());  
+                    throw HTTP_Exception::factory(500,$e->getMessage());
                 }
 
                 $form->object->parent_deep =  $form->object->get_deep();
@@ -175,7 +175,7 @@ class Controller_Panel_Location extends Auth_Crud {
                 try {
                     $form->object->save();
                 } catch (Exception $e) {
-                    throw HTTP_Exception::factory(500,$e->getMessage());  
+                    throw HTTP_Exception::factory(500,$e->getMessage());
                 }
 
                 $this->action_deep();
@@ -185,7 +185,7 @@ class Controller_Panel_Location extends Auth_Crud {
                     $location->rename_icon($form->object->seoname);
 
                 Model_Location::cache_delete();
-                
+
                 Alert::set(Alert::SUCCESS, __('Item updated'));
                 $this->redirect(Route::get($this->_route_name)->uri(array('controller'=> Request::current()->controller())));
             }
@@ -194,13 +194,13 @@ class Controller_Panel_Location extends Auth_Crud {
                 Alert::set(Alert::ERROR, __('Check form for errors'));
             }
         }
-    
+
         return $this->render('oc-panel/pages/locations/update', array('form' => $form, 'location' => $location));
     }
 
     /**
      * saves the location in a specific order and change the parent
-     * @return void 
+     * @return void
      */
     public function action_saveorder()
     {
@@ -217,11 +217,11 @@ class Controller_Panel_Location extends Auth_Crud {
             //saves the current location
             $loc->id_location_parent = core::get('id_location_parent');
             $loc->parent_deep        = core::get('deep');
-            
+
 
             //saves the locations in the same parent the new orders
             $order = 0;
-            foreach (core::get('brothers') as $id_loc) 
+            foreach (core::get('brothers') as $id_loc)
             {
                 $id_loc = substr($id_loc,3);//removing the li_ to get the integer
 
@@ -231,7 +231,7 @@ class Controller_Panel_Location extends Auth_Crud {
                     $c = new Model_Location($id_loc);
                     $c->parent_deep     = core::get('deep');
                     $c->order           = $order;
-                    
+
                     try {
                         $c->save();
                     } catch (Exception $e) {
@@ -301,7 +301,7 @@ class Controller_Panel_Location extends Auth_Crud {
                                 ->set(array('id_location' => $id_location_parent))
                                 ->where('id_location','=',$location->id_location)
                                 ->execute();
-                    
+
                     try
                     {
                         $location_name = $location->name;
@@ -311,7 +311,7 @@ class Controller_Panel_Location extends Auth_Crud {
                         //recalculating the deep of all the categories
                         $this->action_deep();
                         Model_Location::cache_delete();
-                        Alert::set(Alert::SUCCESS, sprintf(__('Location %s deleted'), $location_name));                        
+                        Alert::set(Alert::SUCCESS, sprintf(__('Location %s deleted'), $location_name));
                     }
                     catch (Exception $e)
                     {
@@ -322,14 +322,14 @@ class Controller_Panel_Location extends Auth_Crud {
                      Alert::set(Alert::SUCCESS, __('Location not deleted'));
             }
         }
-        
-        HTTP::redirect(Route::url('oc-panel',array('controller'  => 'location','action'=>'index')));  
+
+        HTTP::redirect(Route::url('oc-panel',array('controller'  => 'location','action'=>'index')));
 
     }
 
     /**
      * Creates multiple locations just with name
-     * @return void      
+     * @return void
      */
     public function action_multy_locations()
     {
@@ -370,26 +370,26 @@ class Controller_Panel_Location extends Auth_Crud {
             else
                 Alert::set(Alert::INFO, __('Select some locations first.'));
         }
-        
+
         HTTP::redirect(Route::url('oc-panel',array('controller'  => 'location','action'=>'index')).'?id_location='.Core::get('id_location', 1));
     }
-    
+
     /**
      * Import multiple locations from geonames
-     * @return void      
+     * @return void
      */
     public function action_geonames()
     {
         $this->template->title  = __('Geonames');
 
         $this->template->scripts['footer'][] = URL::base('http').'themes/default/js/oc-panel/locations-geonames.js';
-        
+
         $location = NULL;
 
         if (intval(Core::get('id_location')) > 0)
         {
             $location = new Model_Location(Core::get('id_location'));
-            
+
             if ($location->loaded())
             {
                 Breadcrumbs::add(Breadcrumb::factory()->set_title($location->name)->set_url(Route::url('oc-panel',array('controller'=>'location','action'=>'geonames')).'?id_location='.$location->id_location));
@@ -400,18 +400,18 @@ class Controller_Panel_Location extends Auth_Crud {
                 $this->redirect(Route::get($this->_route_name)->uri(array('controller'=> Request::current()->controller())));
             }
         }
-    
+
         //update the elements related to that ad
         if (core::post('geonames_locations') !== "")
         {
-    
+
             $geonames_locations = json_decode(core::post('geonames_locations'));
-            
+
             if (core::count($geonames_locations) > 0)
             {
                 $obj_location = new Model_Location();
                 $locations_array = array();
-    
+
                 $insert = DB::insert('locations', array('name', 'seoname', 'id_location_parent', 'latitude', 'longitude', 'id_geoname', 'fcodename_geoname', 'order'));
 
                 $i = 1;
@@ -429,7 +429,7 @@ class Controller_Panel_Location extends Auth_Crud {
                                                         isset($location->id_geoname)?$location->id_geoname:NULL,
                                                         isset($location->fcodename_geoname)?$location->fcodename_geoname:NULL,
                                                         $i));
-                        
+
                         $locations_array[] = $location->seoname;
 
                         $i++;
@@ -445,12 +445,12 @@ class Controller_Panel_Location extends Auth_Crud {
 
                 HTTP::redirect(Route::url('oc-panel',array('controller'  => 'location','action'=>'index')).'?id_location='.Core::get('id_location', 1));
             }
-    
+
         }
         else
             Alert::set(Alert::INFO, __('Select some locations first.'));
-        
-        
+
+
         $this->template->content = View::factory('oc-panel/pages/locations/geonames',array('location' => $location));
     }
 
@@ -461,14 +461,14 @@ class Controller_Panel_Location extends Auth_Crud {
     public function action_deep()
     {
         //clean the cache so we get updated results
-        Model_Category::cache_delete();    
+        Model_Category::cache_delete();
 
         //getting all the cats as array
         $locs_arr  = Model_Location::get_as_array();
 
         $locs = new Model_Location();
         $locs = $locs->order_by('order','asc')->find_all()->cached()->as_array('id_location');
-        foreach ($locs as $loc) 
+        foreach ($locs as $loc)
         {
             $deep = 0;
 
@@ -476,7 +476,7 @@ class Controller_Panel_Location extends Auth_Crud {
             $id_location_parent = $locs_arr[$loc->id_location]['id_location_parent'];
 
             //counting till we find the begining
-            while ($id_location_parent != 1 AND $id_location_parent != 0 AND $deep<10) 
+            while ($id_location_parent != 1 AND $id_location_parent != 0 AND $deep<10)
             {
                 $id_location_parent = $locs_arr[$id_location_parent]['id_location_parent'];
                 $deep++;
@@ -490,7 +490,7 @@ class Controller_Panel_Location extends Auth_Crud {
             }
         }
         //Alert::set(Alert::INFO, __('Success'));
-        //HTTP::redirect(Route::url('oc-panel',array('controller'  => 'location','action'=>'index'))); 
+        //HTTP::redirect(Route::url('oc-panel',array('controller'  => 'location','action'=>'index')));
     }
 
 	public function action_icon()
@@ -500,9 +500,9 @@ class Controller_Panel_Location extends Auth_Crud {
             $icon = $_FILES['location_icon']; //file post
         else
             $this->redirect(Route::get($this->_route_name)->uri(array('controller'=> Request::current()->controller(),'action'=>'index')));
-        
+
         $location = new Model_Location($this->request->param('id'));
-        
+
         if (core::config('image.aws_s3_active'))
         {
             require_once Kohana::find_file('vendor', 'amazon-s3-php-class/S3','php');
@@ -510,12 +510,12 @@ class Controller_Panel_Location extends Auth_Crud {
         }
 
         if (core::post('icon_delete')  AND $location->delete_icon()==TRUE )
-        {            
+        {
             Alert::set(Alert::SUCCESS, __('Icon deleted.'));
             $this->redirect(Route::get($this->_route_name)->uri(array('controller'=> Request::current()->controller(),'action'=>'update','id'=>$location->id_location)));
         }// end of icon delete
 
-        if ( 
+        if (
             ! Upload::valid($icon) OR
             ! Upload::not_empty($icon) OR
             ! Upload::type($icon, explode(',',core::config('image.allowed_formats'))) OR
@@ -525,7 +525,7 @@ class Controller_Panel_Location extends Auth_Crud {
             {
                 Alert::set(Alert::ALERT, $icon['name'].' '.sprintf(__('Is not valid format, please use one of this formats "%s"'),core::config('image.allowed_formats')));
 				$this->redirect(Route::get($this->_route_name)->uri(array('controller'=> Request::current()->controller(),'action'=>'update','id'=>$location->id_location)));
-            } 
+            }
             if ( ! Upload::size($icon, core::config('image.max_image_size').'M'))
             {
                 Alert::set(Alert::ALERT, $icon['name'].' '.sprintf(__('Is not of valid size. Size is limited to %s MB per image'),core::config('image.max_image_size')));
@@ -536,45 +536,45 @@ class Controller_Panel_Location extends Auth_Crud {
         }
         else
         {
-            if ($icon != NULL) // sanity check 
-            {   
+            if ($icon != NULL) // sanity check
+            {
                 // saving/uploading img file to dir.
                 $path = 'images/locations/';
                 $root = DOCROOT.$path; //root folder
                 $icon_name = $location->seoname.'.png';
-                
+
                 // if folder does not exist, try to make it
                	if ( ! file_exists($root) AND ! @mkdir($root, 0775, true)) { // mkdir not successful ?
                         Alert::set(Alert::ERROR, __('Image folder is missing and cannot be created with mkdir. Please correct to be able to upload images.'));
                         return; // exit function
                 };
-                
+
                 // save file to root folder, file, name, dir
                 if ($file = Upload::save($icon, $icon_name, $root))
                 {
                     // put icon to Amazon S3
                     if (core::config('image.aws_s3_active'))
                         $s3->putObject($s3->inputFile($file), core::config('image.aws_s3_bucket'), $path.$icon_name, S3::ACL_PUBLIC_READ);
-                    
+
                     // update location info
                     $location->has_image = 1;
                     $location->last_modified = Date::unix2mysql();
                     $location->save();
-                    
+
                     Alert::set(Alert::SUCCESS, $icon['name'].' '.__('Icon is uploaded.'));
                 }
                 else
                     Alert::set(Alert::ERROR, $icon['name'].' '.__('Icon file could not been saved.'));
-                
+
                 $this->redirect(Route::get($this->_route_name)->uri(array('controller'=> Request::current()->controller(),'action'=>'update','id'=>$location->id_location)));
             }
-            
+
         }
-	}   
-    
+	}
+
     /**
      * deletes all the locations
-     * @return void 
+     * @return void
      */
     public function action_delete_all()
     {
@@ -593,10 +593,10 @@ class Controller_Panel_Location extends Auth_Crud {
                 $locations->where('id_location','!=','1')->find_all();
 
             $locations = $locations->find_all();
-            
+
             foreach ($locations as $location)
                 $location->delete_icon();
-            
+
             $query_update = DB::update('ads');
             $query_delete = DB::delete('locations');
 
@@ -617,16 +617,38 @@ class Controller_Panel_Location extends Auth_Crud {
 
             //delete subscribtions
             DB::delete('subscribers')->where('id_location','!=','1')->execute();
-            
+
             Model_Location::cache_delete();
-            
+
             Alert::set(Alert::SUCCESS, __('All locations were deleted.'));
-            
+
         }
         else {
             Alert::set(Alert::ERROR, __('You did not confirmed your delete action.'));
         }
-        
+
         HTTP::redirect(Route::url('oc-panel',array('controller'=>'location', 'action'=>'index')));
+    }
+
+    /**
+     * Updates translations
+     * @return void
+     */
+    public function action_update_translations()
+    {
+        $location = new Model_Location($this->request->param('id'));
+
+        if ($this->request->post() AND $location->loaded())
+        {
+            $location->translations = json_encode($this->request->post('translations'));
+
+            try {
+                $location->save();
+            } catch (Exception $e) {
+                throw HTTP_Exception::factory(500, $e->getMessage());
+            }
+        }
+
+        $this->redirect(Route::url('oc-panel', array('controller' => 'location', 'action' => 'update', 'id' => $location->id_location)));
     }
 }

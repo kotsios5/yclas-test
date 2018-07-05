@@ -15,7 +15,7 @@
         <?
             $cats = Model_Category::get_category_count();
             $loc_seoname = NULL;
-            
+
             if (Model_Location::current()->loaded())
                 $loc_seoname = Model_Location::current()->seoname;
         ?>
@@ -26,7 +26,7 @@
                         <li class="<?=(Request::current()->uri()==$data['url'])?'active':''?>" >
                         <a href="<?=$data['url']?>" target="<?=$data['target']?>">
                             <?if($data['icon']!=''):?><i class="<?=$data['icon']?>"></i> <?endif?>
-                            <?=$data['title']?></a> 
+                            <?=$data['title']?></a>
                         </li>
                     <?endforeach?>
                 <?else:?>
@@ -38,7 +38,7 @@
                                 <?if($c['id_category_parent'] == 1 && $c['id_category'] != 1):?>
                                     <li class="dropdown-submenu">
                                         <a tabindex="-1" title="<?=HTML::chars($c['seoname'])?>" href="<?=Route::url('list', array('category'=>$c['seoname'],'location'=>$loc_seoname))?>">
-                                            <?=$c['name']?>
+                                            <?=$c['translate_name']?>
                                         </a>
                                         <?if($c['id_category_parent'] == 1):?>
                                             <?$i = 0; foreach($cats as $chi):?>
@@ -47,11 +47,11 @@
                                                         <ul class="dropdown-menu">
                                                     <?endif?>
                                                     <li>
-                                                        <a title="<?=HTML::chars($chi['name'])?>" href="<?=Route::url('list', array('category'=>$chi['seoname'],'location'=>$loc_seoname))?>">
+                                                        <a title="<?=HTML::chars($chi['translate_name'])?>" href="<?=Route::url('list', array('category'=>$chi['seoname'],'location'=>$loc_seoname))?>">
                                                             <?if (Theme::get('category_badge') != 1) : ?>
                                                                 <span class="pull-right badge badge-success"><?=number_format($chi['count'])?></span>
                                                             <?endif?>
-                                                            <span class="<?=Theme::get('category_badge') != 1 ? 'badged-name' : NULL?>"><?=$chi['name']?></span>
+                                                            <span class="<?=Theme::get('category_badge') != 1 ? 'badged-name' : NULL?>"><?=$chi['translate_name']?></span>
                                                         </a>
                                                     </li>
                                                 <?endif?>
@@ -87,7 +87,7 @@
                     <a class="btn btn-danger" href="<?=Route::url('post_new')?>">
                         <i class="glyphicon glyphicon-pencil glyphicon"></i>
                         <?=_e('Publish new ')?>
-                    </a>                
+                    </a>
                 <?endif?>
             </div>
         </div><!--/.nav-collapse -->
@@ -133,6 +133,6 @@
             </div>
         </div>
     </div>
-<?elseif(Core::config('general.pusher_notifications')):?> 
+<?elseif(Core::config('general.pusher_notifications')):?>
     <div id="pusher-subscribe" class="hidden" data-user="<?=Auth::instance()->get_user()->email?>" data-key="<?=Core::config('general.pusher_notifications_key')?>" data-cluster="<?=Core::config('general.pusher_notifications_cluster')?>"></div>
 <?endif?>

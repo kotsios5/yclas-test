@@ -6,17 +6,42 @@
 
 <hr>
 
-<div class="alert alert-info fade in">
-    <p>
-        <strong><?=__('Heads Up!')?></strong>
-        <?=__('You are using our Lite version, to enable all the features and to get support upgrade to PRO')?>
-    </p>
-    <p>
-        <a class="btn btn-info" href="https://yclas.com/self-hosted.html">
-            <?=__('Upgrade to PRO now')?>
-        </a>
-    </p>
-</div>
+<? if (Auth::instance()->get_user()->is_admin() AND Core::config('license.number') == NULL) : ?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title"><span class="text-info">Lite version</span></div>
+        </div>
+        <div class="panel-body">
+            <div class="alert alert-info fade in">
+                <p>
+                    <strong><?=__('Heads Up!')?></strong>
+                    <?=__('You are using our Lite version, to enable all the features and to get support upgrade to PRO')?>
+                </p>
+                <p>
+                    <a class="btn btn-info" href="https://yclas.com/self-hosted.html">
+                        <?=__('Upgrade to PRO now')?>
+                    </a>
+                </p>
+            </div>
+            <hr>
+            <form action="<?= Route::url('oc-panel',array('controller'=>'theme','action'=> 'license'))?>" method="post">
+                <div class="form-group">
+                    <label class="control-label text-info"><?=__('Please insert here your license')?></label>
+                    <input class="form-control" type="text" name="license" value="" placeholder="<?=__('License')?>">
+                </div>
+                <button
+                    type="button"
+                    class="btn btn-primary submit"
+                    title="<?=__('Are you sure?')?>"
+                    data-text="<?=sprintf(__('License will be activated in %s domain. Once activated, your license cannot be changed to another domain.'), parse_url(URL::base(), PHP_URL_HOST))?>"
+                    data-btnOkLabel="<?=__('Yes, definitely!')?>"
+                    data-btnCancelLabel="<?=__('No way!')?>">
+                    <?=__('Check')?>
+                </button>
+            </form>
+        </div>
+    </div>
+<? endif ?>
 
 <p><?=__('This is the main overview page of your website.')?></p>
 

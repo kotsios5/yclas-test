@@ -65,8 +65,8 @@ function createCategorySelect () {
     // initialize selectize on created category select
     category_select = $('.select-category[data-level="'+ num_category_select +'"]').selectize({
         valueField:  'id_category',
-        labelField:  'name',
-        searchField: 'name',
+        labelField:  'translate_name',
+        searchField: 'translate_name',
         onChange: function (value) {
 
             if (!value.length) return;
@@ -85,7 +85,7 @@ function createCategorySelect () {
                     url: $('#category-chained').data('apiurl') + '/' + value,
                     success: function(results) {
                         if (decodeHtml(results.category.price) != $('#category-chained').data('price0')) {
-                            price_txt = $('#paid-category .help-block').data('title').replace(/%s/g, results.category.name).replace(/%d/g, decodeHtml(results.category.price));
+                            price_txt = $('#paid-category .help-block').data('title').replace(/%s/g, results.category.translate_name).replace(/%d/g, decodeHtml(results.category.price));
                             $('#paid-category').removeClass('hidden').find('.help-block span').text(price_txt);
                         }
                         else {
@@ -152,8 +152,8 @@ function createLocationSelect () {
     // initialize selectize on created location select
     location_select = $('.select-location[data-level="'+ num_location_select +'"]').selectize({
         valueField:  'id_location',
-        labelField:  'name',
-        searchField: 'name',
+        labelField:  'translate_name',
+        searchField: 'translate_name',
         onChange: function (value) {
 
             if (!value.length) return;

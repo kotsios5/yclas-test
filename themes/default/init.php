@@ -34,7 +34,8 @@ Theme::$skin = Theme::get('theme');
  */
 
 Theme::$styles = array( '//cdn.jsdelivr.net/bootstrap/3.3.7/css/bootstrap.min.css' => 'screen',
-                        '//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css' => 'screen',
+                        '//use.fontawesome.com/releases/v5.1.0/css/all.css' => 'screen',
+                        '//use.fontawesome.com/releases/v5.1.0/css/v4-shims.css' => 'screen',
                         '//cdn.jsdelivr.net/bootstrap.image-gallery/3.1.0/css/bootstrap-image-gallery.min.css' => 'screen',
                         '//cdn.jsdelivr.net/bootstrap.datepicker/0.1/css/datepicker.css' => 'screen',
                         '//cdn.jsdelivr.net/select2/4.0.2/css/select2.min.css' => 'screen',

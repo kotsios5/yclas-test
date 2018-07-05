@@ -15,7 +15,7 @@
                 <?=_e('Popular Ads last month')?>
             <?endif?>
             <?if ($user_location) :?>
-                <small><?=$user_location->name?></small>
+                <small><?=$user_location->translate_name()?></small>
             <?endif?>
         </h3>
         <div class="row">
@@ -28,7 +28,7 @@
                             <?elseif( ($icon_src = $ad->category->get_icon()) !== FALSE):?>
                                 <?=HTML::picture($icon_src, ['w' => 132, 'h' => 132], ['992px' => ['w' => '132', 'h' => '132'], '320px' => ['w' => '648', 'h' => '648']], ['alt' => HTML::chars($ad->title)])?>
                             <?else:?>
-                                <img data-src="holder.js/179x179?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->name, 'size' => 14, 'auto' => 'yes')))?>" alt="<?=HTML::chars($ad->title)?>">  
+                                <img data-src="holder.js/179x179?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->translate_name(), 'size' => 14, 'auto' => 'yes')))?>" alt="<?=HTML::chars($ad->title)?>">
                             <?endif?>
                         </a>
                         <div class="caption">
@@ -36,7 +36,7 @@
                             <p ><?=Text::limit_chars(Text::removebbcode($ad->description), 30, NULL, TRUE)?></p>
                         </div>
                     </div>
-                </div>     
+                </div>
             <?endforeach?>
         </div>
     </div>
@@ -45,7 +45,7 @@
     <h3>
         <?=_e("Categories")?>
         <?if ($user_location) :?>
-            <small><?=$user_location->name?></small>
+            <small><?=$user_location->translate_name()?></small>
         <?endif?>
     </h3>
     <div class="row">
@@ -54,7 +54,7 @@
                 <div class="col-md-4">
                     <div class="panel panel-home-categories">
                         <div class="panel-heading">
-                            <a title="<?=HTML::chars((strip_tags($c['description'])!=='')?strip_tags($c['description']):$c['name'])?>" href="<?=Route::url('list', array('category'=>$c['seoname'], 'location'=>$user_location ? $user_location->seoname : NULL))?>"><?=mb_strtoupper($c['name']);?></a>
+                            <a title="<?=HTML::chars((strip_tags($c['description'])!=='')?strip_tags($c['description']):$c['translate_name'])?>" href="<?=Route::url('list', array('category'=>$c['seoname'], 'location'=>$user_location ? $user_location->seoname : NULL))?>"><?=mb_strtoupper($c['translate_name']);?></a>
                         </div>
                         <div class="panel-body">
                             <ul class="list-group">
@@ -62,7 +62,7 @@
                                     <?if($chi['id_category_parent'] == $c['id_category'] AND ! in_array($chi['id_category'], $hide_categories)):?>
                                         <?if ($ci < 15):?>
                                             <li class="list-group-item">
-                                                <a title="<?=HTML::chars($chi['name'])?>" href="<?=Route::url('list', array('category'=>$chi['seoname'], 'location'=>$user_location ? $user_location->seoname : NULL))?>"><?=$chi['name'];?> 
+                                                <a title="<?=HTML::chars($chi['translate_name'])?>" href="<?=Route::url('list', array('category'=>$chi['seoname'], 'location'=>$user_location ? $user_location->seoname : NULL))?>"><?=$chi['translate_name'];?>
                                                     <?if (Theme::get('category_badge')!=1) : ?>
                                                         <span class="pull-right badge badge-success"><?=number_format($chi['count'])?></span>
                                                     <?endif?>
@@ -71,7 +71,7 @@
                                         <?endif?>
                                         <?$ci++; if ($ci == 15):?>
                                             <li class="list-group-item">
-                                                <a role="button" 
+                                                <a role="button"
                                                     class="show-all-categories"
                                                     data-cat-id="<?=$c['id_category']?>">
                                                     <?=_e("See all categories")?> <span class="glyphicon glyphicon-chevron-right pull-right"></span>
@@ -120,7 +120,7 @@
                     <div class="modal-body">
                         <div class="list-group">
                             <?foreach($auto_locats as $loc):?>
-                                <a href="<?=Route::url('default')?>" class="list-group-item" data-id="<?=$loc->id_location?>"><span class="pull-right"><span class="glyphicon glyphicon-chevron-right"></span></span> <?=$loc->name?> (<?=i18n::format_measurement($loc->distance)?>)</a>
+                                <a href="<?=Route::url('default')?>" class="list-group-item" data-id="<?=$loc->id_location?>"><span class="pull-right"><span class="glyphicon glyphicon-chevron-right"></span></span> <?=$loc->translate_name()?> (<?=i18n::format_measurement($loc->distance)?>)</a>
                             <?endforeach?>
                         </div>
                     </div>

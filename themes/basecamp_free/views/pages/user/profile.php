@@ -171,7 +171,7 @@
 											<?if($ads->get_first_image() !== NULL):?>
 												<img src="<?=Core::imagefly($ads->get_first_image('image'),180,180)?>" class="img-responsive" alt="<?=HTML::chars($ads->title)?>" />
 											<?else:?>
-												<img data-src="holder.js/180x180?<?=str_replace('+', ' ', http_build_query(array('text' => $ads->category->name, 'size' => 14, 'auto' => 'yes')))?>" class="img-responsive" alt="<?=HTML::chars($ads->title)?>">
+												<img data-src="holder.js/180x180?<?=str_replace('+', ' ', http_build_query(array('text' => $ads->category->translate_name(), 'size' => 14, 'auto' => 'yes')))?>" class="img-responsive" alt="<?=HTML::chars($ads->title)?>">
 											<?endif?>
 											<span class="gallery_only fm"><i class="glyphicon glyphicon-bookmark"></i></span>
 											<?if ($ads->price!=0):?>

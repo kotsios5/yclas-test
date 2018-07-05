@@ -34,7 +34,7 @@ class Controller_Ad extends Controller {
         {
         	$location = Model_Location::current();
             if($location->id_location != 1)
-            $location_name = $location->name;
+            $location_name = $location->translate_name();
 
             //adding the location parent
             if ($location->id_location_parent!=1 AND $location->parent->loaded())
@@ -50,7 +50,7 @@ class Controller_Ad extends Controller {
         {
             $category = Model_Category::current();
             if($category->id_category != 1)
-                $category_name = $category->name;
+                $category_name = $category->translate_name();
             //adding the category parent
             if ($category->id_category_parent!=1 AND $category->parent->loaded())
                 $category_parent = $category->parent;
@@ -65,8 +65,8 @@ class Controller_Ad extends Controller {
 
             $this->template->title = $category_name;
 
-            if ($category->description != '')
-				$this->template->meta_description = $category->description;
+            if ($category->translate_description() != '')
+				$this->template->meta_description = $category->translate_description();
             else
 				$this->template->meta_description = __('All').' '.$category_name.' '.__('in').' '.core::config('general.site_name');
 		}
@@ -74,8 +74,8 @@ class Controller_Ad extends Controller {
         {
 			$this->template->title = __('all');
 			if ($location!==NULL)
-				if ($location->description != '')
-					$this->template->meta_description = $location->description;
+				if ($location->translate_description() != '')
+					$this->template->meta_description = $location->translate_description();
 				else
 					$this->template->meta_description = __('List of all postings in').' '.$location_name;
 			else
@@ -89,35 +89,35 @@ class Controller_Ad extends Controller {
             if(( $icon_src = $location->get_icon() )!==FALSE AND Controller::$image===NULL)
                 Controller::$image = $icon_src;
 
-            $this->template->title .= ' - '.$location->name;
+            $this->template->title .= ' - '.$location->translate_name();
 
             if ($location_parent!==NULL)
             {
-                $this->template->title .=' ('.$location_parent->name.')';
-                Breadcrumbs::add(Breadcrumb::factory()->set_title($location_parent->name)->set_url(Route::url('list', array('location'=>$location_parent->seoname))));
+                $this->template->title .=' ('.$location_parent->translate_name() .')';
+                Breadcrumbs::add(Breadcrumb::factory()->set_title($location_parent->translate_name())->set_url(Route::url('list', array('location'=>$location_parent->seoname))));
             }
 
-            Breadcrumbs::add(Breadcrumb::factory()->set_title($location->name)->set_url(Route::url('list', array('location'=>$location->seoname))));
+            Breadcrumbs::add(Breadcrumb::factory()->set_title($location->translate_name())->set_url(Route::url('list', array('location'=>$location->seoname))));
 
             if ($category_parent!==NULL)
-                Breadcrumbs::add(Breadcrumb::factory()->set_title($category_parent->name)
+                Breadcrumbs::add(Breadcrumb::factory()->set_title($category_parent->translate_name())
                     ->set_url(Route::url('list', array('category'=>$category_parent->seoname,'location'=>$location->seoname))));
 
             if ($category!==NULL)
-                Breadcrumbs::add(Breadcrumb::factory()->set_title($category->name)
+                Breadcrumbs::add(Breadcrumb::factory()->set_title($category->translate_name())
                     ->set_url(Route::url('list', array('category'=>$category->seoname,'location'=>$location->seoname))));
         }
         else
         {
             if ($category_parent!==NULL)
             {
-                $this->template->title .=' ('.$category_parent->name.')';
-                Breadcrumbs::add(Breadcrumb::factory()->set_title($category_parent->name)
+                $this->template->title .=' ('.$category_parent->translate_name() .')';
+                Breadcrumbs::add(Breadcrumb::factory()->set_title($category_parent->translate_name())
                     ->set_url(Route::url('list', array('category'=>$category_parent->seoname))));
             }
 
             if ($category!==NULL)
-                Breadcrumbs::add(Breadcrumb::factory()->set_title($category->name)
+                Breadcrumbs::add(Breadcrumb::factory()->set_title($category->translate_name())
                     ->set_url(Route::url('list', array('category'=>$category->seoname))));
         }
 
@@ -171,6 +171,11 @@ class Controller_Ad extends Controller {
 		//only published ads
         $ads->where('status', '=', Model_Ad::STATUS_PUBLISHED);
 
+        // filter by language
+        if (Core::config('general.multilingual') == 1)
+        {
+            $ads->where('locale', '=', i18n::$locale);
+        }
 
         //if ad have passed expiration time dont show
         if(core::config('advertisement.expire_date') > 0)
@@ -365,43 +370,43 @@ class Controller_Ad extends Controller {
 
                 //base category  title
                 if ($category!==NULL)
-                    $this->template->title = $category->name;
+                    $this->template->title = $category->translate_name();
                 else
                     $this->template->title = '';
 
                 //adding location titles and breadcrumbs
                 if ($location!==NULL)
                 {
-                    $this->template->title .= ' - '.$location->name;
+                    $this->template->title .= ' - '.$location->translate_name();
 
                     if ($location_parent!==NULL)
                     {
-                        $this->template->title .=' ('.$location_parent->name.')';
-                        Breadcrumbs::add(Breadcrumb::factory()->set_title($location_parent->name)->set_url(Route::url('list', array('location'=>$location_parent->seoname))));
+                        $this->template->title .=' ('.$location_parent->translate_name() .')';
+                        Breadcrumbs::add(Breadcrumb::factory()->set_title($location_parent->translate_name())->set_url(Route::url('list', array('location'=>$location_parent->seoname))));
                     }
 
-                    Breadcrumbs::add(Breadcrumb::factory()->set_title($location->name)->set_url(Route::url('list', array('location'=>$location->seoname))));
+                    Breadcrumbs::add(Breadcrumb::factory()->set_title($location->translate_name())->set_url(Route::url('list', array('location'=>$location->seoname))));
 
                     if ($category_parent!==NULL)
-                        Breadcrumbs::add(Breadcrumb::factory()->set_title($category_parent->name)
+                        Breadcrumbs::add(Breadcrumb::factory()->set_title($category_parent->translate_name())
                             ->set_url(Route::url('list', array('category'=>$category_parent->seoname,'location'=>$location->seoname))));
 
                     if ($category!==NULL)
-                        Breadcrumbs::add(Breadcrumb::factory()->set_title($category->name)
+                        Breadcrumbs::add(Breadcrumb::factory()->set_title($category->translate_name())
                             ->set_url(Route::url('list', array('category'=>$category->seoname,'location'=>$location->seoname))));
                 }
                 else
                 {
                     if ($category_parent!==NULL)
                     {
-                        $this->template->title .=' ('.$category_parent->name.')';
-                        Breadcrumbs::add(Breadcrumb::factory()->set_title($category_parent->name)
+                        $this->template->title .=' ('.$category_parent->translate_name() .')';
+                        Breadcrumbs::add(Breadcrumb::factory()->set_title($category_parent->translate_name())
                             ->set_url(Route::url('list', array('category'=>$category_parent->seoname))));
                     }
 
 
                     if ($category!==NULL)
-                        Breadcrumbs::add(Breadcrumb::factory()->set_title($category->name)
+                        Breadcrumbs::add(Breadcrumb::factory()->set_title($category->translate_name())
                             ->set_url(Route::url('list', array('category'=>$category->seoname))));
                 }
 
@@ -412,7 +417,7 @@ class Controller_Ad extends Controller {
 				Breadcrumbs::add(Breadcrumb::factory()->set_title($ad->title));
 
 
-                $this->template->meta_description = $ad->title.' '.__('in').' '.$category->name.' '.__('on').' '.core::config('general.site_name');
+                $this->template->meta_description = $ad->title.' '.__('in').' '.$category->translate_name() .' '.__('on').' '.core::config('general.site_name');
 
 				$permission = TRUE; //permission to add hit to advert and give access rights.
 				$auth_user = Auth::instance();
@@ -1211,6 +1216,12 @@ class Controller_Ad extends Controller {
             elseif (is_numeric($price_max)) // only max price has been provided
             {
                 $ads->where('price', '<=', $price_max);
+            }
+
+            // filter by language
+            if (Core::config('general.multilingual') == 1 AND Core::get('locale') !== NULL)
+            {
+                $ads->where('locale', '=', Core::get('locale'));
             }
 
             //filter by CF ads

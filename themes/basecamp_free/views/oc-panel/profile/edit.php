@@ -64,7 +64,7 @@
                                     <?endif?>
                                 </div>
                             </div>
-                            
+
                             <!-- location select -->
                             <?if(core::config('advertisement.location')):?>
                                 <div class="form-group">
@@ -78,7 +78,7 @@
                                         <div id="location-edit">
                                             <div class="col-md-8">
                                                 <div class="input-group">
-                                                    <input class="form-control" type="text" placeholder="<?=$selected_location->name?>" disabled>
+                                                    <input class="form-control" type="text" placeholder="<?=$selected_location->translate_name()?>" disabled>
                                                     <span class="input-group-btn">
                                                         <button class="btn btn-default" type="button"><?=_e('Select another')?></button>
                                                     </span>

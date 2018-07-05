@@ -2,9 +2,9 @@
 
 <div class="page-header">
     <?if ($category!==NULL):?>
-        <h1><?=$category->name?></h1>
+        <h1><?=$category->translate_name()?></h1>
     <?elseif ($location!==NULL):?>
-        <h1><?=$location->name?></h1>
+        <h1><?=$location->translate_name()?></h1>
     <?else:?>
         <h1><?=_e('Listings')?></h1>
     <?endif?>
@@ -12,20 +12,20 @@
 
 <div class="well blog-description" id="recomentadion">
     <?if (Controller::$image!==NULL AND Theme::get('hide_description_icon')!=1):?>
-        <img src="<?=Controller::$image?>" class="img-responsive" alt="<?=($category!==NULL) ? HTML::chars($category->name) : (($location!==NULL AND $category===NULL) ? HTML::chars($location->name) : NULL)?>">
+        <img src="<?=Controller::$image?>" class="img-responsive" alt="<?=($category!==NULL) ? HTML::chars($category->translate_name()) : (($location!==NULL AND $category===NULL) ? HTML::chars($location->translate_name()) : NULL)?>">
     <?endif?>
 
     <p>
         <?if ($category!==NULL):?>
-            <?=$category->description?> 
+            <?=$category->translate_description()?>
         <?elseif ($location!==NULL):?>
-            <?=$location->description?>
+            <?=$location->translate_description()?>
         <?endif?>
     </p>
-    
+
     <?if (Core::config('advertisement.only_admin_post')!=1 AND (core::config('advertisement.parent_category')==1)):?>
-        <i class="glyphicon glyphicon-pencil"></i> 
-        <a title="<?=__('New Advertisement')?>" 
+        <i class="glyphicon glyphicon-pencil"></i>
+        <a title="<?=__('New Advertisement')?>"
             href="<?=Route::url('post_new')?>?category=<?=($category!==NULL)?$category->seoname:''?>&location=<?=($location!==NULL)?$location->seoname:''?>">
             <?=_e('Publish new advertisement')?>
         </a>
@@ -86,7 +86,7 @@
         </ul>
     </div>
     <div class="clearfix"></div>
-    
+
   <?foreach($ads as $ad ):?>
       <?if($ad->featured >= Date::unix2mysql(time())):?>
           <article class="list well clearfix featured ">
@@ -106,19 +106,19 @@
                   </a>
               <?endif?>
           </div>
-          
+
           <?if($ad->id_location != 1):?>
-              <a href="<?=Route::url('list',array('location'=>$ad->location->seoname))?>" title="<?=HTML::chars($ad->location->name)?>">
-                  <span class="label label-default"><?=$ad->location->name?></span>
+              <a href="<?=Route::url('list',array('location'=>$ad->location->seoname))?>" title="<?=HTML::chars($ad->location->translate_name())?>">
+                  <span class="label label-default"><?=$ad->location->translate_name()?></span>
               </a>
           <?endif?>
-          
+
           <h2>
               <a title="<?=HTML::chars($ad->title)?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>">
                   <?=$ad->title?>
               </a>
           </h2>
-          
+
           <div class="picture">
               <a class="pull-left" title="<?=HTML::chars($ad->title)?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>">
                   <figure>
@@ -129,12 +129,12 @@
                       <?elseif(( $icon_src = $ad->location->get_icon() )!==FALSE ):?>
                           <img src="<?=Core::imagefly($icon_src,150,150)?>" class="img-responsive" alt="<?=HTML::chars($ad->title)?>" />
                       <?else:?>
-                          <img data-src="holder.js/150x150?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->name, 'size' => 14, 'auto' => 'yes')))?>" class="img-responsive" alt="<?=HTML::chars($ad->title)?>"> 
+                          <img data-src="holder.js/150x150?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->translate_name(), 'size' => 14, 'auto' => 'yes')))?>" class="img-responsive" alt="<?=HTML::chars($ad->title)?>">
                       <?endif?>
                   </figure>
               </a>
           </div>
-          
+
           <ul>
               <?if (core::request('sort') == 'distance' AND Model_User::get_userlatlng()) :?>
                   <li><b><?=_e('Distance');?>:</b> <?=i18n::format_measurement($ad->distance)?></li>
@@ -144,29 +144,29 @@
               <? }?>
               <?if ($ad->price!=0){?>
                   <li class="price"><?=_e('Price');?>: <b><span class="price-curry"><?=i18n::money_format( $ad->price, $ad->currency() )?></span></b></li>
-              <?}?>  
+              <?}?>
               <?if ($ad->price==0 AND core::config('advertisement.free')==1){?>
                   <li class="price"><?=_e('Price');?>: <b><?=_e('Free');?></b></li>
-              <?}?>  
+              <?}?>
           </ul>
-       
+
           <?if(core::config('advertisement.description')!=FALSE):?>
             <p><?=Text::limit_chars(Text::removebbcode($ad->description), 255, NULL, TRUE);?></p>
           <?endif?>
-          
+
           <a title="<?=HTML::chars($ad->seotitle);?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>"><i class="glyphicon glyphicon-share"></i><?=_e('Read more')?></a>
           <?if ($user !== NULL AND ($user->is_admin() OR $user->is_moderator())):?>
               <br />
               <div class="toolbar btn btn-primary btn-xs"><i class="glyphicon glyphicon-cog"></i>
                   <div id="user-toolbar-options<?=$ad->id_ad?>" class="hide user-toolbar-options">
                       <a class="btn btn-primary btn-xs" href="<?=Route::url('oc-panel', array('controller'=>'myads','action'=>'update','id'=>$ad->id_ad))?>"><i class="glyphicon glyphicon-edit"></i> <?=_e("Edit");?></a> |
-                      <a class="btn btn-primary btn-xs" href="<?=Route::url('oc-panel', array('controller'=>'ad','action'=>'deactivate','id'=>$ad->id_ad))?>" 
+                      <a class="btn btn-primary btn-xs" href="<?=Route::url('oc-panel', array('controller'=>'ad','action'=>'deactivate','id'=>$ad->id_ad))?>"
                           onclick="return confirm('<?=__('Deactivate?')?>');"><i class="glyphicon glyphicon-off"></i><?=_e("Deactivate");?>
                       </a> |
-                      <a class="btn btn-primary btn-xs" href="<?=Route::url('oc-panel', array('controller'=>'ad','action'=>'spam','id'=>$ad->id_ad))?>" 
+                      <a class="btn btn-primary btn-xs" href="<?=Route::url('oc-panel', array('controller'=>'ad','action'=>'spam','id'=>$ad->id_ad))?>"
                           onclick="return confirm('<?=__('Spam?')?>');"><i class="glyphicon glyphicon-fire"></i><?=_e("Spam");?>
                       </a> |
-                      <a class="btn btn-primary btn-xs" href="<?=Route::url('oc-panel', array('controller'=>'ad','action'=>'delete','id'=>$ad->id_ad))?>" 
+                      <a class="btn btn-primary btn-xs" href="<?=Route::url('oc-panel', array('controller'=>'ad','action'=>'delete','id'=>$ad->id_ad))?>"
                           onclick="return confirm('<?=__('Delete?')?>');"><i class="glyphicon glyphicon-remove"></i><?=_e("Delete");?>
                       </a>
 
@@ -178,14 +178,14 @@
           <div class="toolbar btn btn-primary btn-xs"><i class="glyphicon glyphicon-cog"></i>
               <div id="user-toolbar-options<?=$ad->id_ad?>" class="hide user-toolbar-options">
                   <a class="btn btn-primary btn-xs" href="<?=Route::url('oc-panel', array('controller'=>'myads','action'=>'update','id'=>$ad->id_ad))?>"><i class="glyphicon glyphicon-edit"></i><?=_e("Edit");?></a> |
-                  <a class="btn btn-primary btn-xs" href="<?=Route::url('oc-panel', array('controller'=>'myads','action'=>'deactivate','id'=>$ad->id_ad))?>" 
+                  <a class="btn btn-primary btn-xs" href="<?=Route::url('oc-panel', array('controller'=>'myads','action'=>'deactivate','id'=>$ad->id_ad))?>"
                       onclick="return confirm('<?=__('Deactivate?')?>');"><i class="glyphicon glyphicon-off"></i><?=_e("Deactivate");?>
                   </a>
               </div>
           </div>
           <?endif?>
       </article>
-  
+
   <?endforeach?>
 
   <div class="clearfix"></div>

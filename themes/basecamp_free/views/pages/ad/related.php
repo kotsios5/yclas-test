@@ -18,20 +18,20 @@
 							<?if($ad->get_first_image() !== NULL):?>
 								<?=HTML::picture($ad->get_first_image(), ['w' => 180, 'h' => 180], ['992px' => ['w' => '180', 'h' => '180'], '320px' => ['w' => '180', 'h' => '180']], ['class' => 'img-responsive'], ['alt' => HTML::chars($ad->title)])?>
 							<?else:?>
-								<img data-src="holder.js/180x180?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->name, 'size' => 14, 'auto' => 'yes')))?>" class="img-responsive" alt="<?=HTML::chars($ad->title)?>"> 
+								<img data-src="holder.js/180x180?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->translate_name(), 'size' => 14, 'auto' => 'yes')))?>" class="img-responsive" alt="<?=HTML::chars($ad->title)?>">
 							<?endif?>
 								<span class="gallery_only fm"><i class="glyphicon glyphicon-bookmark"></i></span>
 							<?if ($ad->price!=0):?>
 								<span class="gallery_only ad_gprice"><?=i18n::money_format( $ad->price, $ad->currency())?></span>
 							<?elseif (($ad->price==0 OR $ad->price == NULL) AND core::config('advertisement.free')==1):?>
-								<span class="gallery_only ad_gprice"><?=_e('Free');?></span> 
+								<span class="gallery_only ad_gprice"><?=_e('Free');?></span>
 							<?else:?>
 								<span class="gallery_only ad_gprice">Check Listing</span>
 							<?endif?>
 							</a>
 							</div>
 						</div>
-						
+
 						<div class="ad_details">
 							<div class="ad_details_inner">
 								<h2>
@@ -49,18 +49,18 @@
 								<?endif?>
 								<div class="ad_buttons">
 									<?if ($ad->price!=0):?>
-									<span class="ad_price"> 
+									<span class="ad_price">
 										<a class="add-transition" title="<?=HTML::chars($ad->title)?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>">
 											<?=_e('Price');?>: <b><?=i18n::money_format( $ad->price, $ad->currency())?></b>
-										</a>							 
+										</a>
 									</span>
 									<?elseif (($ad->price==0 OR $ad->price == NULL) AND core::config('advertisement.free')==1):?>
-										<span class="ad_price"> 
+										<span class="ad_price">
 											<a class="add-transition" title="<?=HTML::chars($ad->title)?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>">
 												<?=_e('Price');?>: <b><?=_e('Free');?></b>
-											</a>							 
+											</a>
 										</span>
-									<?else:?>  
+									<?else:?>
 										<span class="ad_price na">
 											<a class="add-transition" title="<?=HTML::chars($ad->title)?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>">Check Listing</a>
 										</span>

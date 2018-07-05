@@ -586,25 +586,25 @@ class Core {
     }
 
     /**
-     * push notiication using GCM
+     * push notiication using FCM
      * @param  array/string $device_id devices
-     * @param  string $message   
-     * @param  array $data      
-     * @return bool            
+     * @param  string $message
+     * @param  array $data
+     * @return bool
      */
     public static function push_notification($device_id,$message,$data = NULL)
     {
         if (core::config('general.gcm_apikey')!=NULL )
         {
-            require_once Kohana::find_file('vendor', 'GCMPushMessage','php');
-            $gcpm = new GCMPushMessage(core::config('general.gcm_apikey'));
-            $gcpm->setDevices($device_id);
+            require_once Kohana::find_file('vendor', 'FCMPushMessage','php');
+            $fcpm = new FCMPushMessage(core::config('general.gcm_apikey'));
+            $fcpm->setDevices($device_id);
 
-            try 
+            try
             {
-                return ($gcpm->send($message, $data))?TRUE:FALSE;
-            } 
-            catch (Exception $e) 
+                return ($fcpm->send($message, $data))?TRUE:FALSE;
+            }
+            catch (Exception $e)
             {
                 return FALSE;
             }

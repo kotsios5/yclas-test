@@ -61,7 +61,7 @@
                                     <?endif?>
                                 </div>
                             </div>
-                            
+
                             <!-- location select -->
                             <?if(core::config('advertisement.location')):?>
                                 <div class="form-group">
@@ -131,8 +131,8 @@
                                     <div class="form-group" id="cf_new">
                                         <label class="col-xs-4 control-label" for="cf_whatsapp"><?=_e('Whatsapp Number')?></label>
                                         <div class="col-sm-8">
-                                            <input id="cf_whatsapp" name="cf_whatsapp" title="" class="form-control cf_string_fields data-custom  " placeholder="whatsapp" data-placeholder="whatsapp" data-original-title="whatsapp" type="text" 
-                                            data-country-code="<?=(core::config('general.country')!==NULL)?I18n::country_codes()[core::config('general.country')]:''?>"
+                                            <input id="cf_whatsapp" name="cf_whatsapp" title="" class="form-control cf_string_fields data-custom  " placeholder="whatsapp" data-placeholder="whatsapp" data-original-title="whatsapp" type="text"
+                                            data-country-code="<?= (core::config('general.country') !== NULL and isset(I18n::country_codes()[core::config('general.country')])) ? I18n::country_codes()[core::config('general.country')] : '' ?>"
                                             value="<?=$user->cf_whatsapp?>"
                                             >
                                         </div>

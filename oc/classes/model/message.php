@@ -145,6 +145,7 @@ class Model_Message extends ORM {
 
         $msg_thread ->where('id_message','=',DB::expr('id_message_parent'))
                     ->where('id_ad','is',NULL)
+                    ->where('id_user_from', '=', $user_from->id_user)
                     ->where('id_user_to','=',$user_to->id_user)
                     ->limit(1)->find();
 

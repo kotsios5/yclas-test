@@ -296,6 +296,22 @@
                             </div>
 
                             <div class="form-group">
+                                <?= FORM::label($forms['disallowed_email_domains']['key'], __('Disallowed email domains'), array('class' => 'control-label', 'for' => $forms['disallowed_email_domains']['key'])) ?>
+                                <a target="_blank" href="https://docs.yclas.com/allowed-email-domains/">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <?= FORM::input($forms['disallowed_email_domains']['key'], $forms['disallowed_email_domains']['value'], array(
+                                    'placeholder' => __('For email domain push enter.'),
+                                    'class' => 'form-control',
+                                    'id' => $forms['disallowed_email_domains']['key'],
+                                    'data-role' => 'tagsinput',
+                                )) ?>
+                                <span class="help-block">
+                                    <?= __("You need to write your email domains to enable the service.") ?>
+                                </span>
+                            </div>
+
+                            <div class="form-group">
                                 <?= FORM::label($forms['api_key']['id'], __('API Key'), array('class'=>'control-label', 'for'=>$forms['api_key']['id']))?>
                                 <a target="_blank" href="https://docs.yclas.com/api-documentation/">
                                     <i class="fa fa-question-circle"></i>
@@ -405,6 +421,29 @@
                                 <span class="help-block">
                                     <?=__("Set an inital country for the phone field.")?>
                                 </span>
+                            </div>
+
+                            <div class="form-group">
+                                <?= FORM::label($forms['multilingual']['id'], __("Multilingual"), array('class'=>'control-label', 'for'=>$forms['multilingual']['id']))?>
+                                <div class="radio radio-primary">
+                                    <?=Form::radio($forms['multilingual']['key'], 1, (bool) $forms['multilingual']['value'], array('id' => $forms['multilingual']['id'].'1'))?>
+                                    <?=Form::label($forms['multilingual']['id'].'1', __('Enabled'))?>
+                                    <?=Form::radio($forms['multilingual']['key'], 0, ! (bool) $forms['multilingual']['value'], array('id' => $forms['multilingual']['id'].'0'))?>
+                                    <?=Form::label($forms['multilingual']['id'].'0', __('Disabled'))?>
+                                </div>
+                                <span class="help-block">
+                                    <?=__("Enables the site to multilingual")?>
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <?=Form::label($forms['languages']['id'], __('Languages'), array('class'=>'control-label','for'=>$forms['languages']['id']))?>
+                                <?= FORM::input($forms['languages']['key'], $forms['languages']['value'], array(
+                                    'placeholder' => __('For each language push enter.'),
+                                    'class' => 'form-control',
+                                    'id' => $forms['languages']['key'],
+                                    'data-role' => 'tagsinput',
+                                )) ?>
                             </div>
 
                             <div class="form-group">

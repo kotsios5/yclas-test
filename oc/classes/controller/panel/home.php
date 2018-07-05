@@ -13,7 +13,7 @@ class Controller_Panel_Home extends Auth_Controller {
         
         Core::ocacu();
 
-        $this->template->scripts['footer'] = array('js/chart.min.js', 'js/chart.js-php.js');
+        $this->template->scripts['footer'] = array('js/chart.min.js', 'js/chart.js-php.js', 'js/oc-panel/license.js');
 
         $this->template->title = __('Welcome');
         Breadcrumbs::add(Breadcrumb::factory()->set_title($this->template->title));

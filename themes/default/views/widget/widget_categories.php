@@ -11,11 +11,11 @@
         <h5>
             <p>
                 <?if($widget->cat_breadcrumb['id_parent'] != 0):?>
-                    <a href="<?=Route::url('list',array('category'=>$widget->cat_breadcrumb['parent_seoname'],'location'=>$widget->loc_seoname))?>" title="<?=HTML::chars($widget->cat_breadcrumb['parent_name'])?>"><?=$widget->cat_breadcrumb['parent_name']?></a> - 
-                    <?=$widget->cat_breadcrumb['name']?>
+                    <a href="<?=Route::url('list',array('category'=>$widget->cat_breadcrumb['parent_seoname'],'location'=>$widget->loc_seoname))?>" title="<?=HTML::chars($widget->cat_breadcrumb['parent_translate_name'])?>"><?=$widget->cat_breadcrumb['parent_translate_name']?></a> -
+                    <?=$widget->cat_breadcrumb['translate_name']?>
                 <?else:?>
-                    <a href="<?=Route::url('list',array('category'=>$widget->cat_breadcrumb['parent_seoname'],'location'=>$widget->loc_seoname))?>" title="<?=HTML::chars($widget->cat_breadcrumb['parent_name'])?>"><?=_e('Home')?></a> - 
-                    <?=$widget->cat_breadcrumb['name']?>
+                    <a href="<?=Route::url('list',array('category'=>$widget->cat_breadcrumb['parent_seoname'],'location'=>$widget->loc_seoname))?>" title="<?=HTML::chars($widget->cat_breadcrumb['parent_translate_name'])?>"><?=_e('Home')?></a> -
+                    <?=$widget->cat_breadcrumb['translate_name']?>
                 <?endif?>
             </p>
         </h5>
@@ -23,8 +23,8 @@
     <ul>
         <?foreach($widget->cat_items as $cat):?>
             <li>
-                <a href="<?=Route::url('list',array('category'=>$cat->seoname,'location'=>$widget->loc_seoname))?>" title="<?=HTML::chars($cat->name)?>">
-                <?=$cat->name?></a>
+                <a href="<?=Route::url('list',array('category'=>$cat->seoname,'location'=>$widget->loc_seoname))?>" title="<?=HTML::chars($cat->translate_name())?>">
+                <?=$cat->translate_name()?></a>
             </li>
         <?endforeach?>
     </ul>

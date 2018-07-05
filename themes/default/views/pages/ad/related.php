@@ -12,7 +12,7 @@
                         <?if(( $icon_src = $ad->category->get_icon() )!==FALSE ):?>
                             <img src="<?=Core::imagefly($icon_src,64,64)?>" alt="<?=HTML::chars($ad->title);?>">
                         <?else:?>
-                            <img data-src="holder.js/64x64?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->name, 'size' => 8, 'auto' => 'yes')))?>" alt="<?=HTML::chars($ad->title)?>"> 
+                            <img data-src="holder.js/64x64?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->translate_name(), 'size' => 8, 'auto' => 'yes')))?>" alt="<?=HTML::chars($ad->title)?>">
                         <?endif?>
                     <?endif?>
                 </a>
@@ -24,10 +24,10 @@
                     <?endif?>
                     <a title="<?=HTML::chars($ad->title);?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>"> <?=$ad->title; ?></a>
                 </h4>
-                <p><?=Text::limit_chars(Text::removebbcode($ad->description), 255, NULL, TRUE);?> 
+                <p><?=Text::limit_chars(Text::removebbcode($ad->description), 255, NULL, TRUE);?>
                     <?if($ad->id_location != 1):?>
-                        <a href="<?=Route::url('list',array('location'=>$ad->location->seoname))?>" title="<?=HTML::chars($ad->location->name)?>">
-                            <span class="label label-default"><?=$ad->location->name?></span>
+                        <a href="<?=Route::url('list',array('location'=>$ad->location->seoname))?>" title="<?=HTML::chars($ad->location->translate_name()?>">
+                            <span class="label label-default"><?=$ad->location->translate_name()?></span>
                         </a>
                     <?endif?>
                 </p>

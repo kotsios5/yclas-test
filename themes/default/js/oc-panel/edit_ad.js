@@ -82,8 +82,8 @@ function createCategorySelect () {
     // initialize selectize on created category select
     category_select = $('.select-category[data-level="'+ num_category_select +'"]').selectize({
         valueField:  'id_category',
-        labelField:  'name',
-        searchField: 'name',
+        labelField:  'translate_name',
+        searchField: 'translate_name',
         onChange: function (value) {
 
             if (!value.length) return;
@@ -178,8 +178,8 @@ function createLocationSelect () {
     // initialize selectize on created location select
     location_select = $('.select-location[data-level="'+ num_location_select +'"]').selectize({
         valueField:  'id_location',
-        labelField:  'name',
-        searchField: 'name',
+        labelField:  'translate_name',
+        searchField: 'translate_name',
         onChange: function (value) {
 
             if (!value.length) return;

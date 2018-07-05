@@ -16,15 +16,15 @@ class I18n extends Kohana_I18n {
     public static $locale_default = 'en_UK';
     public static $charset;
     public static $domain;
-    
+
     /**
      * forces to use the dropin
      */
     public static $dropin = FALSE;
-    
+
 
     /**
-     * 
+     *
      * Initializes the php-gettext
      * Remember to load first php-gettext
      * @param string $locale
@@ -32,7 +32,7 @@ class I18n extends Kohana_I18n {
      * @param string $domain
      */
     public static function initialize($locale = NULL, $charset = 'utf-8', $domain = 'messages')
-    {        	
+    {
         if ($locale===NULL)
             $locale = self::$locale_default;
 
@@ -41,8 +41,8 @@ class I18n extends Kohana_I18n {
          */
 
         //we allow to choose lang from the url
-        if (Core::config('i18n.allow_query_language')==1)
-        {            
+        if (Core::config('i18n.allow_query_language') == 1 OR Core::config('general.multilingual') == 1)
+        {
             if(Core::get('language')!==NULL)
                 $locale  = Core::get('language');
             elseif (Cookie::get('user_language')!==NULL)
@@ -54,7 +54,7 @@ class I18n extends Kohana_I18n {
             else
                 $locale = self::$locale_default;
         }
-     
+
         self::$lang    = $locale;//used in i18n kohana
         self::$locale  = $locale;
         self::$charset = $charset;
@@ -67,10 +67,10 @@ class I18n extends Kohana_I18n {
 
         //time zone set in the config
         date_default_timezone_set(Kohana::$config->load('i18n')->timezone);
-        
+
         //Kohana core charset, used in the HTML templates as well
         Kohana::$charset  = self::$charset;
-                
+
         /**
          * In Windows LC_ALL are not recognized sometimes.
          * So we check if LC_ALL is defined to avoid bugs,
@@ -96,8 +96,8 @@ class I18n extends Kohana_I18n {
              * We load php-gettext here since Kohana_I18n tries to create the function __() function when we extend it.
              * PHP-gettext already does this.
              */
-            require Kohana::find_file('vendor', 'php-gettext/gettext','inc'); 
-            
+            require Kohana::find_file('vendor', 'php-gettext/gettext','inc');
+
             T_setlocale(LC_ALL, self::$locale.'.'.self::$charset);
             T_bindtextdomain(self::$domain,DOCROOT.'languages');
             T_bind_textdomain_codeset(self::$domain, self::$charset);
@@ -105,7 +105,7 @@ class I18n extends Kohana_I18n {
 
             //force to use the gettext dropin
             self::$dropin = TRUE;
-            
+
         }
         /**
          * gettext exists using fallback in case locale doesn't exists
@@ -116,18 +116,18 @@ class I18n extends Kohana_I18n {
             bind_textdomain_codeset(self::$domain, self::$charset);
             textdomain(self::$domain);
         }
-        
-    }    
+
+    }
 
     /**
      * get the language used in the HTML
-     * @return string 
+     * @return string
      */
     public static function html_lang()
     {
         return substr(core::config('i18n.locale'),0,2);
     }
-    
+
     /**
      * get languages
      * @return array
@@ -140,18 +140,39 @@ class I18n extends Kohana_I18n {
         $languages = array();
 
         //check directory for langs
-        foreach (new DirectoryIterator($folder) as $file) 
+        foreach (new DirectoryIterator($folder) as $file)
         {
             if($file->isDir() AND !$file->isDot())
             {
                 $languages[$file->getFilename()] = $file->getFilename();
             }
         }
-        
+
         //alphabetical order
         asort($languages);
 
         return $languages;
+    }
+
+    /**
+     * get selectable languages
+     * @return array
+     */
+    public static function get_selectable_languages()
+    {
+        $selectable_languages = array();
+
+        $languages = explode(',', core::config('general.languages'));
+        $languages = array_intersect($languages, self::get_languages());
+
+        foreach ($languages as $language) {
+            $selectable_languages[$language] = self::get_display_language($language);
+        }
+
+        //alphabetical order
+        asort($selectable_languages);
+
+        return $selectable_languages;
     }
 
     /**
@@ -183,7 +204,7 @@ class I18n extends Kohana_I18n {
     }
 
     /**
-     * 
+     *
      * Override normal translate
      * @param string $string to translate
      * @param string $lang does nothing, legacy
@@ -420,13 +441,13 @@ class I18n extends Kohana_I18n {
             case 'tr':
                 return 'tr_TR';
                 break;
-            
+
             default:
                 return $locale;
                 break;
         }
     }
-        
+
     public static function get_gmaps_language($locale)
     {
         if (strlen($locale)>2)
@@ -437,12 +458,12 @@ class I18n extends Kohana_I18n {
 
     /**
      * returns the number in the locale format
-     * @param  float $number 
+     * @param  float $number
      * @return string
      */
     public static function money_format($number, $currency = NULL)
     {
-        if($currency == NULL){    
+        if($currency == NULL){
             $format = core::config('general.number_format');
         } else {
             $format = $currency;
@@ -460,15 +481,15 @@ class I18n extends Kohana_I18n {
 
     /**
      * A list of the ISO 4217 currency codes with symbol,format and symbol order
-     * 
-     * Symbols from 
+     *
+     * Symbols from
      * http://character-code.com/currency-html-codes.php
      * http://www.phpclasses.org/browse/file/2054.html
      * https://github.com/yiisoft/yii/blob/633e54866d54bf780691baaaa4a1f847e8a07e23/framework/i18n/data/en_us.php
-     * 
-     * Formats from 
+     *
+     * Formats from
      * http://www.joelpeterson.com/blog/2011/03/formatting-over-100-currencies-in-php/
-     * 
+     *
      * Array with key as ISO 4217 currency code
      * 0 - Currency Symbol if there's
      * 1 - Round
@@ -562,7 +583,7 @@ class I18n extends Kohana_I18n {
         'KRW' => array('&#8361;',0,'',',',0),           //  South Korea, Won ₩
         'SZL' => array(NULL,2,'.',', ',0),         //  Swaziland, Lilangeni
         'SEK' => array('kr',2,',','.',1),          //  Swedish Krona
-        'CHF' => array('SFr ',2,'.','\'',0),         //  Swiss Franc 
+        'CHF' => array('SFr ',2,'.','\'',0),         //  Swiss Franc
         'TZS' => array(NULL,2,'.',',',0),          //  Tanzanian Shilling
         'THB' => array('&#3647;',2,'.',',',1),          //  Thailand, Baht ฿
         'TOP' => array(NULL,2,'.',',',0),          //  Tonga, Paanga
@@ -583,12 +604,12 @@ class I18n extends Kohana_I18n {
         'XOF' => array('CFA',2,'.',',',1),          //  West African CFA Franc
         'ZMW' => array('ZK',2,'.',',',1),          //  Zambian Kwacha
     );
-    
+
     /**
      * Format the currency value according to the formatter rules.
      * @param  float $number  The numeric currency value.
      * @param  string $currency The 3-letter ISO 4217 currency code indicating the currency to use.
-     * @return string    representing the formatted currency value.      
+     * @return string    representing the formatted currency value.
      */
     public static function format_currency($number,$currency = 'USD')
     {
@@ -599,7 +620,7 @@ class I18n extends Kohana_I18n {
         //rupees weird format
         if ($currency == 'INR')
             $number = self::format_inr($number);
-        else 
+        else
             $number = number_format($number,self::$currencies[$currency][1],self::$currencies[$currency][2],self::$currencies[$currency][3]);
 
         //no symbol using default code
@@ -642,7 +663,7 @@ class I18n extends Kohana_I18n {
         }
         return $num . $dec;
     }
-    
+
     /**
      * formats measurement system (by defautl metric)
      * @param  float    $number number
@@ -656,7 +677,7 @@ class I18n extends Kohana_I18n {
         else {
             $str = Num::round($number, 1).' km';
         }
-        
+
         return $str;
     }
 
@@ -668,11 +689,11 @@ class I18n extends Kohana_I18n {
     public static function format_currency_without_symbol($number)
     {
         $currency = core::config('general.number_format');
-        
+
         //we format based on the currency, correct round and decimal point. No thousands separator.
         if (in_array($currency, array_keys(self::$currencies)))
             $number = number_format($number,self::$currencies[$currency][1],self::$currencies[$currency][2],'');
-        
+
         return $number;
     }
 
@@ -698,18 +719,18 @@ class I18n extends Kohana_I18n {
 
     /**
      * get country code using IP
-     * @param  string $ip 
-     * @return string     
+     * @param  string $ip
+     * @return string
      */
     public static function ip_country_code($ip = NULL)
     {
         $country_code = NULL;
 
         //if got the country via cloudflare and not trying to get another country...
-        if (!empty($_SERVER["HTTP_CF_IPCOUNTRY"]) AND $ip === NULL) 
+        if (!empty($_SERVER["HTTP_CF_IPCOUNTRY"]) AND $ip === NULL)
         {
             $country_code = $_SERVER["HTTP_CF_IPCOUNTRY"];
-        } 
+        }
         else
         {
             if ($ip === NULL)
@@ -726,10 +747,10 @@ class I18n extends Kohana_I18n {
 
     /**
      * get ip geo information using apis from 3rd parties
-     * @param  string $ip 
-     * @return array     
+     * @param  string $ip
+     * @return array
      */
-    public static function ip_details($ip = NULL) 
+    public static function ip_details($ip = NULL)
     {
         if ($ip === NULL)
             $ip = Request::$client_ip;
@@ -745,7 +766,7 @@ class I18n extends Kohana_I18n {
                                               'region'       => 'region',
                                               'postal_code'  => 'postal',
                                               'lat'          => 'loc', //"loc": "37.3860,-122.0838",
-                                              'lon'          => 'loc'), 
+                                              'lon'          => 'loc'),
 
                             'ip-api' => array('url'          => "http://ip-api.com/json/{$ip}",
                                               'country_code' => 'countryCode',
@@ -754,7 +775,7 @@ class I18n extends Kohana_I18n {
                                               'region'       => 'regionName',
                                               'postal_code'  => 'zip',
                                               'lat'          => 'lat',
-                                              'lon'          => 'lon'), 
+                                              'lon'          => 'lon'),
 
                             'telize' => array('url'          => "http://www.telize.com/geoip/{$ip}",
                                               'country_code' => 'country_code',
@@ -763,10 +784,10 @@ class I18n extends Kohana_I18n {
                                               'region'       => 'region',
                                               'postal_code'  => 'postal_code',
                                               'lat'          => 'latitude',
-                                              'lon'          => 'longitude'), 
-                            
+                                              'lon'          => 'longitude'),
+
                             );
-        
+
         //get 1 provider randomly
         $provider = array_rand($providers);
         $provider = $providers[$provider];
@@ -792,7 +813,7 @@ class I18n extends Kohana_I18n {
             $lat = $result[$provider['lat']];
             $lon = $result[$provider['lon']];
         }
-        
+
         //echo $provider['url'];
         //return details
         $details = array( 'country_code' => $result[$provider['country_code']],
@@ -917,7 +938,7 @@ class I18n extends Kohana_I18n {
     }
 
     public static function currencies_defaults()
-    {   
+    {
         $currencies_defaults = self::currencies();
 
         $currencies_defaults['%n'] = 'Default';
@@ -1189,21 +1210,21 @@ class I18n extends Kohana_I18n {
         else
             return '.';
     }
-    
+
 }//end i18n
 
 
 /**
- * FROM: http://www.php.net/manual/en/function.money-format.php  
- *  We use this to avoid errors that Windows produces. 
+ * FROM: http://www.php.net/manual/en/function.money-format.php
+ *  We use this to avoid errors that Windows produces.
  *  money_format function is not supported on Windows OS machines
  */
 if ( !function_exists('money_format') )
 {
-    function money_format($format, $number) 
-    { 
-        return number_format($number, 2); 
-    } 
+    function money_format($format, $number)
+    {
+        return number_format($number, 2);
+    }
 }
 
 /**

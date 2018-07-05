@@ -7,6 +7,15 @@
 		<div class="well">
 			<?= FORM::open(Route::url('post_new',array('controller'=>'new','action'=>'index')), array('class'=>'form-horizontal post_new', 'id'=>'publish-new', 'enctype'=>'multipart/form-data'))?>
 				<fieldset>
+					<? if (Core::config('general.multilingual')) : ?>
+						<div class="form-group">
+							<div class="col-md-8">
+								<?= Form::label('locale', _e('Language'), array('for'=>'locale'))?>
+								<?= Form::select('locale', i18n::get_selectable_languages(), Core::request('locale', i18n::$locale), array('class' => 'form-control', 'id' => 'locale', 'required'))?>
+							</div>
+						</div>
+					<? endif ?>
+
 					<div class="form-group">
 						<div class="col-md-8">
 							<?= FORM::label('title', _e('Title'), array('for'=>'title'))?>
@@ -34,7 +43,7 @@
 								<div id="category-edit" class="row">
 									<div class="col-md-8">
 										<div class="input-group">
-											<input class="form-control" type="text" placeholder="<?=$selected_category->name?>" disabled>
+											<input class="form-control" type="text" placeholder="<?=$selected_category->translate_name() ?>" disabled>
 											<span class="input-group-btn">
 												<button class="btn btn-default" type="button"><?=_e('Select another')?></button>
 											</span>
@@ -60,7 +69,7 @@
 									<div id="location-edit" class="row">
 										<div class="col-md-8">
 											<div class="input-group">
-												<input class="form-control" type="text" placeholder="<?=$selected_location->name?>" disabled>
+												<input class="form-control" type="text" placeholder="<?=$selected_location->translate_name()?>" disabled>
 												<span class="input-group-btn">
 													<button class="btn btn-default" type="button"><?=_e('Select another')?></button>
 												</span>

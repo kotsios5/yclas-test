@@ -108,6 +108,15 @@
 			<?= FORM::open(Route::url('oc-panel', array('controller'=>'myads','action'=>'update','id'=>$ad->id_ad)), array('class'=>'form-horizontal edit_ad_form', 'enctype'=>'multipart/form-data'))?>
 				<fieldset class="pad_10 ">
 
+					<? if (Core::config('general.multilingual')) : ?>
+						<div class="form-group">
+							<div class="col-xs-12">
+								<?= Form::label('locale', _e('Language'), array('class'=>'', 'for'=>'locale'))?>
+								<?= Form::select('locale', i18n::get_selectable_languages(), $ad->locale, array('class' => 'form-control', 'id' => 'locale', 'required'))?>
+							</div>
+						</div>
+					<? endif ?>
+
 					<!-- START TITLE -->
 					<div class="form-group">
 						<div class="col-xs-12">
@@ -137,7 +146,7 @@
 							<div id="category-edit">
 								<div class="col-sm-6 row">
 									<div class="input-group">
-										<input class="form-control" type="text" placeholder="<?=$ad->category->name?>" disabled>
+										<input class="form-control" type="text" placeholder="<?=$ad->category->translate_name()?>" disabled>
 										<span class="input-group-btn">
 											<button class="btn btn-default" type="button"><?=_e('Edit category')?></button>
 										</span>
@@ -162,7 +171,7 @@
 									<div id="location-edit">
 										<div class="col-sm-6 row">
 											<div class="input-group">
-												<input class="form-control" type="text" placeholder="<?=$ad->location->name?>" disabled>
+												<input class="form-control" type="text" placeholder="<?=$ad->location->translate_name()?>" disabled>
 												<span class="input-group-btn">
 													<button class="btn btn-default" type="button"><?=_e('Edit location')?></button>
 												</span>

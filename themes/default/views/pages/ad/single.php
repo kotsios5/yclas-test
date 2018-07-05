@@ -25,11 +25,11 @@
     </div>
 
     <!-- PAYPAL buttons to featured and to top -->
-    <?if ((Auth::instance()->logged_in() AND Auth::instance()->get_user()->id_role == 10 ) OR 
+    <?if ((Auth::instance()->logged_in() AND Auth::instance()->get_user()->id_role == 10 ) OR
         (Auth::instance()->logged_in() AND $ad->user->id_user == Auth::instance()->get_user()->id_user)):?>
-        <?if((core::config('payment.pay_to_go_on_top') > 0  
+        <?if((core::config('payment.pay_to_go_on_top') > 0
                 && core::config('payment.to_top') != FALSE )
-                OR (core::config('payment.pay_to_go_on_feature') > 0 
+                OR (core::config('payment.pay_to_go_on_feature') > 0
                 && core::config('payment.to_featured') != FALSE)):?>
             <div id="recomentadion" class="well recomentadion clearfix">
                 <?if(core::config('payment.pay_to_go_on_top') > 0 && core::config('payment.to_top') != FALSE):?>
@@ -44,7 +44,7 @@
         <?endif?>
     <?endif?>
     <!-- end paypal button -->
-    
+
     <?$images = $ad->get_images()?>
     <?if($images):?>
         <div class="row">
@@ -72,15 +72,15 @@
             <span class="label label-danger"><?=_e('Price');?> : <?=_e('Free');?></span>
         <?endif?>
         <?if (core::config('advertisement.location') AND $ad->id_location != 1 AND $ad->location->loaded()):?>
-            <span class="label label-default"><?=$ad->location->name?></span>
+            <span class="label label-default"><?=$ad->location->translate_name()?></span>
         <?endif?>
         <a class="label label-default" href="<?=Route::url('profile',  array('seoname'=>$ad->user->seoname))?>"><?=$ad->user->name?></a>
         <div class="pull-right">
             <span class="label label-info"><?= Date::format($ad->published, core::config('general.date_format'))?></span>
             <?if(core::config('advertisement.count_visits')==1):?>
-                <span class="label label-info"><?=$hits?> <?=_e('Hits')?></span> 
+                <span class="label label-info"><?=$hits?> <?=_e('Hits')?></span>
             <?endif?>
-        </div>    
+        </div>
     </div>
 
     <br/>
@@ -141,7 +141,7 @@
                             </div>
                             <div class="modal-body">
                                 <?=Form::errors()?>
-                                
+
                                 <?= FORM::open(Route::url('default', array('controller'=>'contact', 'action'=>'user_contact', 'id'=>$ad->id_ad)), array('class'=>'form-horizontal well', 'enctype'=>'multipart/form-data'))?>
                                     <fieldset>
                                         <?if (!Auth::instance()->get_user()):?>
@@ -169,11 +169,11 @@
                                         <div class="form-group">
                                             <?= FORM::label('message', _e('Message'), array('class'=>'col-sm-2 control-label', 'for'=>'message'))?>
                                             <div class="col-md-6">
-                                                <?= FORM::textarea('message', Core::request('message'), array('class'=>'form-control', 'placeholder' => __('Message'), 'name'=>'message', 'id'=>'message', 'rows'=>2, 'required'))?>    
+                                                <?= FORM::textarea('message', Core::request('message'), array('class'=>'form-control', 'placeholder' => __('Message'), 'name'=>'message', 'id'=>'message', 'rows'=>2, 'required'))?>
                                             </div>
                                         </div>
-                                        <?if(core::config('general.messaging') AND 
-                                            core::config('advertisement.price') AND 
+                                        <?if(core::config('general.messaging') AND
+                                            core::config('advertisement.price') AND
                                             core::config('advertisement.contact_price')):?>
                                             <div class="form-group">
                                                 <?= FORM::label('price', _e('Price'), array('class'=>'col-sm-2 control-label', 'for'=>'price'))?>
@@ -205,7 +205,7 @@
                                                 </div>
                                             </div>
                                         <?endif?>
-                                        <div class="modal-footer">  
+                                        <div class="modal-footer">
                                             <?= FORM::button('submit', _e('Contact Us'), array('type'=>'submit', 'class'=>'btn btn-success', 'action'=>Route::url('default', array('controller'=>'contact', 'action'=>'user_contact' , 'id'=>$ad->id_ad))))?>
                                         </div>
                                     </fieldset>
@@ -240,7 +240,7 @@
         <?=$ad->flagad()?>
     <?endif?>
     <?=$ad->structured_data()?>
-    
+
     <!-- modal-gallery is the modal dialog used for the image gallery -->
     <div class="modal fade" id="modal-gallery">
         <div class="modal-dialog">
@@ -258,7 +258,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- The modal dialog, which will be used to wrap the lightbox content -->
     <div id="blueimp-gallery" class="blueimp-gallery">
         <div class="slides"></div>
@@ -268,7 +268,7 @@
         <a class="close">×</a>
         <a class="play-pause"></a>
         <ol class="indicator"></ol>
-        
+
         <div class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">

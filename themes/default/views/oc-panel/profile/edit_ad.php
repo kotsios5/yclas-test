@@ -131,6 +131,15 @@
             <?= FORM::open(Route::url('oc-panel', array('controller'=>'myads','action'=>'update','id'=>$ad->id_ad)), array('class'=>'form-horizontal edit_ad_form', 'enctype'=>'multipart/form-data'))?>
                 <fieldset>
 
+                    <? if (Core::config('general.multilingual')) : ?>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-xs-12">
+                                <?= Form::label('locale', _e('Language'), array('class'=>'', 'for'=>'locale'))?>
+                                <?= Form::select('locale', i18n::get_selectable_languages(), $ad->locale, array('class' => 'form-control', 'id' => 'locale', 'required'))?>
+                            </div>
+                        </div>
+                    <? endif ?>
+
                     <div class="form-group">
                         <div class="col-sm-8 col-xs-12">
                             <?= FORM::label('title', _e('Title'), array('class'=>'', 'for'=>'title'))?>

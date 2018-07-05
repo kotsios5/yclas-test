@@ -126,6 +126,7 @@ class Model_Ad extends ORM {
                         'price'         => array(array('price')),
                         'latitude'      => array(array('regex', array(':value', '/^-?+(?=.*[0-9])[0-9]*+'.preg_quote('.').'?+[0-9]*+$/D'))),
                         'longitude'     => array(array('regex', array(':value', '/^-?+(?=.*[0-9])[0-9]*+'.preg_quote('.').'?+[0-9]*+$/D'))),
+                        'locale'        => array(),
 				    );
 
         if (core::config('advertisement.description') == FALSE)
@@ -133,6 +134,9 @@ class Model_Ad extends ORM {
 
         if (core::config('payment.stock')==1)
             $rules['stock'] =  array(array('numeric'));
+
+        if (Core::config('general.multilingual') == 1)
+            $rules['locale'] =  array(array('not_empty'));
 
         return $rules;
     }
@@ -981,6 +985,12 @@ class Model_Ad extends ORM {
             $ads->where('id_ad', '!=', $this->id_ad)
                 ->where('status', '=', self::STATUS_PUBLISHED);
 
+            // filter by language
+            if (Core::config('general.multilingual') == 1)
+            {
+                $ads->where('locale', '=', i18n::$locale);
+            }
+
             //if ad have passed expiration time dont show
             if (core::config('advertisement.expire_date') > 0)
             {
@@ -1705,7 +1715,7 @@ class Model_Ad extends ORM {
     public function btc()
     {
         if($this->loaded() AND $this->status == self::STATUS_PUBLISHED AND
-            ((isset($this->cf_bitcoinaddress) AND !empty($this->cf_bitcoinaddress)) OR 
+            ((isset($this->cf_bitcoinaddress) AND !empty($this->cf_bitcoinaddress)) OR
             (isset($this->user->cf_bitcoinaddress) AND !empty($this->user->cf_bitcoinaddress))))
         {
             return View::factory('pages/ad/btc',array('ad'=>$this))->render();

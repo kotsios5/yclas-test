@@ -187,7 +187,7 @@
                 </a>
             </div>
         <?endif?>
-        
+
         <div class="clearfix">&nbsp;</div>
 	</article>
 </div>
@@ -220,7 +220,7 @@
                             <?elseif(( $icon_src = $ad->location->get_icon() )!==FALSE ):?>
                                 <img src="<?=Core::imagefly($icon_src,160,160)?>" class="img-responsive center-block" alt="<?=HTML::chars($ad->title)?>" />
                             <?else:?>
-                                <img data-src="holder.js/160x160?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->name, 'size' => 14, 'auto' => 'yes')))?>" class="img-responsive center-block" alt="<?=HTML::chars($ad->title)?>">
+                                <img data-src="holder.js/160x160?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->translate_name(), 'size' => 14, 'auto' => 'yes')))?>" class="img-responsive center-block" alt="<?=HTML::chars($ad->title)?>">
                             <?endif?>
                         </figure>
                     </a>
@@ -254,4 +254,3 @@
     <?endif?>
 
 </div>
-

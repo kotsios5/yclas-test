@@ -44,6 +44,7 @@ class Controller_Api_Locations extends Api_Controller {
                     $loc = $location->as_array();
                     //$loc['siblings'] = $location->get_siblings_ids();
                     $loc['icon']     = $location->get_icon();
+                    $loc['translate_name'] = $location->translate_name();
 
                     $output[] = $loc;
                 }
@@ -91,6 +92,7 @@ class Controller_Api_Locations extends Api_Controller {
                     $loc = $location->as_array();
                     $loc['siblings'] = $location->get_siblings_ids();
                     $loc['icon']     = $location->get_icon();
+                    $loc['translate_name'] = $location->translate_name();
 
                     $this->rest_output(array('location' => $loc));
                 }
@@ -99,13 +101,13 @@ class Controller_Api_Locations extends Api_Controller {
             }
             else
                 $this->_error(__('Location not found'),404);
-           
+
         }
         catch (Kohana_HTTP_Exception $khe)
         {
             $this->_error($khe);
         }
-       
+
     }
 
 } // END

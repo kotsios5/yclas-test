@@ -9,19 +9,19 @@
 						<p class="nr_info"><?= _e('This advertisement doesn´t exist, or is not yet published!')?></p>
 					</div>
 				<?else:?>
-				
+
 				<div class="page-header">
 					<h3><?= $ad->title;?></h3>
 				</div>
-				
+
 				<?=Form::errors()?>
-			
+
 				<!-- Boost Ad Options -->
-				<?if ((Auth::instance()->logged_in() AND Auth::instance()->get_user()->id_role == 10 ) OR 
+				<?if ((Auth::instance()->logged_in() AND Auth::instance()->get_user()->id_role == 10 ) OR
 				(Auth::instance()->logged_in() AND $ad->user->id_user == Auth::instance()->get_user()->id_user)):?>
-				<?if((core::config('payment.pay_to_go_on_top') > 0  
+				<?if((core::config('payment.pay_to_go_on_top') > 0
 				&& core::config('payment.to_top') != FALSE )
-				OR (core::config('payment.pay_to_go_on_feature') > 0 
+				OR (core::config('payment.pay_to_go_on_feature') > 0
 				&& core::config('payment.to_featured') != FALSE)):?>
 				<div class="alert alert-success text-center alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -76,7 +76,7 @@
 									<div id="gallery" class="ad_images">
 										<div class="#">
 											<div class="thumbnail gallery-item">
-											<img data-src="holder.js/200x200?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->name, 'size' => 14, 'auto' => 'yes')))?>" alt="<?=HTML::chars($ad->title)?>">
+											<img data-src="holder.js/200x200?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->translate_name(), 'size' => 14, 'auto' => 'yes')))?>" alt="<?=HTML::chars($ad->title)?>">
 											</div>
 										</div>
 									</div>
@@ -97,7 +97,7 @@
 							<div class="pad_10">
 								<?if ($ad->id_location != 1):?>
 									<p class="seller_user"> <a class="" href="<?=Route::url('profile',  array('seoname'=>$ad->user->seoname))?>"><?=$ad->user->name?></a></p>
-									<p class="seller_location"><?=$ad->location->name?></p>
+									<p class="seller_location"><?=$ad->location->translate_name()?></p>
 								<?else:?>
 									<p class="seller_user_ul"> <a class="" href="<?=Route::url('profile',  array('seoname'=>$ad->user->seoname))?>"><?=$ad->user->name?></a></p>
 								<?endif?>
@@ -116,7 +116,7 @@
 									<?endif?>
 									<p class=""><span class="glyphicon glyphicon-calendar"></span> <?= Date::format($ad->published, core::config('general.date_format'))?></p>
 									<?if(core::config('advertisement.count_visits')==1):?>
-										<p class=""><span class="glyphicon glyphicon-eye-open"></span> <?=$hits?> <?=_e('Hits')?></p> 
+										<p class=""><span class="glyphicon glyphicon-eye-open"></span> <?=$hits?> <?=_e('Hits')?></p>
 									<?endif?>
 								</div>
 
@@ -135,7 +135,7 @@
 							</div>
 
 							<div class="seller_footer clearfix">
-								<div class="seller_f_block">	
+								<div class="seller_f_block">
 									<?if(core::config('payment.paypal_seller')==1 AND $ad->price != NULL AND $ad->price > 0):?>
 										<?if(core::config('payment.stock')==0 OR ($ad->stock > 0 AND core::config('payment.stock')==1)):?>
                     						<?if($ad->status != Model_Ad::STATUS_SOLD):?>
@@ -153,7 +153,7 @@
 									<?elseif (($ad->price==0 OR $ad->price == NULL) AND core::config('advertisement.free')==1):?>
 										<span class="sf_btn i_price"><?=_e('Free');?></span>
 									<?else:?>
-										<span class="sf_btn i_price">N/A</span>	
+										<span class="sf_btn i_price">N/A</span>
 									<?endif?>
 								</div>
 								<?if ($ad->can_contact()):?>
@@ -166,19 +166,19 @@
 									</div>
 								<?endif?>
 							</div>
-						</div>	
+						</div>
 					</div>
 				</div>
-					
+
 				<div class="clear"></div>
-				
+
 				<br />
 				<hr />
-				<br />	
+				<br />
 			</div>
 
 			<!-- Start Bottom Tabbed Ad Info -->
-			<div class="col-xs-12">	
+			<div class="col-xs-12">
 				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active"><a href="#addesc" aria-controls="addesc" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-info-sign"></i></a></li>
 					<?if($ad->comments()!=FALSE):?>
@@ -203,7 +203,7 @@
 						    <?endif?>
 						</div>
 					</div>
-					
+
 					<div role="tabpanel" class="tab-pane fade clearfix" id="comments">
 						<div class="comments_section">
 						<?if($ad->comments()):?>
@@ -216,7 +216,7 @@
 						<?endif?>
 						</div>
 					</div>
-					
+
 					<div role="tabpanel" class="tab-pane fade clearfix" id="related">
 						<div class="pad_10">
 							<?=$ad->related()?>
@@ -238,7 +238,7 @@
 				</div>
 			</div>
 			<br><br>
-			<!-- END Tabbed Ad Info -->		
+			<!-- END Tabbed Ad Info -->
 			<!-- modal-gallery is the modal dialog used for the image gallery -->
 			<div class="modal fade" id="modal-gallery">
 				<div class="modal-dialog">
@@ -267,7 +267,7 @@
 				<a class="close">×</a>
 				<a class="play-pause"></a>
 				<ol class="indicator"></ol>
-		        
+
 				<div class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -283,7 +283,7 @@
 					</div>
 				</div>
 			</div>
-	
+
 			<?if ($ad->can_contact()):?>
 				<?if ((core::config('advertisement.login_to_contact') == TRUE OR core::config('general.messaging') == TRUE) AND !Auth::instance()->logged_in()):?>
 					<div class="clear"></div>
@@ -319,8 +319,8 @@
 											<dt><?= FORM::label('message', _e('Message'), array('class'=>'control-label', 'for'=>'message'))?></dt>
 											<dd><?= FORM::textarea('message', Core::request('message'), array('class'=>'form-control', 'placeholder' => __('Message'), 'name'=>'message', 'id'=>'message', 'rows'=>5, 'required'))?></dd>
 										</dl>
-										<?if(core::config('general.messaging') AND 
-		                                    core::config('advertisement.price') AND 
+										<?if(core::config('general.messaging') AND
+		                                    core::config('advertisement.price') AND
 		                                    core::config('advertisement.contact_price')):?>
 											<dl class="form-group clearfix">
 												<dt><?= FORM::label('price', _e('Price'), array('class'=>'control-label', 'for'=>'price'))?></dt>
@@ -346,7 +346,7 @@
 												<?endif?>
 											</dl>
 										<?endif?>
-										<dl class="modal-footer text-center">	
+										<dl class="modal-footer text-center">
 											<?= FORM::button('submit', _e('Send Message'), array('type'=>'submit', 'class'=>'btn btn-base-dark', 'action'=>Route::url('default', array('controller'=>'contact', 'action'=>'user_contact' , 'id'=>$ad->id_ad))))?>
 										</dl>
 									</fieldset>

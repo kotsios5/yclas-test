@@ -7,7 +7,7 @@
 		<?if (Core::config('advertisement.only_admin_post')!=1):?>
 			<a class="btn btn-base-light btn-lg" href="<?=Route::url('post_new')?>">
 				 <?=_e('Publish new ')?>
-			</a>                
+			</a>
 		<?endif?>
 		<?if (!Auth::instance()->logged_in()):?>
 		<a class="btn btn-base-light btn-lg" data-toggle="modal" tabindex="-1" data-dismiss="modal" href="<?=Route::url('oc-panel',array('directory'=>'user','controller'=>'auth','action'=>'register'))?>#register-modal">
@@ -27,7 +27,7 @@
 <?if(core::config('advertisement.ads_in_home') != 3):?>
 <div class="container">
 	<div class="row">
-		<div class="col-xs-12">			
+		<div class="col-xs-12">
 			<?if(core::count($ads)):?>
 			<h3 class="text-center">
 				<?if(core::config('advertisement.ads_in_home') == 0):?>
@@ -38,7 +38,7 @@
 					<?=_e('Popular Ads last month')?>
 				<?endif?>
 				<?if ($user_location) :?>
-					<small><?=$user_location->name?></small>
+					<small><?=$user_location->translate_name()?></small>
 				<?endif?>
 			</h3>
 			<div class="home_grid clearfix">
@@ -50,7 +50,7 @@
 							<?if($ad->get_first_image()!== NULL):?>
 								<img src="<?=Core::imagefly($ad->get_first_image('image'),300,300)?>" alt="<?=HTML::chars($ad->title)?>">
 							<?else:?>
-								<img data-src="holder.js/200x200?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->name, 'size' => 14, 'auto' => 'yes')))?>" alt="<?=HTML::chars($ad->title)?>"> 
+								<img data-src="holder.js/200x200?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->translate_name(), 'size' => 14, 'auto' => 'yes')))?>" alt="<?=HTML::chars($ad->title)?>">
 							<?endif?>
 							<?if ($ad->price>0):?>
 								<span class="ad_price"> <?=i18n::money_format( $ad->price, $ad->currency())?></span>
@@ -66,7 +66,7 @@
 				</ul>
 			</div>
 			<?endif?>
-			
+
 		</div>
 	</div>
 </div>
@@ -79,12 +79,12 @@
 			<div class="col-xs-10">
 				<div class="post-ad-banner-text">
 					<?=Theme::get('maintitle_lowerbanner')?>
-				</div>	
+				</div>
 			</div>
 			<div class="col-xs-2 text-right post-ad-banner-btn">
 				<a class="btn btn-base-light btn-lg" href="<?=Route::url('post_new')?>">
 					<?=_e('Publish new ')?>
-				</a>  
+				</a>
 			</div>
 		</div>
 	</div>
@@ -104,7 +104,7 @@
 							<div class="col-xs-4 col-sm-4 col-md-4">
 								<div class="panel panel-home-categories">
 									<div class="panel-heading">
-										<a title="<?=HTML::chars((strip_tags($c['description'])!=='')?strip_tags($c['description']):$c['name'])?>" href="<?=Route::url('list', array('category'=>$c['seoname'], 'location'=>$user_location ? $user_location->seoname : NULL))?>"><?=mb_strtoupper($c['name']);?>
+										<a title="<?=HTML::chars((strip_tags($c['description'])!=='')?strip_tags($c['description']):$c['translate_name'])?>" href="<?=Route::url('list', array('category'=>$c['seoname'], 'location'=>$user_location ? $user_location->seoname : NULL))?>"><?=mb_strtoupper($c['translate_name']);?>
 										<?if (Theme::get('category_badge')!=1) : ?>
 											 (<?=number_format($c['count'])?>)</a>
 										<?endif?>
@@ -115,16 +115,16 @@
 											<?if($chi['id_category_parent'] == $c['id_category'] AND ! in_array($chi['id_category'], $hide_categories)):?>
 												<?if ($ci < 3):?>
 													<li class="list-group-item">
-														<a title="<?=HTML::chars($chi['name'])?>" href="<?=Route::url('list', array('category'=>$chi['seoname'], 'location'=>$user_location ? $user_location->seoname : NULL))?>">
+														<a title="<?=HTML::chars($chi['translate_name'])?>" href="<?=Route::url('list', array('category'=>$chi['seoname'], 'location'=>$user_location ? $user_location->seoname : NULL))?>">
 														<?if (Theme::get('category_badge')!=1) : ?>
 															<span class="pull-right badge badge-success"><?=number_format($chi['count'])?></span>
-														<?endif?><?=$chi['name'];?>
+														<?endif?><?=$chi['translate_name'];?>
 														</a>
 													</li>
 												<?endif?>
 												<?$ci++; if($ci == 3):?>
 													<li class="list-group-item">
-														<a role="button" 
+														<a role="button"
                                                             class="show-all-categories"
                                                             data-cat-id="<?=$c['id_category']?>">
                                                             <?=_e("See all categories")?> <span class="glyphicon glyphicon-chevron-right pull-right"></span>

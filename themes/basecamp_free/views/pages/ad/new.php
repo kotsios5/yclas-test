@@ -31,6 +31,15 @@
                         <br><hr><br>
                     <?endif?>
 
+                    <? if (Core::config('general.multilingual') == 1) : ?>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <?= Form::label('locale', _e('Language'), array('for'=>'locale'))?>
+                                <?= Form::select('locale', i18n::get_selectable_languages(), Core::request('locale', i18n::$locale), array('class' => 'form-control', 'id' => 'locale', 'required'))?>
+                            </div>
+                        </div>
+                    <? endif ?>
+
                     <div class="form-group">
                         <div class="col-xs-12">
                             <?= FORM::label('title', _e('Title'), array('for'=>'title'))?>
@@ -58,7 +67,7 @@
                                 <div id="category-edit" class="row">
                                     <div class="col-xs-8">
                                         <div class="input-group">
-                                            <input class="form-control" type="text" placeholder="<?=$selected_category->name?>" disabled>
+                                            <input class="form-control" type="text" placeholder="<?=$selected_category->translate_name()?>" disabled>
                                             <span class="input-group-btn">
                                                 <button class="btn btn-default" type="button"><?=_e('Select another')?></button>
                                             </span>
@@ -84,7 +93,7 @@
                                     <div id="location-edit" class="row">
                                         <div class="col-xs-8">
                                             <div class="input-group">
-                                                <input class="form-control" type="text" placeholder="<?=$selected_location->name?>" disabled>
+                                                <input class="form-control" type="text" placeholder="<?=$selected_location->translate_name()?>" disabled>
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-default" type="button"><?=_e('Select another')?></button>
                                                 </span>

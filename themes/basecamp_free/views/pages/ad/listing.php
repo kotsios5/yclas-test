@@ -5,29 +5,29 @@
 			<div class="<?=(Theme::get('sidebar_position')!='none')?'col-xs-9':'col-xs-12'?> <?=(Theme::get('sidebar_position')=='left')?'pull-right':'pull-left'?>">
 				<?if ($category!==NULL):?>
 					<div class="page-header">
-						<h3><?=$category->name?></h3>
-					</div>	
+						<h3><?=$category->translate_name()?></h3>
+					</div>
 				<?elseif ($location!==NULL):?>
 					<div class="page-header">
-						<h3><?=$location->name?></h3>
-					</div>	
-				<?endif?>
-		
-				<!-- CAT or LOC DESCRIPTION --> 
-				<?if ($category!==NULL && $category->description !==NULL):?>
-					<div class="cat_loc_desc">
-						<p><?=$category->description?></p>
+						<h3><?=$location->translate_name()?></h3>
 					</div>
-				<?elseif ($location!==NULL && $location->description !==NULL):?>
-					<div class="cat_loc_desc">
-						<p><?=$location->description?></p>
-					</div>	
 				<?endif?>
-				<!-- // CAT or LOC DESCRIPTION --> 
 
-				<!-- ADS AVAILABLE SO LETS SHOW THEM --> 
+				<!-- CAT or LOC DESCRIPTION -->
+				<?if ($category!==NULL && $category->translate_description() !==NULL):?>
+					<div class="cat_loc_desc">
+						<p><?=$category->translate_description()?></p>
+					</div>
+				<?elseif ($location!==NULL && $location->translate_description() !==NULL):?>
+					<div class="cat_loc_desc">
+						<p><?=$location->translate_description()?></p>
+					</div>
+				<?endif?>
+				<!-- // CAT or LOC DESCRIPTION -->
+
+				<!-- ADS AVAILABLE SO LETS SHOW THEM -->
 				<?if(core::count($ads)):?>
-					<!-- FILTER OPTIONS --> 
+					<!-- FILTER OPTIONS -->
 					<div class="listing_filter">
 						<div class="loc_opts btn-group">
 						<?if(core::config('general.auto_locate')):?>
@@ -44,16 +44,16 @@
 							</button>
 						<?endif?>
 						<?if (core::config('advertisement.map')==1):?>
-							<a href="<?=Route::url('map')?>?category=<?=Model_Category::current()->loaded()?Model_Category::current()->seoname:NULL?>&location=<?=Model_Location::current()->loaded()?Model_Location::current()->seoname:NULL?>" 
+							<a href="<?=Route::url('map')?>?category=<?=Model_Category::current()->loaded()?Model_Category::current()->seoname:NULL?>&location=<?=Model_Location::current()->loaded()?Model_Location::current()->seoname:NULL?>"
 								class="btn btn-sm btn-base-dark">
 								<span class="glyphicon glyphicon-globe"></span> <?=_e('Map')?>
 							</a>
 						<?endif?>
 						</div>
-					
+
 						<div class="sort_opts btn-group ">
 							<a class="btn btn-sm btn-base-dark <?=(core::cookie('list/grid')==0)?'active':''?>" id="grid" href="#"><span class="glyphicon glyphicon-th-large"></span></a>
-							<a class="btn btn-sm btn-base-dark <?=(core::cookie('list/grid')==1)?'active':''?>" id="list" href="#"><span class="glyphicon glyphicon-th-list"></span></a>	
+							<a class="btn btn-sm btn-base-dark <?=(core::cookie('list/grid')==1)?'active':''?>" id="list" href="#"><span class="glyphicon glyphicon-th-list"></span></a>
 						<button type="button" id="sort" data-sort="<?=core::request('sort')?>" class="btn btn-sm btn-base-dark dropdown-toggle" data-toggle="dropdown">
 							<span class="glyphicon glyphicon-sort-by-attributes-alt"></span> <?=_e('Sort')?> <span class="caret"></span>
 						</button>
@@ -73,7 +73,7 @@
 								<li><a href="?<?=http_build_query(['sort' => 'published-asc'] + Request::current()->query())?>"><?=_e('Oldest')?></a></li>
 							</ul>
 						</div>
-				
+
 						<div class="clearfix"></div>
 					</div>
 					<div class="text-right">
@@ -110,7 +110,7 @@
 											<?if($ad->get_first_image() !== NULL):?>
 												<?=HTML::picture($ad->get_first_image(), ['w' => 180, 'h' => 180], ['320px' => ['w' => '180', 'h' => '180']], ['class' => 'img-responsive'], ['alt' => HTML::chars($ad->title)])?>
 											<?else:?>
-												<img data-src="holder.js/180x180?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->name, 'size' => 14, 'auto' => 'yes')))?>" class="img-responsive" alt="<?=HTML::chars($ad->title)?>"> 
+												<img data-src="holder.js/180x180?<?=str_replace('+', ' ', http_build_query(array('text' => $ad->category->translate_name(), 'size' => 14, 'auto' => 'yes')))?>" class="img-responsive" alt="<?=HTML::chars($ad->title)?>">
 											<?endif?>
 											<span class="gallery_only fm"><i class="glyphicon glyphicon-bookmark"></i></span>
 											<?if ($ad->price!=0):?>
@@ -119,17 +119,17 @@
 												<span class="gallery_only ad_gprice"><?=_e('Free');?></span>
 											<?else:?>
 												<span class="gallery_only ad_gprice"><?=_e('Check Listing');?></span>
-											<?endif?>	
+											<?endif?>
 										</a>
 									</div>
 								</div>
-					
+
 								<div class="ad_details">
 									<div class="ad_details_inner">
 										<h2>
 											<a title="<?=HTML::chars($ad->title)?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>">
 											<?=$ad->title?>
-											</a>							
+											</a>
 										</h2>
 										<p class="ad_meta clearfix">
 											<?if ($ad->published!=0){?>
@@ -139,11 +139,11 @@
 												<span> - <i class="glyphicon glyphicon-map-marker"></i> <?=i18n::format_measurement($ad->distance)?> away</span>
 											<?endif?>
 										</p>
-						
+
 										<?if(core::config('advertisement.description')!=FALSE):?>
 											<p class="ad_desc"><?=(core::cookie('list/grid')==1)?Text::limit_chars(Text::removebbcode($ad->description), 255, NULL, TRUE) : Text::limit_chars(Text::removebbcode($ad->description), 30, NULL, TRUE)?></p>
 										<?endif?>
-				
+
 									</div>
 								</div>
 								<div class="ad_buttons">
@@ -172,7 +172,7 @@
 										<span class="ad_options">
 											<a class="btn btn-warning" data-toggle="modal" data-dismiss="modal" href="<?=Route::url('oc-panel',array('controller'=>'myads','action'=>'index'))?>#adcontrol<?=$ad->id_ad?>-modal"><i class="glyphicon glyphicon-cog"></i></a>
 										</span>
-							
+
 										<div id="adcontrol<?=$ad->id_ad?>-modal" class="modal fade">
 											<div class="modal-dialog">
 												<div class="modal-content">
@@ -188,18 +188,18 @@
 											</div>
 										</div>
 									<?endif?>
-						
+
 									<?if ($ad->price!=0):?>
-										<span class="ad_price"> 
+										<span class="ad_price">
 											<a class="add-transition" title="<?=HTML::chars($ad->title)?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>">
 											<?=_e('Price');?>: <b><span class="price-curry"><?=i18n::money_format( $ad->price, $ad->currency())?></span></b>
-											</a>							 
+											</a>
 										</span>
 									<?elseif (($ad->price==0 OR $ad->price == NULL) AND core::config('advertisement.free')==1):?>
-										<span class="ad_price"> 
+										<span class="ad_price">
 										<a class="add-transition" title="<?=HTML::chars($ad->title)?>" href="<?=Route::url('ad', array('controller'=>'ad','category'=>$ad->category->seoname,'seotitle'=>$ad->seotitle))?>">
 											<b><?=_e('Free');?></b>
-										</a>	
+										</a>
 										</span>
 									<?else:?>
 										<span class="ad_price na">
@@ -215,32 +215,32 @@
 					</ul>
 				</div>
 				<!-- // AD LIST -->
-				
+
 				<div class="text-center">
 					<?=$pagination?>
 				</div>
-			
+
 				<?else:?>
-			
+
 					<!-- NO ADS -->
 					<div class="no_results text-center">
 						<span class="nr_badge"><i class="glyphicon glyphicon-info-sign glyphicon"></i></span>
 						<p class="nr_info"><?=_e('We do not have any advertisements in this category')?></p>
 						<?if (Core::config('advertisement.only_admin_post')!=1):?>
-							<a class="btn btn-base-dark" title="<?=__('New Advertisement')?>" 
+							<a class="btn btn-base-dark" title="<?=__('New Advertisement')?>"
 								href="<?=Route::url('post_new')?>?category=<?=($category!==NULL)?$category->seoname:''?>&location=<?=($location!==NULL)?$location->seoname:''?>">
 								<i class="glyphicon glyphicon-pencil"></i> <?=_e('Publish new advertisement')?>
 							</a>
 						<?endif?>
 					</div>
-					<!-- // NO ADS -->				
+					<!-- // NO ADS -->
 				<?endif?>
 			</div>
-		
+
             <?=View::fragment('sidebar_front','sidebar')?>
-        
+
         </div>
-	
+
 	</div>
 </div>
 

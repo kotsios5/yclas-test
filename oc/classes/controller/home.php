@@ -24,16 +24,16 @@ class Controller_Home extends Controller {
 
             Theme::$scripts['async_defer'][] = '//maps.google.com/maps/api/js?libraries=geometry&v=3&key='.core::config("advertisement.gm_api_key").'&callback=initAutoLocate&language='.i18n::get_gmaps_language(i18n::$locale);
         }
-        
+
 	    //template header
 	    $this->template->title            = '';
 	    // $this->template->meta_keywords    = 'keywords';
 	    if(core::config('general.site_description') != '')
-			$this->template->meta_description = core::config('general.site_description');		    
-	    else 
-			$this->template->meta_description = core::config('general.site_name').' '.__('official homepage, get your post listed now.');		    
+			$this->template->meta_description = core::config('general.site_description');
+	    else
+			$this->template->meta_description = core::config('general.site_name').' '.__('official homepage, get your post listed now.');
 
-	    //setting main view/template and render pages  
+	    //setting main view/template and render pages
 
         // get user location if any
         $user_location = NULL;
@@ -49,6 +49,12 @@ class Controller_Home extends Controller {
 	    $ads = new Model_Ad();
         $ads->where('status','=', Model_Ad::STATUS_PUBLISHED);
 
+        // filter by language
+        if (Core::config('general.multilingual') == 1)
+        {
+            $ads->where('locale', '=', i18n::$locale);
+        }
+
         if ($user_location)
             $ads->where('id_location', 'in', $user_location->get_siblings_ids());
 
@@ -58,13 +64,13 @@ class Controller_Home extends Controller {
         if(core::config('advertisement.count_visits')==0 AND $ads_in_home==2)
             $ads_in_home = 0;
 
-        switch ($ads_in_home) 
+        switch ($ads_in_home)
         {
             case 2:
                 $id_ads = array_keys(Model_Visit::popular_ads());
                 if (core::count($id_ads)>0)
                     $ads->where('id_ad','IN', $id_ads);
-                
+
                 break;
             case 1:
                 $ads->where('featured','IS NOT', NULL)
@@ -82,7 +88,7 @@ class Controller_Home extends Controller {
                 break;
         }
 
-        //if ad have passed expiration time dont show 
+        //if ad have passed expiration time dont show
         if(core::config('advertisement.expire_date') > 0)
         {
             $ads->where(DB::expr('DATE_ADD( published, INTERVAL '.core::config('advertisement.expire_date').' DAY)'), '>', Date::unix2mysql());
@@ -106,11 +112,11 @@ class Controller_Home extends Controller {
                                             ->find_all()
                                             ->as_array();
         }
-	
+
         $this->template->bind('content', $content);
-        
+
         $this->template->content = View::factory('pages/home', compact('ads', 'categs', 'auto_locats', 'user_location', 'hide_categories'));
-		
+
 	}
 
 } // End Welcome

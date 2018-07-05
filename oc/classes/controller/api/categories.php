@@ -46,6 +46,7 @@ class Controller_Api_Categories extends Api_Controller {
                     //$cat['siblings'] = $category->get_siblings_ids();
                     $cat['icon']     = $category->get_icon();
                     $cat['price']    = i18n::money_format($category->price);
+                    $cat['translate_name'] = $category->translate_name();
 
                     $output[] = $cat;
                 }
@@ -92,6 +93,7 @@ class Controller_Api_Categories extends Api_Controller {
                 if ($category->loaded())
                 {
                     $cat = $category->as_array();
+                    $cat['translate_name']  = $category->translate_name();
                     $cat['price']    = i18n::money_format($category->price);
                     $cat['parents']  = $category->get_parents_ids();
                     $cat['siblings'] = $category->get_siblings_ids();
@@ -105,13 +107,13 @@ class Controller_Api_Categories extends Api_Controller {
             }
             else
                 $this->_error(__('Category not found'),404);
-           
+
         }
         catch (Kohana_HTTP_Exception $khe)
         {
             $this->_error($khe);
         }
-       
+
     }
 
 } // END

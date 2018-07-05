@@ -34,7 +34,7 @@ function init_panel()
         });
     }
 	else if ($( "#crud-post" ).length || $( "#crud-category" ).length || $( "#crud-location" ).length) {
-		$("#formorm_description").summernote({
+        $("#formorm_description, textarea[id^=translations_description]").summernote({
             height: "350",
             placeholder: ' ',
             toolbar: [
