@@ -76,7 +76,7 @@ script:
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/default
 
 after_failure:
-  # - cat /var/www/yclas-test/oc/tests/_output/{test-filename}.fail.html
+  - cat /var/www/yclas-test/oc/tests/_output/SetUsersPasswordsCept.fail.html
 
   # configure notifications (email, IRC, campfire etc)
 notifications:
