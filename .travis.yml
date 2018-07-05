@@ -38,7 +38,13 @@ before_script:
   - sudo cp -f $TRAVIS_BUILD_DIR/build/travis-ci-apache /etc/apache2/sites-available/reoc.lo.conf 
   - sudo a2ensite reoc.lo.conf 
   - sudo sed -i 's/localhost/reoc.lo/g' /etc/hosts
+  - sudo cp TRAVIS_BUILD_DIR/build/install/auth.php /var/www/oc/config/
+  - sudo cp TRAVIS_BUILD_DIR/build/install/database.php /var/www/oc/config/
+  - sudo cp TRAVIS_BUILD_DIR/build/install/robots /var/www/robots.txt
+  - sudo cp TRAVIS_BUILD_DIR/build/install/sitemap /var/www/sitemap.xml
+  - sudo cp TRAVIS_BUILD_DIR/build/install/htaccess-install /var/www/.htaccess
   - sudo cp -r $TRAVIS_BUILD_DIR /var/www
+  - mysql -uroot -p1234 openclassifieds < /build/install/openclassifieds.sql
 
   # Enable mod_rewrite
   - sudo a2enmod rewrite
