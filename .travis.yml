@@ -38,7 +38,7 @@ before_script:
   - sudo cp -f $TRAVIS_BUILD_DIR/build/travis-ci-apache /etc/apache2/sites-available/reoc.lo.conf 
   - sudo a2ensite reoc.lo.conf 
   - sudo sed -i 's/localhost/reoc.lo/g' /etc/hosts
-  - pwd
+  - ls /
   - sudo cp $TRAVIS_BUILD_DIR/build/install/auth.php /var/www/yclas-test/oc/config/
   - sudo cp $TRAVIS_BUILD_DIR/build/install/database.php /var/www/yclas-test/oc/config/
   - sudo cp $TRAVIS_BUILD_DIR/build/install/robots /var/www/yclas-test/robots.txt
