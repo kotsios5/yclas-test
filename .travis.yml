@@ -72,6 +72,7 @@ before_script:
   - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then sudo wget https://codeception.com/codecept.phar; fi
   - sudo chmod -R 755 codecept.phar
   - curl reoc.lo
+  
 
 script: 
   # - set -e # don't stop on failure
