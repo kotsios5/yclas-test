@@ -54,7 +54,6 @@ before_script:
   - sudo chown -R root:root /var/www
   - sudo chown -R www-data:www-data /var/www/*
   - sudo chmod -R 755 /var/www/*
-
   - sudo chmod -R 777 /var/www/yclas-test/oc/tests # permissions for codeception output, it doesnt work without this.
 
   # install
