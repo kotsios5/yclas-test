@@ -75,6 +75,7 @@ before_script:
 
 script: 
   # - set -e # don't stop on failure
+  - php /var/www/yclas-test/oc/classes/controller/panel/update.php
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/SetUsersPasswordsCept.php
   - sudo chmod 777 /var/www/yclas/oc/config/database.php
   - php /var/www/yclas-test/oc/codecept.phar run acceptance tests/acceptance/UpdateDBCept.php
